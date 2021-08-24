@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: ./docker/images/node
+    container_name: tcc_api
+    ports:
+      - 3000:3000
+    volumes:
+      - ./api:/app
+    working_dir: /app
+    command: node helloWorld.js
+
+  image_recognition:
+    build:
+      context: ./docker/images/python
+    container_name: tcc_image_recognition
+    ports:
+      - 4000:4000
+    volumes:
+      - ./imageRecognition:/app
+    working_dir: /app
+    command: python helloWorld.py
