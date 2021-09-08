@@ -11,14 +11,3 @@ services:
       - ./api:/app
     working_dir: /app
     command: node helloWorld.js
-
-  image_recognition:
-    build:
-      context: ./docker/images/python
-    container_name: tcc_image_recognition
-    ports:
-      - 4000:4000
-    volumes:
-      - ./imageRecognition:/app
-    working_dir: /app
-    command: python helloWorld.py
