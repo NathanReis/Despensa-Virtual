@@ -3,7 +3,7 @@ version: "3.8"
 services:
   api:
     build:
-      context: ./docker/images/node
+      context: ./docker/api
     container_name: tcc_api
     ports:
       - 3000:3000
@@ -11,3 +11,16 @@ services:
       - ./api:/app
     working_dir: /app
     command: node helloWorld.js
+
+  mobile:
+    build:
+      context: ./docker/mobile
+    container_name: tcc_mobile
+    depends_on:
+      - api
+    ports:
+      - 19000:19000
+    volumes:
+      - ./mobile:/app
+    working_dir: /app
+    command: sh /scripts-app/setup.sh
