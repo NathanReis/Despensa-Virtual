@@ -1,6 +1,6 @@
-FROM node:14.17
+FROM node:14.17-alpine
 
-RUN apt update \
-    && apt upgrade -y \
-    && apt install -y nano \
-    && apt autoclean
+RUN apk update \
+    && apk upgrade \
+    && apk add nano \
+    && rm /var/cache/apk/*
