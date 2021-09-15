@@ -10,7 +10,7 @@ services:
     volumes:
       - ./api:/app
     working_dir: /app
-    command: node helloWorld.js
+    command: sh /scripts-app/setup.sh
 
   mobile:
     build:
