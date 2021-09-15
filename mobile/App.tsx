@@ -1,6 +1,6 @@
 import React from 'react';
-import { Product } from './src/screens/product';
+import Navigator from './src/navigators';
 
 export default function App() {
-  return <Product />;
+  return <Navigator />;
 }
