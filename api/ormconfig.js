@@ -1,5 +1,6 @@
 let ormConfig = {
   type: "postgres",
+  "synchronize": true,
   entities: [
     "./src/entity/*.ts"
   ],
@@ -7,7 +8,7 @@ let ormConfig = {
     "./src/database/migrations/*.ts"
   ],
   cli: {
-    "migrationsDir": "./src/migrations/migrations/"
+    "migrationsDir": "./src/database/migrations/"
   },
   ssl: true,
   extra: {
