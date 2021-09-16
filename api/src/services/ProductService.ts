@@ -23,18 +23,29 @@ class ProductService {
     return productCreate;
   }
 
-  async findOne({ name }: ProductEntity): Promise<ProductEntity> {
+  async findAll(): Promise<ProductEntity[]> {
+    let productRepository = getRepository(ProductEntity);
+    let products = productRepository.find();
+
+    if (!products) {
+      throw new Error('Nenhum produto encontrado');
+    }
+
+    return products;
+  }
+
+  async findById(id: Number): Promise<ProductEntity> {
     const productRepository = getRepository(ProductEntity);
-    const findProduct = await productRepository.findOne({
-      where: { name }
+    const product = await productRepository.findOne({
+      where: { id }
     });
 
-    if (!findProduct) {
+    if (!product) {
       // throw new AppError('Produto não encontrado', 404);
       throw new Error('Produto não encontrado');
     }
-    return findProduct;
 
+    return product;
   }
 
   async update({ name, amount, brand }: ProductEntity): Promise<ProductEntity> {

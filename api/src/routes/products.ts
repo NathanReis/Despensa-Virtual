@@ -1,16 +1,17 @@
-import express, { response } from 'express';
+import express from 'express';
 import { ProductController } from '../controller/ProductController';
+
 const router = express.Router();
 
 let productController = new ProductController();
 
+router.get("/", productController.findAll)
+router.get("/:id", productController.findById)
 
-router.get("/", productController.findProduct)
+router.post("/", productController.create);
 
-router.post("/", productController.createProduct);
+router.put("/", productController.update)
 
-router.put("/", productController.updateProduct)
-
-router.delete("/", productController.removeProduct)
+router.delete("/", productController.remove)
 
 export { router }

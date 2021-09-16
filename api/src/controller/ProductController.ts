@@ -14,9 +14,8 @@ function fillProduct(request: Request): ProductEntity {
   return product;
 }
 
-class ProductController {
-
-  async createProduct(request: Request, response: Response) {
+export class ProductController {
+  async create(request: Request, response: Response) {
     const product = fillProduct(request);
 
     if (!product.name || !product.amount || !product.brand) {
@@ -30,17 +29,23 @@ class ProductController {
     return response.status(201).json(productCreated);
   }
 
-  async findProduct(request: Request, response: Response) {
-    const product = fillProduct(request);
+  async findAll(request: Request, response: Response): Promise<Response> {
+    let productService = new ProductService();
+    let products = await productService.findAll();
 
-    const productService = new ProductService();
-    const productFound = await productService.findOne(product)
-
-    return response.status(201).json(productFound);
-
+    return response.json(products);
   }
 
-  async updateProduct(request: Request, response: Response) {
+  async findById(request: Request, response: Response) {
+    let id = (Number)(request.params.id);
+
+    const productService = new ProductService();
+    const product = await productService.findById(id);
+
+    return response.json(product);
+  }
+
+  async update(request: Request, response: Response) {
     const product = fillProduct(request);
     const productService = new ProductService();
     const productFound = await productService.update(product);
@@ -48,13 +53,11 @@ class ProductController {
     return response.status(201).json(productFound);
   }
 
-  async removeProduct(request: Request, response: Response) {
+  async remove(request: Request, response: Response) {
     const product = fillProduct(request);
     const productService = new ProductService();
     const productFound = await productService.remove(product);
+
     return response.status(201).json(productFound);
   }
-
 }
-
-export { ProductController };
