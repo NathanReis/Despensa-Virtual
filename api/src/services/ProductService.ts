@@ -1,27 +1,20 @@
-import { ProductEntity } from './../entity/ProductEntity';
 import { getRepository } from 'typeorm';
+
+import { ProductEntity } from '../entity/ProductEntity';
 import { AppError } from '../errors/AppErrors';
 
-class ProductService {
-  async create({ name, amount, brand }: ProductEntity): Promise<ProductEntity> {
+export class ProductService {
+  async create(product: ProductEntity): Promise<void> {
     const productRepository = getRepository(ProductEntity);
-    const findProduct = await productRepository.findOne({
-      where: { name }
+    const productFound = await productRepository.findOne({
+      where: { name: product.name }
     });
 
-    if (findProduct) {
+    if (productFound) {
       throw new AppError('Produto já cadastrado');
     }
 
-    const productCreate = productRepository.create({
-      name,
-      amount,
-      brand
-    })
-
-    await productRepository.save(productCreate);
-
-    return productCreate;
+    await productRepository.save(product);
   }
 
   async findAll(): Promise<ProductEntity[]> {
@@ -48,39 +41,29 @@ class ProductService {
     return product;
   }
 
-  async update({ name, amount, brand }: ProductEntity): Promise<ProductEntity> {
+  async update(product: ProductEntity): Promise<void> {
     const productRepository = getRepository(ProductEntity);
-    const findProduct = await productRepository.findOne({
-      where: { name }
+    const productFound = await productRepository.findOne({
+      where: { id: product.id }
     });
 
-    if (!findProduct) {
+    if (!productFound) {
       throw new AppError('Produto não encontrado', 404);
     }
 
-    findProduct.name = name;
-    findProduct.amount = amount;
-    findProduct.brand = brand;
-
-    await productRepository.save(findProduct);
-
-    return findProduct;
+    await productRepository.save(product);
   }
 
-  async remove({ name }: ProductEntity): Promise<ProductEntity> {
+  async remove(id: Number): Promise<void> {
     const productRepository = getRepository(ProductEntity);
-    const findProduct = await productRepository.findOne({
-      where: { name }
+    const productFound = await productRepository.findOne({
+      where: { id }
     });
 
-    if (!findProduct) {
+    if (!productFound) {
       throw new AppError('Produto não encontrado', 404);
     }
 
-    await productRepository.remove(findProduct);
-
-    return findProduct;
+    await productRepository.remove(productFound);
   }
-
 }
-export { ProductService };

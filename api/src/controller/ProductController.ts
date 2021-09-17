@@ -9,24 +9,28 @@ function fillProduct(request: Request): ProductEntity {
 
   let product = new ProductEntity();
   product.name = name;
-  product.amount = amount;
+  product.amount = Number(amount);
   product.brand = brand;
+
+  if (request.params.id) {
+    product.id = Number(request.params.id);
+  }
 
   return product;
 }
 
 export class ProductController {
-  async create(request: Request, response: Response) {
+  async create(request: Request, response: Response): Promise<Response> {
     const product = fillProduct(request);
 
     if (!product.name || !product.amount || !product.brand) {
-      throw new AppError('nome ou quantidade ou marca não informado');
+      throw new AppError('Nome, quantidade e/ou marca não informado');
     }
 
     const productService = new ProductService();
-    const productCreated = await productService.create(product);
+    await productService.create(product);
 
-    return response.status(201).json(productCreated);
+    return response.status(201).json({ id: product.id });
   }
 
   async findAll(request: Request, response: Response): Promise<Response> {
@@ -36,8 +40,8 @@ export class ProductController {
     return response.json(products);
   }
 
-  async findById(request: Request, response: Response) {
-    let id = (Number)(request.params.id);
+  async findById(request: Request, response: Response): Promise<Response> {
+    let id = Number(request.params.id);
 
     const productService = new ProductService();
     const product = await productService.findById(id);
@@ -45,19 +49,25 @@ export class ProductController {
     return response.json(product);
   }
 
-  async update(request: Request, response: Response) {
+  async update(request: Request, response: Response): Promise<Response> {
     const product = fillProduct(request);
-    const productService = new ProductService();
-    const productFound = await productService.update(product);
 
-    return response.status(201).json(productFound);
+    if (!product.id || !product.name || !product.amount || !product.brand) {
+      throw new AppError('ID, nome, quantidade e/ou marca não informado');
+    }
+
+    const productService = new ProductService();
+    await productService.update(product);
+
+    return response.json({ id: product.id });
   }
 
-  async remove(request: Request, response: Response) {
-    const product = fillProduct(request);
-    const productService = new ProductService();
-    const productFound = await productService.remove(product);
+  async remove(request: Request, response: Response): Promise<Response> {
+    let id = Number(request.params.id);
 
-    return response.status(201).json(productFound);
+    const productService = new ProductService();
+    await productService.remove(id);
+
+    return response.json({ id });
   }
 }
