@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+
 import { ProductEntity } from '../entity/ProductEntity';
-import { ProductService } from '../services/ProductService';
 import { AppError } from '../errors/AppErrors';
+import { ProductService } from '../services/ProductService';
 
 function fillProduct(request: Request): ProductEntity {
   const { name, amount, brand } = request.body;
@@ -19,8 +20,7 @@ export class ProductController {
     const product = fillProduct(request);
 
     if (!product.name || !product.amount || !product.brand) {
-      // throw new AppError('nome ou quantidade ou marca não informado');
-      throw new Error('nome ou quantidade ou marca não informado');
+      throw new AppError('nome ou quantidade ou marca não informado');
     }
 
     const productService = new ProductService();

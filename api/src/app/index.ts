@@ -1,12 +1,13 @@
 import express from 'express';
-import { router } from '../routes/products';
+import "express-async-errors";
 import "reflect-metadata";
 import { catchErrors } from '../middlewares/CatchErrors';
-// import "express-async-errors";
+import { router } from '../routes/products';
 
 const app = express();
 
 app.use("/", express.json());
 app.use("/produto", router);
-// app.use(catchErrors);
+app.use(catchErrors);
+
 export default app;

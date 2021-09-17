@@ -6,6 +6,7 @@ import { AppError } from '../errors/AppErrors';
 export function catchErrors(error: Error, request: Request, response: Response, next: NextFunction) {
   let statusCode = 500;
   let errorMessage: string | string[] = `Internal server error: ${error.message}`;
+
   if (error instanceof AppError) {
     statusCode = error.statusCode;
     errorMessage = error.message;
@@ -13,5 +14,6 @@ export function catchErrors(error: Error, request: Request, response: Response, 
     statusCode = 400;
     errorMessage = error.errors;
   }
+
   return response.status(statusCode).json({ error: errorMessage });
 }

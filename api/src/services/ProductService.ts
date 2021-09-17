@@ -4,15 +4,15 @@ import { AppError } from '../errors/AppErrors';
 
 class ProductService {
   async create({ name, amount, brand }: ProductEntity): Promise<ProductEntity> {
-
     const productRepository = getRepository(ProductEntity);
     const findProduct = await productRepository.findOne({
       where: { name }
     });
+
     if (findProduct) {
-      // throw new AppError('Produto já cadastrado');
-      throw new Error('Produto já cadastrado');
+      throw new AppError('Produto já cadastrado');
     }
+
     const productCreate = productRepository.create({
       name,
       amount,
@@ -20,6 +20,7 @@ class ProductService {
     })
 
     await productRepository.save(productCreate);
+
     return productCreate;
   }
 
@@ -28,7 +29,7 @@ class ProductService {
     let products = productRepository.find();
 
     if (!products) {
-      throw new Error('Nenhum produto encontrado');
+      throw new AppError('Nenhum produto encontrado', 404);
     }
 
     return products;
@@ -41,8 +42,7 @@ class ProductService {
     });
 
     if (!product) {
-      // throw new AppError('Produto não encontrado', 404);
-      throw new Error('Produto não encontrado');
+      throw new AppError('Produto não encontrado', 404);
     }
 
     return product;
@@ -55,8 +55,7 @@ class ProductService {
     });
 
     if (!findProduct) {
-      // throw new AppError('Produto não encontrado', 404);
-      throw new Error('Produto não encontrado');
+      throw new AppError('Produto não encontrado', 404);
     }
 
     findProduct.name = name;
@@ -64,6 +63,7 @@ class ProductService {
     findProduct.brand = brand;
 
     await productRepository.save(findProduct);
+
     return findProduct;
   }
 
@@ -74,11 +74,11 @@ class ProductService {
     });
 
     if (!findProduct) {
-      // throw new AppError('Produto não encontrado', 404);
-      throw new Error('Produto não encontrado');
+      throw new AppError('Produto não encontrado', 404);
     }
 
     await productRepository.remove(findProduct);
+
     return findProduct;
   }
 
