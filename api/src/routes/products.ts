@@ -1,4 +1,5 @@
 import express from 'express';
+
 import { ProductController } from '../controller/ProductController';
 
 const router = express.Router();
@@ -10,8 +11,8 @@ router.get("/:id", productController.findById)
 
 router.post("/", productController.create);
 
-router.put("/", productController.update)
+router.put("/:id", productController.update)
 
-router.delete("/", productController.remove)
+router.delete("/:id", productController.remove)
 
 export { router }
