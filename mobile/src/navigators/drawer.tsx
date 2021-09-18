@@ -1,5 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
+import Home from '../screens/home';
 import { Product } from '../screens/product';
 import { TabProductNavigator } from './tabProduct';
 

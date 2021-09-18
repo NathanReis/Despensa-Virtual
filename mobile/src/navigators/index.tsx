@@ -4,7 +4,7 @@ import { DrawerNavigator } from './drawer';
 
 export default function Navigator() {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <DrawerNavigator />
     </NavigationContainer>
   );
