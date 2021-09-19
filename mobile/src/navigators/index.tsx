@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect } from 'react';
-import DrawerNavigator from './drawer';
+import { DrawerNavigator } from './drawer';
 import { StackNavigator } from './stack';
 
 async function getLogged() {

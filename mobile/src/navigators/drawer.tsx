@@ -5,7 +5,7 @@ import { TabProductNavigator } from './tabProduct';
 
 let drawer = createDrawerNavigator();
 
-export default function DrawerNavigator() {
+export function DrawerNavigator() {
   return (
     <drawer.Navigator>
       <drawer.Screen component={Product} name='Product 1' />
