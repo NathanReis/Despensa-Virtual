@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DrawerNavigator } from './drawer';
 import { StackNavigator } from './stack';
 
@@ -9,18 +9,21 @@ async function getLogged() {
 }
 
 export default function Navigator() {
-  let logged = false;
+  let [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
-    async () => {
-      logged = (await getLogged()) === 'y'
+    async function checkLogged() {
+      // Comment this (👇) line to always show Home
+      setIsLogged((await getLogged()) === 'y')
     }
+
+    checkLogged();
   }, []);
 
   return (
     <NavigationContainer>
       {
-        logged
+        isLogged
           ? <DrawerNavigator />
           : <StackNavigator />
       }
