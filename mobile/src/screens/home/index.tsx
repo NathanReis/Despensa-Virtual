@@ -1,22 +1,25 @@
+import { useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 import React from 'react';
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   Text,
-  View,
-  Image
+  View
 } from 'react-native';
 import { CustomButton } from '../../components/button';
-import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 
-export default function Home() {
-
+export function Home() {
   const navigation = useNavigation();
-  function handleNavigation() {
-    navigation.navigate('Navigator');
+
+  async function handleNavigation() {
+    await SecureStore.setItemAsync('ftttcc_logged', 'y');
+    navigation.navigate('DrawerNavigator');
   }
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

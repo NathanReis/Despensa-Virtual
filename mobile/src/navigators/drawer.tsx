@@ -1,12 +1,11 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
-import Home from '../screens/home';
 import { Product } from '../screens/product';
 import { TabProductNavigator } from './tabProduct';
 
 let drawer = createDrawerNavigator();
 
-export function DrawerNavigator() {
+export default function DrawerNavigator() {
   return (
     <drawer.Navigator>
       <drawer.Screen component={Product} name='Product 1' />
