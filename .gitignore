@@ -1,0 +1,7 @@
+*
+
+!docker/
+!.editorconfig
+!.gitignore
+!docker-compose.yaml
+!README.md
