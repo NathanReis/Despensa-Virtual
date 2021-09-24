@@ -1,7 +1,9 @@
-*
+*/*
 
-!docker/
+!docker/api
+!docker/mobile
 !.editorconfig
 !.gitignore
+!.gitkeep
 !docker-compose.yaml
 !README.md
