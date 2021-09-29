@@ -4,9 +4,7 @@ import {
   Image,
   Text
 } from 'react-native';
-import TesseractOcr, {
-  LANG_ENGLISH
-} from 'react-native-tesseract-ocr';
+import MlkitOcr from 'react-native-mlkit-ocr';
 import { CustomButton } from '../../components/button';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 
@@ -50,11 +48,7 @@ export function TestOCR() {
 
   async function recognizeTextFromImage() {
     try {
-      let recognizedText = await TesseractOcr.recognize(
-        image,
-        LANG_ENGLISH,
-        {},
-      );
+      let recognizedText = await MlkitOcr.detectFromUri(image);
 
       setText(recognizedText);
     } catch (e) {
