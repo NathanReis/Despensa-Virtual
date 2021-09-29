@@ -1,18 +1,13 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  Text
-} from 'react-native';
-import MlkitOcr from 'react-native-mlkit-ocr';
+import { Image } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 
 import styles from './style';
 
-export function TestOCR() {
-  let [image, setImage] = useState<String>();
-  let [text, setText] = useState<String>();
+export function SamplePickImageGallery() {
+  let [image, setImage] = useState<string>();
 
   useEffect(() => {
     async function checkPermission() {
@@ -41,19 +36,6 @@ export function TestOCR() {
 
     if (!result.cancelled) {
       setImage(result.uri);
-
-      await recognizeTextFromImage();
-    }
-  }
-
-  async function recognizeTextFromImage() {
-    try {
-      let recognizedText = await MlkitOcr.detectFromUri(image);
-
-      setText(recognizedText);
-    } catch (e) {
-      console.log(e);
-      setText(String(e))
     }
   }
 
@@ -70,14 +52,6 @@ export function TestOCR() {
         title='Selecionar imagem'
         onPress={handlePickImage}
       />
-      {
-        image
-        && <CustomButton
-          title='Extrair texto'
-          onPress={recognizeTextFromImage}
-        />
-      }
-      <Text>{text}</Text>
     </SafeZoneScreen>
   );
 }
