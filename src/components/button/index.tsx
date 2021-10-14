@@ -26,6 +26,7 @@ export function CustomButton(props: ICustomButtonProps) {
       style={[styles.button, style]}
     >
       <Text style={styles.buttonTitle}>{title}</Text>
+
     </TouchableOpacity>
   );
 }

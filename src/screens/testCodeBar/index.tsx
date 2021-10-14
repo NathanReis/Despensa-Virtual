@@ -4,10 +4,12 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import BarcodeMask from "react-native-barcode-mask";
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/core';
 
 export default function App() {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const navigation = useNavigation();
 
     useEffect(() => {
         (async () => {
@@ -19,6 +21,7 @@ export default function App() {
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        navigation.navigate('Product 1', { codebar: data });
     };
 
     if (hasPermission === null) {
@@ -40,7 +43,7 @@ export default function App() {
                     outerMaskOpacity={0.5}
                     showAnimatedLine={false}
                 />
-                {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+                {scanned && <Button title={'Clique para escanear novamente'} onPress={() => setScanned(false)} />}
                 <View style={styles.scannerGrid}>
                     <View style={styles.topbar}>
                         <TouchableOpacity />
