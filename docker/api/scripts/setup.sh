@@ -9,5 +9,4 @@ rm -f src/temp/*
 touch src/temp/.gitkeep
 
 yarn install
-yarn typeorm migration:run
 yarn dev
