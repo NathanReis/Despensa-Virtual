@@ -4,7 +4,7 @@ about: Adição de nova funcionalidade ou melhoria de uma já existente.
 title: ''
 labels: enhancement
 assignees: ''
-projects: Desenvolvimento
+projects: desenvolvimento
 
 ---
 
