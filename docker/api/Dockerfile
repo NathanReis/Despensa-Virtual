@@ -1,8 +1,7 @@
-FROM node:14.17-alpine
+FROM node:16-alpine
 
 RUN apk update \
     && apk upgrade \
-    && apk add nano \
     && rm /var/cache/apk/*
 
 COPY ./scripts /scripts-app

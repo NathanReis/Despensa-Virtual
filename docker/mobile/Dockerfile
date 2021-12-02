@@ -1,11 +1,10 @@
-FROM node:14.17-alpine
+FROM node:16-alpine
 
 RUN apk update \
     && apk upgrade \
-    && apk add nano \
     && rm /var/cache/apk/*
 
-RUN yarn global add expo-cli
+RUN yarn global add expo-cli@4.13.*
 
 COPY ./scripts /scripts-app
 
