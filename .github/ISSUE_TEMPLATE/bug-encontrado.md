@@ -23,7 +23,7 @@ Descreva em alto nível qual deveria ser o resultado esperado.
 
 Caso tenha alguma, deixe detalhado para auxiliar quem for corrigir.
 
-## Checklist
+## Checklist (Issue)
 
 - [ ] Adicione uma label de tecnologia (`alexa` - `api` - `mobile`)
 - [ ] Se for algo de configuração de ambiente, adicione label `env-...`
