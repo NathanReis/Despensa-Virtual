@@ -11,7 +11,7 @@ assignees: ''
 
 Descreva o que deve ser feito de uma forma que todos entendam o que precisa ser feito e qual resultado esperado.
 
-## Checklist
+## Checklist (Issue)
 
 - [ ] Se for algo relacionado a alguma tecnologia, adicione uma das labels `alexa`, `api` e/ou `mobile`
 - [ ] Se for algo extremamente indispensável, adicione a label `critical`
