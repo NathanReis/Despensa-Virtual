@@ -21,3 +21,4 @@ Caso tenha alguma, deixe detalhado para auxiliar quem for desenvolver.
 - [ ] Se for algo extremamente indispensável, adicione a label `critical`
 - [ ] Se for algo de configuração de ambiente, adicione label `env-...`
 - [ ] Se a issue foi adicionada numa sprint ativa, adicione label `not-planned`
+- [ ] Escolha o board (project) que esta issue pertence
