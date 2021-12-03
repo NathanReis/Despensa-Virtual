@@ -15,7 +15,7 @@ Descreva o que deve ser feito em alto nível de uma forma que todos entendam o q
 
 Caso tenha alguma, deixe detalhado para auxiliar quem for desenvolver.
 
-## Checklist
+## Checklist (Issue)
 
 - [ ] Adicione uma label de tecnologia (`alexa` - `api` - `mobile`)
 - [ ] Se for algo extremamente indispensável, adicione a label `critical`
