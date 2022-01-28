@@ -12,12 +12,24 @@ services:
     working_dir: /app
     command: sh /scripts-app/setup.sh
 
+  ocr:
+    build:
+      context: ./docker/ocr
+    container_name: tcc_ocr
+    ports:
+      - 3050:3050
+    volumes:
+      - ./ocr:/app
+    working_dir: /app
+    command: sh /scripts-app/setup.sh
+
   mobile:
     build:
       context: ./docker/mobile
     container_name: tcc_mobile
     depends_on:
       - api
+      - ocr
     ports:
       - 19000:19000
     volumes:
