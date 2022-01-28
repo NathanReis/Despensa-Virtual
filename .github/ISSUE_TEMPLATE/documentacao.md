@@ -13,7 +13,7 @@ Descreva o que deve ser feito de uma forma que todos entendam o que precisa ser 
 
 ## Checklist (Issue)
 
-- [ ] Se for algo relacionado a alguma tecnologia, adicione uma das labels `alexa`, `api` e/ou `mobile`
+- [ ] Se for algo relacionado a alguma tecnologia, adicione uma das labels (`alexa` - `api` - `mobile` - `ocr`)
 - [ ] Se for algo extremamente indispensável, adicione a label `critical`
 - [ ] Se for algo de configuração de ambiente, adicione label `env-...`
 - [ ] Se a issue foi adicionada numa sprint ativa, adicione label `not-planned`
