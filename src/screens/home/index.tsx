@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
 import React from 'react';
 import {
   Image,
@@ -8,13 +7,14 @@ import {
 } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
+import { LocalStorageHelper } from '../../helpers/LocalStorageHelper';
 import styles from './style';
 
 export function Home() {
   const navigation = useNavigation();
 
   async function handleNavigation() {
-    await SecureStore.setItemAsync('ftttcc_logged', 'y');
+    await LocalStorageHelper.set('logged', 'y');
     navigation.navigate('DrawerNavigator');
   }
 

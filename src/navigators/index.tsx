@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState } from 'react';
+import { LocalStorageHelper } from '../helpers/LocalStorageHelper';
 import { DrawerNavigator } from './drawer';
 import { StackNavigator } from './stack';
 
 async function getLogged() {
-  return await SecureStore.getItemAsync('ftttcc_logged') || 'n';
+  return await LocalStorageHelper.get('logged') || 'n';
 }
 
 export default function Navigator() {
