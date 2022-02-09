@@ -9,7 +9,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
 
-    marginHorizontal: 20,
+    paddingHorizontal: 20,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
   }
 });

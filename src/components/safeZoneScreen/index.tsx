@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ReactNode } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -7,11 +7,25 @@ import {
   ScrollView,
   TouchableWithoutFeedback
 } from 'react-native';
+import { SafeAreaViewProps } from 'react-native-safe-area-context';
 import styles from './style';
 
-export function SafeZoneScreen({ children }: ComponentProps<any>) {
+interface ISafeZoneScreenProps extends SafeAreaViewProps {
+  children: ReactNode;
+}
+
+export function SafeZoneScreen(props: ISafeZoneScreenProps) {
+  let {
+    children,
+    style,
+    ...rest
+  } = props;
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      {...rest}
+      style={[styles.container, style]}
+    >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
