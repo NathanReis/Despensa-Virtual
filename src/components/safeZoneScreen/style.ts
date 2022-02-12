@@ -10,6 +10,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
 
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
+    backgroundColor: '#FFFFFF'
   }
 });
