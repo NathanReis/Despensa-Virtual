@@ -1,56 +1,44 @@
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Text,
-  View
-} from 'react-native';
-import { CustomButton } from '../../components/button';
-import { CustomNumberInput } from '../../components/numberInput';
+import { Alert, Image, Text, View } from 'react-native';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { CustomTextInput } from '../../components/textInput';
 import api from '../../services/api';
 import { AntDesign } from '@expo/vector-icons';
 import styles from './style';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import { Button } from 'react-native-paper';
 import TestCamera from '../testCamera';
-import mime from "mime";
-
-interface Params {
-  codebar: string;
-}
-
+import mime from 'mime';
+import { NumericUpDown } from '../../components/numericUpDown';
+import { IProductModel } from './IProductModel';
+import ocr from '../../services/ocr';
+import { GreenButton } from '../../components/greenButton';
+import { IProductDto } from './IProductDto';
 
 export function Product() {
-  function handleSave() {
-    Alert.alert('Saved', 'Your product was saved');
+  function handleContinue() {
+    navigation.navigate('BarcodeScan' as never);
   }
 
   function handleScan() {
     setScannedValidate(true);
   }
 
-
   function handleValidate(uri) {
     setScannedValidate(false);
 
-
-    const newImageUri = "file:///" + uri.split("file:/").join("");
+    const newImageUri = 'file:///' + uri.split('file:/').join('');
 
     const formData = new FormData();
-    formData.append('image', JSON.parse(JSON.stringify({ uri: newImageUri, type: mime.getType(newImageUri), name: newImageUri.split("/").pop() })));
+    formData.append('image', JSON.parse(JSON.stringify({ uri: newImageUri, type: mime.getType(newImageUri), name: newImageUri.split('/').pop() })));
 
     getValidate(formData);
-
   }
 
   async function getValidate(formData) {
-    // const response = await api.post(data);
     try {
-      const response = await api.post('/test-ocr/validate', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const response = await ocr.post('/ocr/validate', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       if (response.data.length > 0)
-        setValidate(response.data[0])
+        setValidate(response.data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'))
       else
         Alert.alert('Error', 'Erro ao reconhecer a imagem');
       console.log(response.data)
@@ -61,39 +49,57 @@ export function Product() {
     }
   }
 
+  let navigation = useNavigation();
   const route = useRoute();
-  const routeParams = route.params as Params;
-  const [description, setDescription] = useState<string>('');
+  const routeParams = route.params as IProductDto;
+  // const routeParams = { barcode: '7891079013458' };
+  let [product, setProduct] = useState<IProductModel>();
   const [validate, setValidate] = useState<string>('');
-  const [scannedValidate, setScannedValidate] = useState<Boolean>(false);
+  const [scannedValidate, setScannedValidate] = useState<boolean>(false);
+
   useEffect(() => {
     setScannedValidate(false);
-    console.log(routeParams);
-    api.get(`products/codebar/${routeParams.codebar}`).then(response => {
-      setDescription(response.data.productName);
-      setValidate('')
-    })
-  }, [routeParams])
+
+    api.get(`/products/barcode/${routeParams.barcode}`)
+      .then(response => {
+        setProduct(response.data as IProductModel);
+        setValidate('');
+      })
+      .catch(error => console.log(error));
+  }, [])
 
   return (
-    <View style={{ flex: 1 }}>
-      {!scannedValidate ?
-        <SafeZoneScreen>
-          <View style={styles.form}>
-            <Text style={styles.formTitle}>{'Product'}</Text>
+    <SafeZoneScreen>
+      <View style={styles.amountContainer}>
+        <Text style={styles.productName}>{product?.name}</Text>
 
-            <CustomTextInput placeholder='Codebar' value={routeParams.codebar} />
-            <CustomTextInput placeholder='Description' value={description} />
-            <CustomNumberInput placeholder='Amount' />
-            <CustomTextInput value={validate} editable={false} placeholder='Validate dd/mm/yyyy' />
-            <View ><TouchableOpacity onPress={handleScan} style={[styles.iconContainer, styles.button]}><Text >Escanear validade</Text><AntDesign style={styles.icon} name="camera" size={24} color="black" /></TouchableOpacity></View>
-            <CustomButton title='Save' onPress={handleSave} />
-          </View>
-        </SafeZoneScreen>
-        :
-        <TestCamera handleImg={handleValidate} />
+        <Image style={styles.image} source={require('../../../assets/logo.png')} />
+
+        <NumericUpDown style={styles.upDown} />
+      </View>
+
+      <CustomTextInput
+        style={styles.validate}
+        label='Data de validade'
+        defaultValue={validate}
+        placeholder='xx/xx/xxxx'
+        maxLength={10}
+        rightIcon={<AntDesign
+          style={styles.icon}
+          name='camera'
+          size={24}
+          color='#5A6CF3'
+          onPress={handleScan}
+        />}
+      />
+
+      <GreenButton style={styles.button} title='Continuar' onPress={handleContinue} />
+
+      {
+        !scannedValidate
+          ? <></>
+          : <TestCamera handleImg={handleValidate} />
       }
-
-    </View>
+    </SafeZoneScreen>
   );
 }

@@ -1,7 +1,8 @@
 import React from 'react';
-import { TextInputProps } from 'react-native';
-import { CustomTextInput } from '../textInput';
+import { CustomTextInput, ICustomTextInputProps } from '../textInput';
 
-export function CustomNumberInput(props: TextInputProps) {
+interface ICustomNumberInputProps extends ICustomTextInputProps { }
+
+export function CustomNumberInput(props: ICustomNumberInputProps) {
   return <CustomTextInput {...props} keyboardType='numeric' />
 }

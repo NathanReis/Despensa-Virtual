@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps
-} from "react-native";
-
+import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import styles from './style';
 
-interface ICustomButtonProps extends TouchableOpacityProps {
+export interface ICustomButtonProps extends TouchableOpacityProps {
   title: string;
 }
 
@@ -26,7 +21,6 @@ export function CustomButton(props: ICustomButtonProps) {
       style={[styles.button, style]}
     >
       <Text style={styles.buttonTitle}>{title}</Text>
-
     </TouchableOpacity>
   );
 }

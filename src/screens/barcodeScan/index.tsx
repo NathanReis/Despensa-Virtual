@@ -33,7 +33,7 @@ export function BarcodeScan() {
 
   function handleBarCodeScanned({ data }: BarCodeScannerResult) {
     setScanned(true);
-    navigation.navigate('Product 1' as never, { barcode: data } as never);
+    navigation.navigate('Product' as never, { barcode: data } as never);
   };
 
   if (!hasPermission) {

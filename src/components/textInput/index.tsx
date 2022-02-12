@@ -1,31 +1,40 @@
-import React, { useState } from 'react';
-import {
-  TextInput,
-  TextInputProps
-} from 'react-native';
+import React, { ReactNode } from 'react';
+import { StyleProp, Text, TextInput, TextInputProps, TextStyle, View } from 'react-native';
+import styles from './styles';
 
-import styles from './style';
+export interface ICustomTextInputProps extends TextInputProps {
+  inputContainerStyle?: StyleProp<TextStyle>;
+  inputStyle?: StyleProp<TextStyle>;
+  label?: string;
+  labelStyle?: StyleProp<TextStyle>;
+  rightIcon?: ReactNode;
+}
 
-export function CustomTextInput(props: TextInputProps) {
+export function CustomTextInput(props: ICustomTextInputProps) {
   let {
+    inputContainerStyle,
+    inputStyle,
     keyboardType,
+    label,
+    labelStyle,
+    rightIcon,
     style,
     ...rest
   } = props;
 
-  let [isFocused, setIsFocused] = useState<boolean>(false);
-
   return (
-    <TextInput
-      {...rest}
-      keyboardType={keyboardType ?? 'default'}
-      style={[
-        styles.input,
-        isFocused && styles.inputFocused,
-        style
-      ]}
-      onBlur={() => setIsFocused(false)}
-      onFocus={() => setIsFocused(true)}
-    />
+    <View style={style}>
+      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+
+      <View style={[styles.inputContainer, inputContainerStyle]}>
+        <TextInput
+          {...rest}
+          keyboardType={keyboardType ?? 'default'}
+          style={[styles.input, inputStyle]}
+        />
+
+        {rightIcon && <View style={[styles.icon, styles.rightIcon]}>{rightIcon}</View>}
+      </View>
+    </View>
   );
 }

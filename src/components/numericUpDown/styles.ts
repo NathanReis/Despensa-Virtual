@@ -11,12 +11,18 @@ export default StyleSheet.create({
 
     backgroundColor: '#FFFFFF'
   },
+  inputContainer: {
+    borderRadius: 5,
+
+    width: '70%',
+    minWidth: 88
+  },
   input: {
     width: '70%',
+    minWidth: 88,
 
     marginHorizontal: 0,
-
-    borderBottomWidth: 0,
+    paddingHorizontal: 24,
 
     backgroundColor: '#FFFFFF',
     textAlign: 'center'

@@ -11,6 +11,7 @@ export default StyleSheet.create({
     borderRadius: 16
   },
   buttonTitle: {
+    color: '#000000',
     fontSize: 16,
     fontWeight: 'bold'
   }

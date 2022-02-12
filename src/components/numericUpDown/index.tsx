@@ -29,7 +29,7 @@ export function NumericUpDown(props: ViewProps) {
   return (
     <View {...rest} style={[styles.container, style]}>
       <CustomButton style={styles.upDownButton} title='-' onPress={handleDown}></CustomButton>
-      <CustomNumberInput style={styles.input} defaultValue={String(amount)} />
+      <CustomNumberInput inputContainerStyle={styles.inputContainer} inputStyle={styles.input} defaultValue={String(amount)} />
       <CustomButton style={styles.upDownButton} title='+' onPress={handleUp}></CustomButton>
     </View>
   )

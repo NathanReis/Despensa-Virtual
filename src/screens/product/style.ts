@@ -1,33 +1,40 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  form: {
-    flex: 1,
+  amountContainer: {
     alignItems: 'center',
+    padding: 8,
+    borderRadius: 16,
+    backgroundColor: '#F8F8F8'
+  },
+  productName: {
+    fontSize: 24,
+    textAlign: 'center'
+  },
+  image: {
+    height: 150,
+    width: 150,
+
+    marginVertical: 16
+  },
+  upDown: {
     justifyContent: 'center',
 
-    height: '100%',
-    width: '100%'
+    width: 184,
+
+    marginBottom: 16
   },
-  formTitle: {
-    fontSize: 32,
-    fontWeight: 'bold'
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30,
-    marginTop: 10
+  validate: {
+    marginTop: 32,
   },
   icon: {
-    marginLeft: 5
+    padding: 4,
+
+    borderRadius: 8,
+
+    backgroundColor: '#D0EDFB'
   },
   button: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
-    padding: 10
+    marginTop: 64
   }
 });
