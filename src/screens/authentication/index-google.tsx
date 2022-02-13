@@ -21,28 +21,34 @@ export function Authentication() {
   });
 
   useEffect(() => {
-    try {
-      if (response?.type === 'success') {
-        let { authentication } = response;
+    async function authenticate() {
+      try {
+        if (response?.type === 'success') {
+          await LocalStorageHelper.set('logged', 'y');
+          navigator.navigate('DrawerNavigator' as never);
+        } else {
+          console.error({ _title: 'Authentication with error', response });
 
-        console.log('Dados da autenticação', authentication);
-
-        LocalStorageHelper.set('logged', 'y'); // Missing await
-        navigator.navigate('DrawerNavigator' as never);
-      } else {
-        console.log(response);
-        Alert.alert('Error:', 'Error')
+          if (response?.type === 'dismiss') {
+            // TO DO: Delete this condition after fix this problem
+            await LocalStorageHelper.set('logged', 'n');
+            Alert.alert('Bug', 'Mesmo conseguindo se autenticar, não é obtido sucesso');
+          } else {
+            await LocalStorageHelper.set('logged', 'n');
+            Alert.alert('Erro', 'Não foi possível fazer autenticação.');
+          }
+        }
+      } catch (exception) {
+        console.error({ _title: 'Authentication threw exception', exception });
+        Alert.alert('Erro', (exception as Error).message)
       }
-    } catch (err) {
-      console.log(err);
-      Alert.alert('Error:', (err as Error).message)
     }
+
+    authenticate();
   }, [response]);
 
   return (
-    <SafeZoneScreen
-      style={styles.container}
-    >
+    <SafeZoneScreen style={styles.container}>
       <View style={styles.main}>
         <Image
           style={styles.image}

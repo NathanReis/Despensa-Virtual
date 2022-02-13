@@ -24,20 +24,29 @@ export function Authentication() {
     try {
       let response = await AuthSession.startAsync({ authUrl: OAUTH2_URL });
 
-      console.log(response);
+      if (response.type === 'success') {
+        await LocalStorageHelper.set('logged', 'y');
+        navigator.navigate('DrawerNavigator' as never);
+      } else {
+        console.error({ _title: 'Authentication with error', response });
 
-      await LocalStorageHelper.set('logged', 'y');
-      navigator.navigate('DrawerNavigator' as never);
-    } catch (err) {
-      console.log(err);
-      Alert.alert('Error:', (err as Error).message)
+        if (response.type === 'dismiss') {
+          // TO DO: Delete this condition after fix this problem
+          await LocalStorageHelper.set('logged', 'n');
+          Alert.alert('Bug', 'Mesmo conseguindo se autenticar, não é obtido sucesso');
+        } else {
+          await LocalStorageHelper.set('logged', 'n');
+          Alert.alert('Erro', 'Não foi possível fazer autenticação.');
+        }
+      }
+    } catch (exception) {
+      console.error({ _title: 'Authentication threw exception', exception });
+      Alert.alert('Erro', (exception as Error).message)
     }
   }
 
   return (
-    <SafeZoneScreen
-      style={styles.container}
-    >
+    <SafeZoneScreen style={styles.container}>
       <View style={styles.main}>
         <Image
           style={styles.image}
