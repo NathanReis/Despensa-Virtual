@@ -11,8 +11,6 @@ import styles from './styles';
 WebBrowser.maybeCompleteAuthSession();
 
 export function Authentication() {
-  let navigator = useNavigation();
-
   async function handleNavigation() {
     const CLIENT_ID = process.env.OAUTH_CLIENT_ID;
     const REDIRECT_URI = process.env.OAUTH_REDIRECT_URI;
@@ -44,6 +42,8 @@ export function Authentication() {
       Alert.alert('Erro', (exception as Error).message)
     }
   }
+
+  let navigator = useNavigation();
 
   return (
     <SafeZoneScreen style={styles.container}>

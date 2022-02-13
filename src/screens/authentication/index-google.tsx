@@ -11,14 +11,13 @@ import styles from './styles';
 WebBrowser.maybeCompleteAuthSession();
 
 export function Authentication() {
-  let navigator = useNavigation();
-
   let [request, response, promptAsync] = Google.useAuthRequest({
     clientId: process.env.OAUTH_CLIENT_ID,
     redirectUri: process.env.OAUTH_REDIRECT_URI,
     responseType: 'token',
     scopes: ['email', 'profile']
   });
+  let navigator = useNavigation();
 
   useEffect(() => {
     async function authenticate() {
