@@ -12,7 +12,7 @@ import api from '../../services/api';
 import ocr from '../../services/ocr';
 import { IProductDto } from './IProductDto';
 import { IProductModel } from './IProductModel';
-import styles from './style';
+import styles from './styles';
 
 export function Product() {
   function handleContinue() {
@@ -48,25 +48,28 @@ export function Product() {
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
+      let data: any = response.data;
+      let status = response.status;
 
-      if (response.data.length > 0) {
-        setValidate(response.data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'))
+      if (status === 200 && data.length > 0) {
+        setValidate(data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'))
+      } else if (status === 400) {
+        Alert.alert('Erro', data.error.join('\n'));
       } else {
-        Alert.alert('Error', 'Erro ao reconhecer a imagem');
+        Alert.alert('Erro', 'Validade não pode ser extraída.');
       }
-    } catch (error) {
-      Alert.alert('Error', 'Erro ao reconhecer a imagem');
-      console.log(error.response.data)
+    } catch {
+      Alert.alert('Erro', 'Erro inesperado.');
     }
   }
 
+  let [product, setProduct] = useState<IProductModel>();
+  let [validate, setValidate] = useState<string>('');
+  let [scannedValidate, setScannedValidate] = useState<boolean>(false);
   let navigator = useNavigation();
   let route = useRoute();
   let routeParams = route.params as IProductDto;
   // let routeParams = { barcode: '7891079013458' };
-  let [product, setProduct] = useState<IProductModel>();
-  let [validate, setValidate] = useState<string>('');
-  let [scannedValidate, setScannedValidate] = useState<boolean>(false);
 
   useEffect(() => {
     setScannedValidate(false);
