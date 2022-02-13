@@ -1,6 +1,8 @@
 import { Camera as ExpoCamera } from 'expo-camera';
 import React, { useState, useEffect } from 'react';
-import { View, Button, Alert, Text } from 'react-native';
+import { View, Button } from 'react-native';
+import { PermissionDenied } from '../permissionDenied';
+import { WaitingPermission } from '../waitingPermission';
 import styles from './styles';
 
 interface ICameraProps {
@@ -9,7 +11,7 @@ interface ICameraProps {
 
 export function Camera(props: ICameraProps) {
   let [camera, setCamera] = useState<ExpoCamera | null>(null);
-  let [hasPermission, setHasPermission] = useState<boolean>(false);
+  let [hasPermission, setHasPermission] = useState<boolean | null>(null);
   let [imageUri, setImageUri] = useState<string>();
 
   useEffect(() => {
@@ -17,23 +19,21 @@ export function Camera(props: ICameraProps) {
       let currentStatus = (await ExpoCamera.getCameraPermissionsAsync()).status;
 
       if (currentStatus !== 'granted') {
+        setHasPermission(true);
+      } else {
         let newStatus = (await ExpoCamera.requestCameraPermissionsAsync()).status;
 
-        if (newStatus !== 'granted') {
-          Alert.alert('Você precisa permitir acesso à câmera para usar este app');
-        } else {
-          setHasPermission(true);
-        }
-      } else {
-        setHasPermission(true);
+        setHasPermission(newStatus === 'granted');
       }
     }
 
     checkPermission();
   }, []);
 
-  if (!hasPermission) {
-    return <Text>Precisamos de sua permissão para acessar Camera</Text>;
+  if (hasPermission === null) {
+    return <WaitingPermission />;
+  } else if (!hasPermission) {
+    return <PermissionDenied resource='Câmera' />;
   }
 
   async function takePicture() {
