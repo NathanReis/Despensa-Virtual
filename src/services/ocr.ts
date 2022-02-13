@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ocr = axios.create({
+let ocr = axios.create({
   baseURL: process.env.OCR_URL
 });
 

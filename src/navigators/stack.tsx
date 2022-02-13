@@ -10,13 +10,13 @@ export function StackNavigator() {
     <stack.Navigator
       screenOptions={{
         cardStyle: {
-          backgroundColor: "#fff"
+          backgroundColor: '#fff'
         },
         headerShown: false
       }}
     >
-      <stack.Screen name="Authentication" component={Authentication} />
-      <stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
+      <stack.Screen name='Authentication' component={Authentication} />
+      <stack.Screen name='DrawerNavigator' component={DrawerNavigator} />
     </stack.Navigator>
   )
 }

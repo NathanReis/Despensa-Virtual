@@ -1,61 +1,72 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import mime from 'mime';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
+import { Camera } from '../../components/camera';
+import { GreenButton } from '../../components/greenButton';
+import { NumericUpDown } from '../../components/numericUpDown';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { CustomTextInput } from '../../components/textInput';
 import api from '../../services/api';
-import { AntDesign } from '@expo/vector-icons';
-import styles from './style';
-import TestCamera from '../testCamera';
-import mime from 'mime';
-import { NumericUpDown } from '../../components/numericUpDown';
-import { IProductModel } from './IProductModel';
 import ocr from '../../services/ocr';
-import { GreenButton } from '../../components/greenButton';
 import { IProductDto } from './IProductDto';
+import { IProductModel } from './IProductModel';
+import styles from './style';
 
 export function Product() {
   function handleContinue() {
-    navigation.navigate('BarcodeScan' as never);
+    navigator.navigate('BarcodeScan' as never);
   }
 
   function handleScan() {
     setScannedValidate(true);
   }
 
-  function handleValidate(uri) {
+  function handleValidate(uri: string) {
     setScannedValidate(false);
 
-    const newImageUri = 'file:///' + uri.split('file:/').join('');
+    let newImageUri = 'file:///' + uri.split('file:/').join('');
 
-    const formData = new FormData();
-    formData.append('image', JSON.parse(JSON.stringify({ uri: newImageUri, type: mime.getType(newImageUri), name: newImageUri.split('/').pop() })));
+    let formData = new FormData();
+    formData.append(
+      'image',
+      JSON.parse(JSON.stringify({
+        uri: newImageUri,
+        type: mime.getType(newImageUri),
+        name: newImageUri.split('/').pop()
+      }))
+    );
 
     getValidate(formData);
   }
 
-  async function getValidate(formData) {
+  async function getValidate(formData: FormData) {
     try {
-      const response = await ocr.post('/ocr/validate', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      if (response.data.length > 0)
-        setValidate(response.data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'))
-      else
-        Alert.alert('Error', 'Erro ao reconhecer a imagem');
-      console.log(response.data)
+      let response = await ocr.post(
+        '/ocr/validate',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
 
+      if (response.data.length > 0) {
+        setValidate(response.data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'))
+      } else {
+        Alert.alert('Error', 'Erro ao reconhecer a imagem');
+      }
     } catch (error) {
       Alert.alert('Error', 'Erro ao reconhecer a imagem');
       console.log(error.response.data)
     }
   }
 
-  let navigation = useNavigation();
-  const route = useRoute();
-  const routeParams = route.params as IProductDto;
-  // const routeParams = { barcode: '7891079013458' };
+  let navigator = useNavigation();
+  let route = useRoute();
+  let routeParams = route.params as IProductDto;
+  // let routeParams = { barcode: '7891079013458' };
   let [product, setProduct] = useState<IProductModel>();
-  const [validate, setValidate] = useState<string>('');
-  const [scannedValidate, setScannedValidate] = useState<boolean>(false);
+  let [validate, setValidate] = useState<string>('');
+  let [scannedValidate, setScannedValidate] = useState<boolean>(false);
 
   useEffect(() => {
     setScannedValidate(false);
@@ -100,7 +111,7 @@ export function Product() {
       {
         !scannedValidate
           ? <></>
-          : <TestCamera handleImg={handleValidate} />
+          : <Camera handleImg={handleValidate} />
       }
     </SafeZoneScreen>
   );

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -12,10 +12,10 @@ export default StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   inputContainer: {
-    borderRadius: 5,
-
     width: '70%',
-    minWidth: 88
+    minWidth: 88,
+
+    borderRadius: 5
   },
   input: {
     width: '70%',
@@ -25,6 +25,7 @@ export default StyleSheet.create({
     paddingHorizontal: 24,
 
     backgroundColor: '#FFFFFF',
+
     textAlign: 'center'
   },
   upDownButton: {

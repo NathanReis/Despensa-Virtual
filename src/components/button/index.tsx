@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
-import styles from './style';
+import React, { ReactNode } from 'react';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import styles from './styles';
 
 export interface ICustomButtonProps extends TouchableOpacityProps {
   children: ReactNode;

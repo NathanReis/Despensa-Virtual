@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import { SafeAreaViewProps } from 'react-native-safe-area-context';
-import styles from './style';
+import styles from './styles';
 
 interface ISafeZoneScreenProps extends SafeAreaViewProps {
   children: ReactNode;
@@ -22,10 +22,7 @@ export function SafeZoneScreen(props: ISafeZoneScreenProps) {
   } = props;
 
   return (
-    <SafeAreaView
-      {...rest}
-      style={[styles.container, style]}
-    >
+    <SafeAreaView {...rest} style={[styles.container, style]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >

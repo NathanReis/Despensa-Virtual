@@ -2,21 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect } from 'react';
-import {
-  Alert,
-  Image,
-  Text,
-  View
-} from 'react-native';
+import { Alert, Image, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { LocalStorageHelper } from '../../helpers/LocalStorageHelper';
-import styles from './style';
+import styles from './styles';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export function Authentication() {
-  let navigation = useNavigation();
+  let navigator = useNavigation();
 
   let [request, response, promptAsync] = Google.useAuthRequest({
     clientId: process.env.OAUTH_CLIENT_ID,
@@ -33,7 +28,7 @@ export function Authentication() {
         console.log('Dados da autenticação', authentication);
 
         LocalStorageHelper.set('logged', 'y'); // Missing await
-        navigation.navigate('DrawerNavigator' as never);
+        navigator.navigate('DrawerNavigator' as never);
       } else {
         console.log(response);
         Alert.alert('Error:', 'Error')

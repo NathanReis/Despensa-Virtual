@@ -1,15 +1,15 @@
+import { useNavigation } from '@react-navigation/core';
+import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
-import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import BarcodeMask from 'react-native-barcode-mask';
-import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/core';
+import styles from './styles';
 
 export function BarcodeScan() {
-  const [hasPermission, setHasPermission] = useState<boolean>(false);
-  const [scanned, setScanned] = useState<boolean>(false);
-  const navigation = useNavigation();
+  let [hasPermission, setHasPermission] = useState<boolean>(false);
+  let [scanned, setScanned] = useState<boolean>(false);
+  let navigator = useNavigation();
 
   useEffect(() => {
     async function checkPermission() {
@@ -33,7 +33,7 @@ export function BarcodeScan() {
 
   function handleBarCodeScanned({ data }: BarCodeScannerResult) {
     setScanned(true);
-    navigation.navigate('Product' as never, { barcode: data } as never);
+    navigator.navigate('Product' as never, { barcode: data } as never);
   };
 
   if (!hasPermission) {
@@ -52,7 +52,7 @@ export function BarcodeScan() {
           outerMaskOpacity={0.5}
           showAnimatedLine={false}
         />
-        {scanned && <Button title={'Clique para escanear novamente'} onPress={() => setScanned(false)} />}
+        {scanned && <Button title='Clique para escanear novamente' onPress={() => setScanned(false)} />}
         <View style={styles.scannerGrid}>
           <View style={styles.topbar}>
             <TouchableOpacity />
