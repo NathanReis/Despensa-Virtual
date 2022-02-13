@@ -61,13 +61,12 @@ export function Authentication() {
         </Text>
 
         <CustomButton
-          disabled={!request}
-          onPress={() => {
-            promptAsync();
-          }}
-          title='Entrar'
           style={styles.button}
-        />
+          disabled={!request}
+          onPress={() => promptAsync()}
+        >
+          <Text style={styles.buttonContent}>Entrar</Text>
+        </CustomButton>
       </View>
     </SafeZoneScreen>
   );

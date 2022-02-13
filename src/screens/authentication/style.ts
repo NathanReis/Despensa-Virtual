@@ -31,5 +31,10 @@ export default StyleSheet.create({
     width: '90%',
     maxWidth: 325,
     marginTop: 60
+  },
+  buttonContent: {
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 });

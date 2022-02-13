@@ -6,5 +6,10 @@ export default StyleSheet.create({
     width: 200,
 
     alignSelf: 'center'
+  },
+  buttonContent: {
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 });

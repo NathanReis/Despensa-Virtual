@@ -9,10 +9,5 @@ export default StyleSheet.create({
     padding: 10,
 
     borderRadius: 16
-  },
-  buttonTitle: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: 'bold'
   }
 });

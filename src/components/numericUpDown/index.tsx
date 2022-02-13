@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, ViewProps } from 'react-native';
 import { CustomButton } from '../button';
@@ -28,9 +29,19 @@ export function NumericUpDown(props: ViewProps) {
 
   return (
     <View {...rest} style={[styles.container, style]}>
-      <CustomButton style={styles.upDownButton} title='-' onPress={handleDown}></CustomButton>
-      <CustomNumberInput inputContainerStyle={styles.inputContainer} inputStyle={styles.input} defaultValue={String(amount)} />
-      <CustomButton style={styles.upDownButton} title='+' onPress={handleUp}></CustomButton>
+      <CustomButton style={styles.upDownButton} onPress={handleDown}>
+        <AntDesign name='minus' size={16} color='#000000' />
+      </CustomButton>
+
+      <CustomNumberInput
+        inputContainerStyle={styles.inputContainer}
+        inputStyle={styles.input}
+        defaultValue={String(amount)}
+      />
+
+      <CustomButton style={styles.upDownButton} onPress={handleUp}>
+        <AntDesign name='plus' size={16} color='#000000' />
+      </CustomButton>
     </View>
   )
 }

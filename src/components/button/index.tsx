@@ -1,16 +1,16 @@
-import React from "react";
-import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import React, { ReactNode } from "react";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import styles from './style';
 
 export interface ICustomButtonProps extends TouchableOpacityProps {
-  title: string;
+  children: ReactNode;
 }
 
 export function CustomButton(props: ICustomButtonProps) {
   let {
     activeOpacity,
+    children,
     style,
-    title,
     ...rest
   } = props;
 
@@ -20,7 +20,7 @@ export function CustomButton(props: ICustomButtonProps) {
       activeOpacity={activeOpacity ?? 0.25}
       style={[styles.button, style]}
     >
-      <Text style={styles.buttonTitle}>{title}</Text>
+      {children}
     </TouchableOpacity>
   );
 }

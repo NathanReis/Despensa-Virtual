@@ -36,5 +36,10 @@ export default StyleSheet.create({
   },
   button: {
     marginTop: 64
+  },
+  buttonContent: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 });

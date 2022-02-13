@@ -55,11 +55,9 @@ export function Authentication() {
           reduzir o desperdício em sua residência
         </Text>
 
-        <CustomButton
-          onPress={handleNavigation}
-          title='Entrar'
-          style={styles.button}
-        />
+        <CustomButton style={styles.button} onPress={handleNavigation}>
+          <Text style={styles.buttonContent}>Entrar</Text>
+        </CustomButton>
       </View>
     </SafeZoneScreen>
   );

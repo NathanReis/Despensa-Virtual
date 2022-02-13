@@ -93,7 +93,9 @@ export function Product() {
         />}
       />
 
-      <GreenButton style={styles.button} title='Continuar' onPress={handleContinue} />
+      <GreenButton style={styles.button} onPress={handleContinue}>
+        <Text style={styles.buttonContent}>Continuar</Text>
+      </GreenButton>
 
       {
         !scannedValidate

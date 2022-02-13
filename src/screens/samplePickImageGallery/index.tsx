@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import { Image } from 'react-native';
+import { Image, Text } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 
@@ -48,10 +48,9 @@ export function SamplePickImageGallery() {
           source={{ uri: image }}
         />
       }
-      <CustomButton
-        title='Selecionar imagem'
-        onPress={handlePickImage}
-      />
+      <CustomButton onPress={handlePickImage}>
+        <Text style={styles.buttonContent}>Selecionar imagem</Text>
+      </CustomButton>
     </SafeZoneScreen>
   );
 }
