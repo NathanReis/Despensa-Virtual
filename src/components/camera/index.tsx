@@ -1,6 +1,8 @@
+import { Entypo } from '@expo/vector-icons';
 import { Camera as ExpoCamera } from 'expo-camera';
 import React, { useState, useEffect } from 'react';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
+import { CustomButton } from '../button';
 import { PermissionDenied } from '../permissionDenied';
 import { WaitingPermission } from '../waitingPermission';
 import styles from './styles';
@@ -12,7 +14,6 @@ interface ICameraProps {
 export function Camera(props: ICameraProps) {
   let [camera, setCamera] = useState<ExpoCamera | null>(null);
   let [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  let [imageUri, setImageUri] = useState<string>();
 
   useEffect(() => {
     async function checkPermission() {
@@ -39,22 +40,22 @@ export function Camera(props: ICameraProps) {
   async function takePicture() {
     if (camera) {
       let data = await camera.takePictureAsync();
-      setImageUri(data.uri);
+
+      props.handleImg(data.uri);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.cameraContainer}>
-        <ExpoCamera
-          ref={ref => setCamera(ref)}
-          style={styles.fixedRatio}
-          type={ExpoCamera.Constants.Type.back}
-        />
-      </View>
+    <View>
+      <ExpoCamera
+        style={styles.camera}
+        ref={ref => setCamera(ref)}
+        type={ExpoCamera.Constants.Type.back}
+      />
 
-      <Button title='Tirar foto' onPress={takePicture} />
-      {imageUri && <Button title='Avançar' onPress={() => props.handleImg(imageUri)} />}
+      <CustomButton style={styles.button} onPress={takePicture}>
+        <Entypo name='circle' size={40} color='#FFFFFF' />
+      </CustomButton>
     </View>
   );
 }
