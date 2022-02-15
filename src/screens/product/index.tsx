@@ -19,12 +19,8 @@ export function Product() {
     navigator.navigate('BarcodeScan' as never);
   }
 
-  function handleScan() {
-    setScannedValidate(true);
-  }
-
   function handleValidate(uri: string) {
-    setScannedValidate(false);
+    setCameraVisible(false);
 
     let newImageUri = 'file:///' + uri.split('file:/').join('');
 
@@ -63,16 +59,16 @@ export function Product() {
     }
   }
 
+  let [cameraVisible, setCameraVisible] = useState<boolean>(false);
   let [product, setProduct] = useState<IProductModel>();
   let [validate, setValidate] = useState<string>('');
-  let [scannedValidate, setScannedValidate] = useState<boolean>(false);
   let navigator = useNavigation();
   let route = useRoute();
   let routeParams = route.params as IProductDto;
   // let routeParams = { barcode: '7891079013458' };
 
   useEffect(() => {
-    setScannedValidate(false);
+    setCameraVisible(false);
 
     api.get(`/products/barcode/${routeParams.barcode}`)
       .then(response => {
@@ -84,37 +80,37 @@ export function Product() {
 
   return (
     <SafeZoneScreen>
-      <View style={styles.amountContainer}>
-        <Text style={styles.productName}>{product?.name}</Text>
-
-        <Image style={styles.image} source={require('../../../assets/logo.png')} />
-
-        <NumericUpDown style={styles.upDown} />
-      </View>
-
-      <CustomTextInput
-        style={styles.validate}
-        label='Data de validade'
-        defaultValue={validate}
-        placeholder='xx/xx/xxxx'
-        maxLength={10}
-        rightIcon={<AntDesign
-          style={styles.icon}
-          name='camera'
-          size={24}
-          color='#5A6CF3'
-          onPress={handleScan}
-        />}
-      />
-
-      <GreenButton style={styles.button} onPress={handleContinue}>
-        <Text style={styles.buttonContent}>Continuar</Text>
-      </GreenButton>
-
       {
-        !scannedValidate
-          ? <></>
-          : <Camera handleImg={handleValidate} />
+        cameraVisible
+          ? <Camera handleImg={handleValidate} />
+          : <>
+            <View style={styles.amountContainer}>
+              <Text style={styles.productName}>{product?.name}</Text>
+
+              <Image style={styles.image} source={require('../../../assets/logo.png')} />
+
+              <NumericUpDown style={styles.upDown} />
+            </View>
+
+            <CustomTextInput
+              style={styles.validate}
+              label='Data de validade'
+              defaultValue={validate}
+              placeholder='xx/xx/xxxx'
+              maxLength={10}
+              rightIcon={<AntDesign
+                style={styles.icon}
+                name='camera'
+                size={24}
+                color='#5A6CF3'
+                onPress={() => setCameraVisible(true)}
+              />}
+            />
+
+            <GreenButton style={styles.button} onPress={handleContinue}>
+              <Text style={styles.buttonContent}>Continuar</Text>
+            </GreenButton>
+          </>
       }
     </SafeZoneScreen>
   );
