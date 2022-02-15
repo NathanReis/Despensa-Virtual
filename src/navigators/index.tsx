@@ -5,7 +5,7 @@ import { DrawerNavigator } from './drawer';
 import { StackNavigator } from './stack';
 
 async function getLogged() {
-  return await LocalStorageHelper.get('logged') || 'n';
+  return await LocalStorageHelper.get('logged') || 'y';
 }
 
 export default function Navigator() {
@@ -14,7 +14,7 @@ export default function Navigator() {
   useEffect(() => {
     async function checkLogged() {
       // Comment this (👇) line to always show Authentication
-      setIsLogged((await getLogged()) === 'y')
+      setIsLogged((await getLogged()) === 'n')
     }
 
     checkLogged();

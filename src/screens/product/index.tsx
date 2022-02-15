@@ -69,9 +69,11 @@ export function Product() {
 
   useEffect(() => {
     setCameraVisible(false);
+    console.log(routeParams.barcode)
 
     api.get(`/products/barcode/${routeParams.barcode}`)
       .then(response => {
+        console.log(response)
         setProduct(response.data as IProductModel);
         setValidate('');
       })
