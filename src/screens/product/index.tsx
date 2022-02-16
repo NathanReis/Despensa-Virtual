@@ -5,9 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
 import { Camera } from '../../components/camera';
 import { GreenButton } from '../../components/greenButton';
+import { Loading } from '../../components/loading';
 import { NumericUpDown } from '../../components/numericUpDown';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { CustomTextInput } from '../../components/textInput';
+import { DateHelper } from '../../helpers/DateHelper';
 import api from '../../services/api';
 import ocr from '../../services/ocr';
 import { IProductDto } from './IProductDto';
@@ -48,7 +50,7 @@ export function Product() {
       let status = response.status;
 
       if (status === 200 && data.length > 0) {
-        setValidate(data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'))
+        setValidate(DateHelper.convertFromStoreToViewFormat(data));
       } else if (status === 400) {
         Alert.alert('Erro', data.error.join('\n'));
       } else {
@@ -62,10 +64,13 @@ export function Product() {
   let [cameraVisible, setCameraVisible] = useState<boolean>(false);
   let [product, setProduct] = useState<IProductModel>();
   let [validate, setValidate] = useState<string>('');
+  let [isLoading, setIsLoading] = useState<boolean>(true);
   let navigator = useNavigation();
   let route = useRoute();
-  let routeParams = route.params as IProductDto;
-  // let routeParams = { barcode: '7891079013458' };
+  let routeParams = route.params
+    ? route.params as IProductDto
+    : { barcode: '7891079013458' };
+  // : { barcode: '7896213002138' };
 
   useEffect(() => {
     setCameraVisible(false);
@@ -74,9 +79,14 @@ export function Product() {
       .then(response => {
         setProduct(response.data as IProductModel);
         setValidate('');
+        setIsLoading(false);
       })
       .catch(error => console.log(error));
-  }, [])
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SafeZoneScreen>
