@@ -25,6 +25,7 @@
     "expo-random": "~11.2.0",
     "expo-secure-store": "~10.2.0",
     "expo-status-bar": "~1.0.4",
+    "lottie-ios": "3.2.*",
     "lottie-react-native": "5.0.*",
     "mime": "^2.5.2",
     "react": "16.13.1",
