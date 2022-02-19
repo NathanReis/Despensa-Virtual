@@ -18,17 +18,21 @@ import { IProductModel } from './IProductModel';
 import styles from './styles';
 
 export function Product() {
-  async function handleContinue() {
+  async function saveCurrentData() {
     product!.barcode = routeParams.barcode;
     product!.validate = validate;
     product!.amount = amount;
 
     await Purchase.addProduct(product!);
+  }
+
+  async function handleContinue() {
+    await saveCurrentData();
 
     navigator.navigate('BarcodeScan' as never);
   }
 
-  function handleValidate(uri: string) {
+  async function handleValidate(uri: string) {
     setCameraVisible(false);
 
     let newImageUri = 'file:///' + uri.split('file:/').join('');
@@ -43,7 +47,7 @@ export function Product() {
       }))
     );
 
-    getValidate(formData);
+    await getValidate(formData);
   }
 
   async function getValidate(formData: FormData) {
@@ -66,6 +70,11 @@ export function Product() {
     } catch {
       Alert.alert('Erro', 'Erro inesperado.');
     }
+  }
+
+  async function handleShowCamera() {
+    await saveCurrentData();
+    setCameraVisible(true);
   }
 
   let [cameraVisible, setCameraVisible] = useState<boolean>(false);
@@ -135,16 +144,17 @@ export function Product() {
             <CustomTextInput
               style={styles.validate}
               label='Data de validade'
-              defaultValue={validate}
               placeholder='xx/xx/xxxx'
+              value={validate}
               maxLength={10}
               rightIcon={<AntDesign
                 style={styles.icon}
                 name='camera'
                 size={24}
                 color='#5A6CF3'
-                onPress={() => setCameraVisible(true)}
+                onPress={handleShowCamera}
               />}
+              onChangeText={(text) => setValidate(text)}
             />
 
             <GreenButton style={styles.button} onPress={handleContinue}>
