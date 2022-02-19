@@ -115,7 +115,9 @@ export function Product() {
       setIsLoading(false);
     }
 
-    loadData().catch(error => console.log(error));
+    loadData().catch(error => {
+      Alert.alert('Erro', 'Produto não foi encontrado');
+    });
   }, [route.params]);
 
   if (isLoading) {
