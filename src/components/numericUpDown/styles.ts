@@ -26,6 +26,7 @@ export default StyleSheet.create({
 
     backgroundColor: '#FFFFFF',
 
+    color: 'black',
     textAlign: 'center'
   },
   upDownButton: {
