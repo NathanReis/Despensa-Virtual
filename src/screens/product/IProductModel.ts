@@ -6,5 +6,7 @@ export interface IProductModel {
     id: number;
     ncm: number;
     description: string;
-  }
+  },
+  validate: string;
+  amount: number;
 };

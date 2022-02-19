@@ -12,12 +12,19 @@ import { CustomTextInput } from '../../components/textInput';
 import { DateHelper } from '../../helpers/DateHelper';
 import api from '../../services/api';
 import ocr from '../../services/ocr';
+import { Purchase } from '../../storage/Purchase';
 import { IProductDto } from './IProductDto';
 import { IProductModel } from './IProductModel';
 import styles from './styles';
 
 export function Product() {
-  function handleContinue() {
+  async function handleContinue() {
+    product!.barcode = routeParams.barcode;
+    product!.validate = validate;
+    product!.amount = amount;
+
+    await Purchase.addProduct(product!);
+
     navigator.navigate('BarcodeScan' as never);
   }
 
@@ -63,6 +70,7 @@ export function Product() {
 
   let [cameraVisible, setCameraVisible] = useState<boolean>(false);
   let [product, setProduct] = useState<IProductModel>();
+  let [amount, setAmount] = useState<number>(0);
   let [validate, setValidate] = useState<string>('');
   let [isLoading, setIsLoading] = useState<boolean>(true);
   let navigator = useNavigation();
@@ -73,16 +81,33 @@ export function Product() {
   // : { barcode: '7896213002138' };
 
   useEffect(() => {
-    setCameraVisible(false);
+    async function loadData() {
+      setCameraVisible(false);
+      setAmount(0);
+      setValidate('');
+      setIsLoading(true);
 
-    api.get(`/products/barcode/${routeParams.barcode}`)
-      .then(response => {
-        setProduct(response.data as IProductModel);
-        setValidate('');
-        setIsLoading(false);
-      })
-      .catch(error => console.log(error));
-  }, []);
+      let localResponse = await Purchase.findProductByBarcode(routeParams.barcode);
+      let productFound = localResponse;
+
+      if (productFound) {
+        setValidate(productFound.validate);
+        setAmount(productFound.amount);
+
+        Alert.prompt('Encontrei localmente');
+      } else {
+        let apiResponse = await api.get(`/products/barcode/${routeParams.barcode}`);
+        productFound = apiResponse.data as IProductModel;
+
+        Alert.prompt('Encontrei remotamente');
+      }
+
+      setProduct(productFound);
+      setIsLoading(false);
+    }
+
+    loadData().catch(error => console.log(error));
+  }, [route.params]);
 
   if (isLoading) {
     return <Loading />;
@@ -99,7 +124,12 @@ export function Product() {
 
               <Image style={styles.image} source={require('../../../assets/logo.png')} />
 
-              <NumericUpDown style={styles.upDown} />
+              <NumericUpDown
+                style={styles.upDown}
+                value={amount}
+                onDown={() => setAmount(--amount)}
+                onUp={() => setAmount(++amount)}
+              />
             </View>
 
             <CustomTextInput
