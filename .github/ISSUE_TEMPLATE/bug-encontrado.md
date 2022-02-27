@@ -2,7 +2,7 @@
 name: Bug encontrado
 about: Informe de um problema e detalhes de como encontra-lo.
 title: ''
-labels: 'type - bug', 'critical'
+labels: type - bug, critical
 assignees: ''
 
 ---
