@@ -2,7 +2,7 @@
 name: Nova funcionalidade/melhoria
 about: Adição de nova funcionalidade ou melhoria de uma já existente.
 title: ''
-labels: enhancement
+labels: type - enhancement
 assignees: ''
 
 ---
@@ -17,8 +17,7 @@ Caso tenha alguma, deixe detalhado para auxiliar quem for desenvolver.
 
 ## Checklist (Issue)
 
-- [ ] Adicione uma label de tecnologia (`alexa` - `api` - `mobile` - `ocr`)
-- [ ] Se for algo extremamente indispensável, adicione a label `critical`
-- [ ] Se for algo de configuração de ambiente, adicione label `env-...`
+- [ ] Adicione uma label de tecnologia (`tec - *`)
+- [ ] Se for algo de configuração de ambiente, adicione label `env - *`
 - [ ] Se a issue foi adicionada numa sprint ativa, adicione label `not-planned`
-- [ ] Escolha o board (project) que esta issue pertence
+- [ ] Escolha o board (project) `Desenvolvimento`
