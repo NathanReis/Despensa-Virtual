@@ -2,7 +2,7 @@
 name: Bug encontrado
 about: Informe de um problema e detalhes de como encontra-lo.
 title: ''
-labels: bug, critical
+labels: 'type - bug', 'critical'
 assignees: ''
 
 ---
@@ -25,7 +25,7 @@ Caso tenha alguma, deixe detalhado para auxiliar quem for corrigir.
 
 ## Checklist (Issue)
 
-- [ ] Adicione uma label de tecnologia (`alexa` - `api` - `mobile` - `ocr`)
-- [ ] Se for algo de configuração de ambiente, adicione label `env-...`
+- [ ] Adicione uma label de tecnologia (`tec - *`)
+- [ ] Se for algo de configuração de ambiente, adicione label `env - *`
 - [ ] Se a issue foi adicionada numa sprint ativa, adicione label `not-planned`
-- [ ] Escolha o board (project) que esta issue pertence
+- [ ] Escolha o board (project) `Desenvolvimento`
