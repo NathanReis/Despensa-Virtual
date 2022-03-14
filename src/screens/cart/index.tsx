@@ -11,90 +11,96 @@ import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { Picker } from '@react-native-picker/picker';
 import api from '../../services/api';
 import { useIsFocused } from '@react-navigation/native';
+import { Loading } from '../../components/loading';
+
 export function Cart() {
 
-    let [products, setProducts] = useState<IProductModel[]>([]);
-    let [loggedUser, setLoggedUser] = useState<IUserModel>({} as IUserModel);
-    let [defaultUserGroup, setDefaultUserGroup] = useState<IUserGroupModel>({} as IUserGroupModel);
-    let navigator = useNavigation();
+  let [products, setProducts] = useState<IProductModel[]>([]);
+  let [loggedUser, setLoggedUser] = useState<IUserModel>({} as IUserModel);
+  let [defaultUserGroup, setDefaultUserGroup] = useState<IUserGroupModel>({} as IUserGroupModel);
+  let [isLoading, setIsLoading] = useState<boolean>(true);
+  let navigator = useNavigation();
 
-    const isFocused = useIsFocused();
-    useEffect(() => {
-        if (isFocused) {
-            async function load() {
-                let products = await Purchase.getProducts();
-                setProducts(products);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      async function load() {
+        setIsLoading(true);
 
-                let user = await User.getLoggedUser();
-                // let user2 = await api.get('/')
-                setLoggedUser(user);
+        let products = await Purchase.getProducts();
+        setProducts(products);
 
-                let defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
-                setDefaultUserGroup(defaultGroup!);
+        let user = await User.getLoggedUser();
+        // let user2 = await api.get('/')
+        setLoggedUser(user);
 
-
-                console.log(defaultGroup)
-
-            }
-            load().catch(error => {
-                Alert.alert('Erro', JSON.stringify(error));
-            });
-        }
-
-    }, [isFocused])
+        let defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
+        setDefaultUserGroup(defaultGroup!);
 
 
-    async function removeProductFromCart(barcode: string) {
-        let newProducts = await Purchase.removeProductByBarcode(barcode);
-        setProducts(newProducts);
+        console.log(defaultUserGroup)
+        setIsLoading(false);
+      }
+
+      load().catch(error => {
+        Alert.alert('Erro', JSON.stringify(error));
+      });
     }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.pageTitle}>Salvar Produtos</Text>
+  }, [isFocused]);
 
-            <ScrollView >
-                {products.map(x =>
-                (
-                    <View key={x.id} style={styles.productContainer}>
-                        <View style={styles.productImgContainer}>
-                            <Image style={styles.image} source={require('../../../assets/logo.png')} />
-                            <View style={styles.productNameContainer}>
-                                <Text style={styles.productName}>{x.name}</Text>
-                            </View>
-                            <CustomButton
-                                onPress={() => removeProductFromCart(x.barcode)}
-                            >
-                                <FontAwesome size={30} style={styles.trashIcon} name='trash' />
-                            </CustomButton>
-                        </View>
+  if (isLoading) {
+    return <Loading />;
+  }
 
+  async function removeProductFromCart(barcode: string) {
+    let newProducts = await Purchase.removeProductByBarcode(barcode);
+    setProducts(newProducts);
+  }
 
-                        <Text>{x.amount} x</Text>
-                        {/* <Text>Vence em: {x.validate}</Text> */}
-                    </View>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.pageTitle}>Salvar Produtos</Text>
 
-                ))}
-            </ScrollView>
-            {/* </ScrollView> */}
-            <View style={styles.userGroupContainer}>
-
-                <Picker
-                    selectedValue={defaultUserGroup}
-                    onValueChange={(value, index) => setDefaultUserGroup(value)}
-                    mode="dropdown" // Android only
-                    style={styles.picker}
-                >
-
-                    {/* Essa linha aqui que crasha o app ao descomentar */}
-                    {/* <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} /> */}
-
-                </Picker>
-                <CustomButton style={styles.btnAdicionar}>
-                    <Text style={styles.btnAdicionarTxt}>Adicionar</Text>
-                </CustomButton>
-
+      <ScrollView >
+        {products.map(x =>
+        (
+          <View key={x.id} style={styles.productContainer}>
+            <View style={styles.productImgContainer}>
+              <Image style={styles.image} source={require('../../../assets/logo.png')} />
+              <View style={styles.productNameContainer}>
+                <Text style={styles.productName}>{x.name}</Text>
+              </View>
+              <CustomButton
+                onPress={() => removeProductFromCart(x.barcode)}
+              >
+                <FontAwesome size={30} style={styles.trashIcon} name='trash' />
+              </CustomButton>
             </View>
-        </View>
-    )
+
+
+            <Text>{x.amount} x</Text>
+            {/* <Text>Vence em: {x.validate}</Text> */}
+          </View>
+
+        ))}
+      </ScrollView>
+      {/* </ScrollView> */}
+      <View style={styles.userGroupContainer}>
+
+        <Picker
+          selectedValue={defaultUserGroup}
+          onValueChange={(value, index) => setDefaultUserGroup(value)}
+          mode="dropdown" // Android only
+          style={styles.picker}
+        >
+          <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} />
+        </Picker>
+
+        <CustomButton style={styles.btnAdicionar}>
+          <Text style={styles.btnAdicionarTxt}>Adicionar</Text>
+        </CustomButton>
+      </View>
+    </View>
+  )
 }
