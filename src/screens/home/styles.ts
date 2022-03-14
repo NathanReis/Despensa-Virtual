@@ -10,6 +10,11 @@ export default StyleSheet.create({
     welcomeTitle: {
         fontSize: 20
     },
+    itemsContainer: {
+        flexDirection: 'row',
+        marginTop: 16,
+        marginBottom: 32,
+    },
     pageTitle: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -37,11 +42,11 @@ export default StyleSheet.create({
     },
     menuLargeItemButton: {
         backgroundColor: '#F8F8FB',
-        height: '15%',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
+        height: '70%',
+        width: 240,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexDirection: 'row',
         marginTop: 45
     },
     menuLargeItemText: {
@@ -50,6 +55,7 @@ export default StyleSheet.create({
     largeMenuIconContainer: {
         width: '20%',
         height: '40%',
-        marginRight: 10
+        marginRight: 10,
+        marginBottom: 10
     }
 })

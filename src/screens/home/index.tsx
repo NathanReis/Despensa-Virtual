@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Image, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { User } from '../../storage/User';
 import styles from './styles';
@@ -22,6 +22,10 @@ export function Home() {
 
     function handleNavigationToScan() {
         navigator.navigate('BarcodeScan' as never);
+    };
+
+    function handleNavigationToCart() {
+        navigator.navigate('Cart' as never);
     };
 
     return (
@@ -66,16 +70,31 @@ export function Home() {
                     <Text>Produtos vencidos</Text>
                 </CustomButton>
 
-                <CustomButton style={styles.menuLargeItemButton}>
-                    <Image
-                        style={styles.largeMenuIconContainer}
-                        source={require('../../../assets/editUserIcon.png')}
-                    />
-                    <Text style={styles.menuLargeItemText}>
-                        Gerenciar grupo de {`\n`} usuários
-                    </Text>
-                </CustomButton>
+                <View style={styles.itemsContainer}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={true} contentContainerStyle={{ paddingHorizontal: 20 }}>
+                        <CustomButton style={styles.menuLargeItemButton}>
+                            <Image
+                                style={styles.largeMenuIconContainer}
+                                source={require('../../../assets/editUserIcon.png')}
+                            />
+                            <Text style={styles.menuLargeItemText}>
+                                Gerenciar grupo de {`\n`} usuários
+                            </Text>
+                        </CustomButton>
 
+                        <CustomButton
+                            onPress={() => handleNavigationToCart()}
+                            style={styles.menuLargeItemButton}>
+                            <Image
+                                style={styles.largeMenuIconContainer}
+                                source={require('../../../assets/cartIcon.png')}
+                            />
+                            <Text style={styles.menuLargeItemText}>
+                                Carrinho
+                            </Text>
+                        </CustomButton>
+                    </ScrollView>
+                </View>
             </View>
         </View>
     )

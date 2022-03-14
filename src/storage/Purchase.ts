@@ -32,4 +32,17 @@ export class Purchase {
 
     await this.saveProducts(products);
   }
+
+  public static async removeProductByBarcode(barcode: string): Promise<IProductModel[]> {
+    let products = await this.getProducts();
+    let index = products.findIndex(_product => _product.barcode === barcode);
+
+    if (index !== -1) {
+      products.splice(index, 1);
+    }
+    await this.saveProducts(products);
+
+    return products;
+
+  }
 }

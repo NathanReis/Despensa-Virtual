@@ -1,11 +1,17 @@
 import { LocalStorageHelper } from '../helpers/LocalStorageHelper';
 
-interface IUserModel {
+export interface IUserModel {
     email: string,
     id: number,
     idDefaultUserGroup: number,
     name: string,
-    picture: string
+    picture: string,
+    userGroupEntities: Array<IUserGroupModel>
+}
+
+export interface IUserGroupModel {
+    id: number,
+    name: string
 }
 export class User {
     public static async getLoggedUser(): Promise<IUserModel> {
