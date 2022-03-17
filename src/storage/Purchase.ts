@@ -20,6 +20,10 @@ export class Purchase {
     await LocalStorageHelper.set('products', json);
   }
 
+  public static async cleanProducts(): Promise<void> {
+    await LocalStorageHelper.set('products', '[]');
+  }
+
   public static async addProduct(product: IProductModel): Promise<void> {
     let products = await this.getProducts();
     let index = products.findIndex(_product => _product.barcode === product.barcode);
