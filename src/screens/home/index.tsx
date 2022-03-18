@@ -28,6 +28,10 @@ export function Home() {
         navigator.navigate('Cart' as never);
     };
 
+    function handleNavigationToPantry() {
+        navigator.navigate('Pantry' as never);
+    };
+
     return (
         <View>
             <View style={styles.container}>
@@ -46,12 +50,14 @@ export function Home() {
                     <Text>Novo Produto</Text>
                 </CustomButton>
 
-                <CustomButton style={styles.menuItemButton}>
+                <CustomButton
+                    onPress={() => handleNavigationToPantry()}
+                    style={styles.menuItemButton}>
                     <Image
                         style={styles.iconContainer}
                         source={require('../../../assets/calendarIcon.png')}
                     />
-                    <Text>Produtos a vencer</Text>
+                    <Text>Minha despensa</Text>
                 </CustomButton>
 
                 <CustomButton style={styles.menuItemButton}>

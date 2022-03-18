@@ -19,6 +19,7 @@ export function Cart() {
     let [loggedUser, setLoggedUser] = useState<IUserModel>({} as IUserModel);
     let [defaultUserGroup, setDefaultUserGroup] = useState<IUserGroupModel>({} as IUserGroupModel);
     let [isLoading, setIsLoading] = useState<boolean>(true);
+    let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>();
     let navigator = useNavigation();
 
     const isFocused = useIsFocused();
@@ -35,6 +36,7 @@ export function Cart() {
 
                 let defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
                 setDefaultUserGroup(defaultGroup!);
+                setDefaultUserGroupId(defaultGroup!.id);
                 setIsLoading(false);
             }
 
@@ -71,7 +73,7 @@ export function Cart() {
         let formatedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
 
         let purchase = {
-            idUserGroup: defaultUserGroup.id,
+            idUserGroup: defaultUserGroupId,
             products: productsDTO,
             purchaseDate: formatedDate
         }
@@ -131,12 +133,15 @@ export function Cart() {
             </ScrollView>
             <View style={styles.userGroupContainer}>
                 <Picker
-                    selectedValue={defaultUserGroup}
-                    onValueChange={(value, index) => setDefaultUserGroup(value)}
+                    selectedValue={defaultUserGroupId}
+                    onValueChange={(value, index) => setDefaultUserGroupId(value)}
                     mode="dropdown" // Android only
                     style={styles.picker}
                 >
-                    <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} />
+                    {/* <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} /> */}
+                    {loggedUser.userGroupEntities.map(x => (
+                        <Picker.Item key={x.id} label={x.name} value={x.id} />
+                    ))}
                 </Picker>
                 {products.length > 0 &&
                     <CustomButton onPress={saveProducts} style={styles.btnAdicionar}>
