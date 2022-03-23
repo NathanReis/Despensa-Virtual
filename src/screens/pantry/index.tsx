@@ -55,6 +55,7 @@ export function Pantry() {
     async function handleChangeUserGroup(id: number) {
         let products = await api.get<IMyProductModel[]>(`/my-products/${id}`);
         setProducts(products.data);
+        setSearchedProducts(products.data)
         setDefaultUserGroupId(id);
     }
 

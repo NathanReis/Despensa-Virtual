@@ -20,4 +20,8 @@ export class User {
         return JSON.parse(json);
     }
 
+    public static async setLoggedUser(user: IUserModel) {
+        await LocalStorageHelper.set('loggedUser', JSON.stringify(user));
+    }
+
 }

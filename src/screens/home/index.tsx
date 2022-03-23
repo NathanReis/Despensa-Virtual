@@ -31,6 +31,9 @@ export function Home() {
     function handleNavigationToPantry() {
         navigator.navigate('Pantry' as never);
     };
+    function handleNavigationToUserGroup() {
+        navigator.navigate('UserGroup' as never);
+    };
 
     return (
         <View>
@@ -78,7 +81,8 @@ export function Home() {
 
                 <View style={styles.itemsContainer}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={true} contentContainerStyle={{ paddingHorizontal: 20 }}>
-                        <CustomButton style={styles.menuLargeItemButton}>
+                        <CustomButton onPress={() => handleNavigationToUserGroup()}
+                            style={styles.menuLargeItemButton}>
                             <Image
                                 style={styles.largeMenuIconContainer}
                                 source={require('../../../assets/editUserIcon.png')}
