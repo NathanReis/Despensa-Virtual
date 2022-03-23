@@ -34,6 +34,7 @@ export function Pantry() {
                 let defaultGroup;
 
                 if (user.idDefaultUserGroup != null) {
+                    setDefaultUserGroupId(user.idDefaultUserGroup);
                     products = await api.get<IMyProductModel[]>(`/my-products/${user.idDefaultUserGroup}`);
                     defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
                     setProducts(products.data);
@@ -46,17 +47,26 @@ export function Pantry() {
 
             load().catch(error => {
                 console.log(error.response.data)
-                Alert.alert('Erro', JSON.stringify(error.response.data));
+                // Alert.alert('Erro', JSON.stringify(error.response.data));
+                setIsLoading(false);
+
             });
         }
 
     }, [isFocused]);
 
     async function handleChangeUserGroup(id: number) {
-        let products = await api.get<IMyProductModel[]>(`/my-products/${id}`);
-        setProducts(products.data);
-        setSearchedProducts(products.data)
+
         setDefaultUserGroupId(id);
+        try {
+            let products = await api.get<IMyProductModel[]>(`/my-products/${id}`);
+            setProducts(products.data);
+            setSearchedProducts(products.data)
+        } catch (error) {
+            setProducts([])
+            setSearchedProducts([])
+        }
+
     }
 
     function handleSearchProduct(productName: string) {
@@ -74,8 +84,32 @@ export function Pantry() {
 
     if (defaultUserGroupId == 0) {
         return (
-            <View >
+            <View style={{ padding: 10 }}>
                 <Text style={styles.pageTitle}>Você precisa registrar uma residência para visualizar seus produtos!</Text>
+            </View>
+        )
+    }
+
+    if (searchedProducts.length == 0) {
+        return (
+            <View style={{ padding: 10 }}>
+                <Text style={styles.pageTitle}>Você não possui nenhum produto nessa despensa</Text>
+                <SafeAreaView style={styles.userGroupContainer}>
+                    <View style={styles.pickerBorder}>
+                        <Picker
+                            selectedValue={defaultUserGroupId}
+                            onValueChange={(value, index) => handleChangeUserGroup(value)}
+                            mode="dropdown" // Android only
+                            style={styles.picker}
+                        >
+                            {loggedUser.userGroupEntities.map(x => (
+                                <Picker.Item key={x.id} label={x.name} value={x.id} />
+                            ))}
+                        </Picker>
+
+                    </View>
+
+                </SafeAreaView>
             </View>
         )
     }

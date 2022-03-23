@@ -27,18 +27,11 @@ export function UserGroup() {
             Alert.alert('Erro', 'Informe como gostaria de chamar sua despensa');
             return;
         }
-        let loggedUser = await User.getLoggedUser();
 
         try {
             let response: AxiosResponse<IUserGroupResponse> = await api.post('/user-groups', { name: userGroupName });
-
             let userGroupCreatedId = response.data.id;
-
-            loggedUser.idDefaultUserGroup = userGroupCreatedId;
-            loggedUser.userGroupEntities.push({ id: userGroupCreatedId, name: userGroupName });
-
-            await User.setLoggedUser(loggedUser);
-
+            await saveUserInUserGroup(userGroupCreatedId)
             Alert.alert('Sucesso', 'Despensa registrada com sucesso');
             setUserGroupName('')
 
@@ -46,7 +39,17 @@ export function UserGroup() {
             Alert.alert('Erro', error.message);
         }
 
-        console.log(userGroupName)
+    }
+
+    async function saveUserInUserGroup(idUserGroup: number) {
+        let loggedUser = await User.getLoggedUser();
+        await api.post('/user-groups/users', { idUser: loggedUser.id, idUserGroup });
+        loggedUser.idDefaultUserGroup = idUserGroup;
+        loggedUser.userGroupEntities.push({ id: idUserGroup, name: userGroupName });
+
+        await api.put(`/users/${loggedUser.id}`, { idDefaultUserGroup: idUserGroup })
+
+        await User.setLoggedUser(loggedUser);
     }
 
     return (
