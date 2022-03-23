@@ -19,7 +19,7 @@ export function Cart() {
     let [loggedUser, setLoggedUser] = useState<IUserModel>({} as IUserModel);
     let [defaultUserGroup, setDefaultUserGroup] = useState<IUserGroupModel>({} as IUserGroupModel);
     let [isLoading, setIsLoading] = useState<boolean>(true);
-    let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>();
+    let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>(0);
     let navigator = useNavigation();
 
     const isFocused = useIsFocused();
@@ -33,10 +33,14 @@ export function Cart() {
 
                 let user = await User.getLoggedUser();
                 setLoggedUser(user);
+                let defaultGroup;
 
-                let defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
-                setDefaultUserGroup(defaultGroup!);
-                setDefaultUserGroupId(defaultGroup!.id);
+                if (user.idDefaultUserGroup != null) {
+                    defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
+                    setDefaultUserGroup(defaultGroup!);
+                    setDefaultUserGroupId(defaultGroup!.id);
+                }
+
                 setIsLoading(false);
             }
 
@@ -50,7 +54,13 @@ export function Cart() {
     if (isLoading) {
         return <Loading />;
     }
-
+    if (defaultUserGroupId == 0) {
+        return (
+            <View >
+                <Text style={styles.pageTitle}>Você precisa registrar uma residência para poder salvar seus produtos</Text>
+            </View>
+        )
+    }
     async function saveProducts() {
         let productsDTO: any = [];
 
@@ -132,17 +142,20 @@ export function Cart() {
                 ))}
             </ScrollView>
             <View style={styles.userGroupContainer}>
-                <Picker
-                    selectedValue={defaultUserGroupId}
-                    onValueChange={(value, index) => setDefaultUserGroupId(value)}
-                    mode="dropdown" // Android only
-                    style={styles.picker}
-                >
-                    {/* <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} /> */}
-                    {loggedUser.userGroupEntities.map(x => (
-                        <Picker.Item key={x.id} label={x.name} value={x.id} />
-                    ))}
-                </Picker>
+                <View style={styles.pickerBorder}>
+                    <Picker
+                        selectedValue={defaultUserGroupId}
+                        onValueChange={(value, index) => setDefaultUserGroupId(value)}
+                        mode="dropdown" // Android only
+                        style={styles.picker}
+                    >
+                        {/* <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} /> */}
+                        {loggedUser.userGroupEntities.map(x => (
+                            <Picker.Item key={x.id} label={x.name} value={x.id} />
+                        ))}
+                    </Picker>
+                </View>
+
                 {products.length > 0 &&
                     <CustomButton onPress={saveProducts} style={styles.btnAdicionar}>
                         <Text style={styles.btnAdicionarTxt}>Adicionar</Text>

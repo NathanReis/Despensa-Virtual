@@ -51,14 +51,16 @@ export default StyleSheet.create({
         height: '30%',
         width: '90%',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     picker: {
         marginVertical: 30,
         width: 300,
         padding: 10,
+    },
+    pickerBorder: {
         borderWidth: 1,
-        borderColor: "#666",
+        borderRadius: 10
     },
     btnAdicionar: {
         width: '100%',

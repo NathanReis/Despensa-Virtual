@@ -5,8 +5,9 @@ export default StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 40,
-        flex: 1
+        // marginTop: 40,
+        flex: 1,
+        backgroundColor: '#FFFFFF'
     },
     productContainer: {
         backgroundColor: '#F8F8FB',
@@ -18,6 +19,8 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
         padding: 10,
+        borderWidth: 1,
+        borderColor: '#F08F5F'
     },
     image: {
         width: 40,
@@ -33,7 +36,8 @@ export default StyleSheet.create({
     pageTitle: {
         fontWeight: 'bold',
         fontSize: 25,
-        marginBottom: 20
+        marginBottom: 20,
+        marginTop: 20
     },
     trashIcon: {
         margin: 3
@@ -59,6 +63,10 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: "#666",
     },
+    pickerBorder: {
+        borderWidth: 1,
+        borderRadius: 10
+    },
     btnAdicionar: {
         width: '100%',
         height: '30%',
@@ -69,5 +77,31 @@ export default StyleSheet.create({
     btnAdicionarTxt: {
         color: 'white',
         fontSize: 18
+    },
+    searchInput: {
+        width: '70%',
+        // marginBottom: 10,
+        height: '80%'
+    },
+    menuItemButton: {
+        backgroundColor: '#F8F8FB',
+        height: '80%',
+        // width: '40%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    iconContainer: {
+        // width: '40%',
+        // height: '35%',
+        // borderRadius: 10,
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        height: '10%',
+        width: '90%',
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#F8F8FB'
     }
 })
