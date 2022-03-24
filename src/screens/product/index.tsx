@@ -1,5 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+// import MaskInput, { Masks } from 'react-native-mask-input';
 import mime from 'mime';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
@@ -78,6 +80,7 @@ export function Product() {
   }
 
   let [cameraVisible, setCameraVisible] = useState<boolean>(false);
+  let [hasImage, setHasImage] = useState<boolean>(false);
   let [product, setProduct] = useState<IProductModel>();
   let [amount, setAmount] = useState<number>(0);
   let [validate, setValidate] = useState<string>('');
@@ -111,6 +114,16 @@ export function Product() {
         Alert.prompt('Encontrei remotamente');
       }
 
+      try {
+
+        await axios.get(`http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}`)
+        setHasImage(true)
+      } catch (error) {
+        setHasImage(false)
+        console.log(error)
+        console.log(routeParams.barcode)
+      }
+
       setProduct(productFound);
       setIsLoading(false);
     }
@@ -133,7 +146,11 @@ export function Product() {
             <View style={styles.amountContainer}>
               <Text style={styles.productName}>{product?.name}</Text>
 
-              <Image style={styles.image} source={require('../../../assets/logo.png')} />
+              {hasImage &&
+                <Image style={styles.image} source={{ uri: `http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}` }} />
+                ||
+                <Image style={styles.image} source={require('../../../assets/logo.png')} />
+              }
 
               <NumericUpDown
                 style={styles.upDown}
@@ -149,6 +166,7 @@ export function Product() {
               placeholder='xx/xx/xxxx'
               value={validate}
               maxLength={10}
+
               rightIcon={<AntDesign
                 style={styles.icon}
                 name='camera'

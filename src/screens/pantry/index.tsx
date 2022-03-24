@@ -157,10 +157,6 @@ export function Pantry() {
 
                 </View>
 
-                {products.length > 0 &&
-                    <CustomButton style={styles.btnAdicionar}>
-                        <Text style={styles.btnAdicionarTxt}>Adicionar</Text>
-                    </CustomButton>}
             </SafeAreaView>
         </View>
     )

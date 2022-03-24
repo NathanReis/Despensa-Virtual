@@ -5182,6 +5182,11 @@ react-native-iphone-x-helper@^1.3.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
+react-native-mask-input@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-mask-input/-/react-native-mask-input-1.2.0.tgz#08da62742b34697d1e42d086fb4640951caea5a2"
+  integrity sha512-0bLJ9Szlly4tt59RrbLBS5TSJAGVoH22Hpka85HQ3q4qy10AH+UkcDkozXEonSY5oJK6sobnmzKQ4px5+mkCWg==
+
 react-native-mlkit-ocr@^0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/react-native-mlkit-ocr/-/react-native-mlkit-ocr-0.2.3.tgz#2d6af84288ab9a79245c8f47e41d034ca8e4b085"

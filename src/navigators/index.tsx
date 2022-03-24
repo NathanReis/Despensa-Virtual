@@ -14,7 +14,7 @@ export default function Navigator() {
   useEffect(() => {
     async function checkLogged() {
       // Comment this (👇) line to always show Authentication
-      setIsLogged((await getLogged()) === 'n')
+      setIsLogged((await getLogged()) === 'y')
     }
 
     checkLogged();
