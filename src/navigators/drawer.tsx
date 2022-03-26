@@ -13,11 +13,11 @@ export function DrawerNavigator() {
   return (
     <drawer.Navigator>
       <drawer.Screen component={Home} name='Home' />
-      <drawer.Screen component={BarcodeScan} name='BarcodeScan' />
-      <drawer.Screen component={Product} name='Product' />
-      <drawer.Screen component={Cart} name='Cart' />
-      <drawer.Screen component={Pantry} name='Pantry' />
-      <drawer.Screen component={UserGroup} name='UserGroup' />
+      <drawer.Screen component={BarcodeScan} name='BarcodeScan' options={{ title: 'Código de barras' }} />
+      <drawer.Screen component={Product} name='Product' options={{ title: 'Produto' }} />
+      <drawer.Screen component={Cart} name='Cart' options={{ title: 'Carrinho' }} />
+      <drawer.Screen component={Pantry} name='Pantry' options={{ title: 'Meus produtos' }} />
+      <drawer.Screen component={UserGroup} name='UserGroup' options={{ title: 'Nova despensa' }} />
     </drawer.Navigator>
   );
 }
