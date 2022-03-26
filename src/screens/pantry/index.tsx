@@ -99,7 +99,7 @@ export function Pantry() {
                         <Picker
                             selectedValue={defaultUserGroupId}
                             onValueChange={(value, index) => handleChangeUserGroup(value)}
-                            mode="dropdown" // Android only
+                            mode='dropdown' // Android only
                             style={styles.picker}
                         >
                             {loggedUser.userGroupEntities.map(x => (
@@ -147,7 +147,7 @@ export function Pantry() {
                     <Picker
                         selectedValue={defaultUserGroupId}
                         onValueChange={(value, index) => handleChangeUserGroup(value)}
-                        mode="dropdown" // Android only
+                        mode='dropdown' // Android only
                         style={styles.picker}
                     >
                         {loggedUser.userGroupEntities.map(x => (

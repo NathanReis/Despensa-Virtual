@@ -61,7 +61,7 @@ export default StyleSheet.create({
         width: 300,
         padding: 10,
         borderWidth: 1,
-        borderColor: "#666",
+        borderColor: '#666',
     },
     pickerBorder: {
         borderWidth: 1,

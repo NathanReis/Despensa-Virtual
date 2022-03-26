@@ -23,7 +23,7 @@ export function Authentication() {
       let response = await AuthSession.startAsync({ authUrl: OAUTH2_URL });
 
       if (response.type === 'success') {
-        let user = (await api.post('/users/login-google', { token: response.params["access_token"] })).data;
+        let user = (await api.post('/users/login-google', { token: response.params['access_token'] })).data;
         console.log(user)
         await LocalStorageHelper.set('loggedUser', JSON.stringify(user));
         await LocalStorageHelper.set('logged', 'y');

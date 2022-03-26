@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { IUserGroupModel, IUserModel, User } from '../../storage/User';
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Purchase } from '../../storage/Purchase';
@@ -71,7 +71,7 @@ export function Cart() {
                 amount: x.amount,
                 validate: x.validate,
                 measure: {
-                    unit: "kg",
+                    unit: 'kg',
                     value: 2
                 },
                 position: x.id
@@ -146,7 +146,7 @@ export function Cart() {
                     <Picker
                         selectedValue={defaultUserGroupId}
                         onValueChange={(value, index) => setDefaultUserGroupId(value)}
-                        mode="dropdown" // Android only
+                        mode='dropdown' // Android only
                         style={styles.picker}
                     >
                         {/* <Picker.Item label={defaultUserGroup.name} value={defaultUserGroup.id} /> */}
