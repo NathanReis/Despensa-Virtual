@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Image, ScrollView, Text, TextInput, View } from 'react-native';
-import { CustomButton } from '../../components/button';
-import { IUserGroupModel, IUserModel, User } from '../../storage/User';
-import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
-import api from '../../services/api';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { Image, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
+import { CustomButton } from '../../components/button';
 import { Loading } from '../../components/loading';
+import api from '../../services/api';
+import { IUserGroupModel, IUserModel, User } from '../../storage/User';
 import { IMyProductModel } from '../product/IMyProductModel';
-import { CustomTextInput } from '../../components/textInput';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import styles from './styles';
 
 export function Pantry() {
 
@@ -127,7 +124,7 @@ export function Pantry() {
                 </CustomButton>
             </View>
 
-            <ScrollView >
+            <ScrollView>
                 {searchedProducts.map(x =>
                 (
                     <View key={x.id} style={styles.productContainer}>

@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { User } from '../../storage/User';
 import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
 
 export function Home() {
 

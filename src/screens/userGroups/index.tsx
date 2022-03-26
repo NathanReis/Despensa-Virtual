@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Image, ScrollView, Text, View } from 'react-native';
-import { CustomButton } from '../../components/button';
-import { User } from '../../storage/User';
-import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { TextInput } from 'react-native-gesture-handler';
+import { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Alert, Text, View } from 'react-native';
+import { CustomButton } from '../../components/button';
 import { CustomTextInput } from '../../components/textInput';
 import api from '../../services/api';
-import { AxiosResponse } from 'axios';
+import { User } from '../../storage/User';
+import styles from './styles';
 
 export function UserGroup() {
 

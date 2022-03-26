@@ -1,17 +1,15 @@
+import { FontAwesome } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
-import { IUserGroupModel, IUserModel, User } from '../../storage/User';
-import { FontAwesome } from '@expo/vector-icons';
-import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
-import { Purchase } from '../../storage/Purchase';
-import { IProductModel } from '../product/IProductModel';
-import { SafeZoneScreen } from '../../components/safeZoneScreen';
-import { Picker } from '@react-native-picker/picker';
-import api from '../../services/api';
-import { useIsFocused } from '@react-navigation/native';
 import { Loading } from '../../components/loading';
+import api from '../../services/api';
+import { Purchase } from '../../storage/Purchase';
+import { IUserGroupModel, IUserModel, User } from '../../storage/User';
+import { IProductModel } from '../product/IProductModel';
+import styles from './styles';
 
 export function Cart() {
 

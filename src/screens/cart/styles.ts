@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { lightBlue100 } from 'react-native-paper/lib/typescript/styles/colors';
 
 export default StyleSheet.create({
     container: {
