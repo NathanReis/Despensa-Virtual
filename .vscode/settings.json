@@ -1,0 +1,48 @@
+{
+  // Text editor
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.rulers": [
+    {
+      "color": "#FFFF00",
+      "column": 80
+    },
+    {
+      "color": "#FF0000",
+      "column": 120
+    }
+  ],
+  "editor.showUnused": true,
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  // Text editor > Formater
+  "editor.formatOnSave": true,
+  // Text editor > Files
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  // Anothers
+  "emmet.syntaxProfiles": {
+    "javascript": "jsx"
+  },
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+  // Extensions > Code Spell Checker
+  "cSpell.enabledLanguageIds": [
+    "git-commit",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "markdown",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+    "yml"
+  ]
+}
