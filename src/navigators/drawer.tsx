@@ -11,7 +11,7 @@ let drawer = createDrawerNavigator();
 
 export function DrawerNavigator() {
   return (
-    <drawer.Navigator>
+    <drawer.Navigator screenOptions={{ headerStyle: { height: 80 } }}>
       <drawer.Screen component={Home} name='Home' />
       <drawer.Screen component={BarcodeScan} name='BarcodeScan' options={{ title: 'Código de barras' }} />
       <drawer.Screen component={Product} name='Product' options={{ title: 'Produto' }} />
