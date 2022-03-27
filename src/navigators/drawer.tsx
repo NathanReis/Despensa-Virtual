@@ -6,6 +6,7 @@ import { Home } from '../screens/home';
 import { Pantry } from '../screens/pantry';
 import { Product } from '../screens/product';
 import { UserGroup } from '../screens/userGroup';
+import { UserGroups } from '../screens/userGroups';
 
 let drawer = createDrawerNavigator();
 
@@ -23,6 +24,7 @@ export function DrawerNavigator() {
       <drawer.Screen component={Cart} name='Cart' options={{ title: 'Carrinho' }} />
       <drawer.Screen component={Pantry} name='Pantry' options={{ title: 'Meus produtos' }} />
       <drawer.Screen component={UserGroup} name='UserGroup' options={{ title: 'Despensa' }} />
+      <drawer.Screen component={UserGroups} name='UserGroups' options={{ title: 'Minhas despensas' }} />
     </drawer.Navigator>
   );
 }

@@ -1,67 +1,87 @@
-import { useNavigation } from '@react-navigation/native';
-import { AxiosResponse } from 'axios';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { CustomButton } from '../../components/button';
-import { CustomTextInput } from '../../components/textInput';
-import api from '../../services/api';
-import { User } from '../../storage/User';
+import { Loading } from '../../components/loading';
+import { SafeZoneScreen } from '../../components/safeZoneScreen';
+import { Title } from '../../components/title';
+import { IUserGroupModel, UserGroupStorage } from '../../storage/UserGroup';
 import styles from './styles';
 
-export function UserGroup() {
+export function UserGroups() {
+  let [userGroups, setUserGroups] = useState<IUserGroupModel[]>([]);
+  let [isLoading, setIsLoading] = useState<boolean>(true);
+  let isFocused = useIsFocused();
+  let navigator = useNavigation();
 
-    let [userGroupName, setUserGroupName] = useState<string>('');
-    let navigator = useNavigation();
+  async function loadData() {
+    setIsLoading(true);
 
-    useEffect(() => {
-
-    }, [])
-
-    interface IUserGroupResponse {
-        id: number
+    try {
+      setUserGroups(await UserGroupStorage.getAll());
+    } catch {
+      Alert.alert('Erro', 'Erro inesperado!');
     }
 
-    async function handleSaveUserGroup() {
-        if (userGroupName.trim().length == 0) {
-            Alert.alert('Erro', 'Informe como gostaria de chamar sua despensa');
-            return;
-        }
+    setIsLoading(false);
+  }
 
-        try {
-            let response: AxiosResponse<IUserGroupResponse> = await api.post('/user-groups', { name: userGroupName });
-            let userGroupCreatedId = response.data.id;
-            await saveUserInUserGroup(userGroupCreatedId)
-            Alert.alert('Sucesso', 'Despensa registrada com sucesso');
-            setUserGroupName('')
+  function handleEdit(id: number) {
+    navigator.navigate('UserGroup' as never, { id } as never);
+  }
 
-        } catch (error: Error | any) {
-            Alert.alert('Erro', error.message);
-        }
+  async function handleRemove(id: number) {
+    await UserGroupStorage.remove(id);
+    await loadData();
+  }
 
+  useEffect(() => {
+    if (isFocused) {
+      loadData();
     }
+  }, [isFocused]);
 
-    async function saveUserInUserGroup(idUserGroup: number) {
-        let loggedUser = await User.getLoggedUser();
-        await api.post('/user-groups/users', { idUser: loggedUser.id, idUserGroup });
-        loggedUser.idDefaultUserGroup = idUserGroup;
-        loggedUser.userGroupEntities.push({ id: idUserGroup, name: userGroupName });
+  return (
+    <SafeZoneScreen isWithoutScroll={true}>
+      <Title content='Despensas' />
 
-        await api.put(`/users/${loggedUser.id}`, { idDefaultUserGroup: idUserGroup })
+      <CustomButton onPress={() => navigator.navigate('UserGroup' as never)}>
+        <Text>Criar nova despensa</Text>
+      </CustomButton>
 
-        await User.setLoggedUser(loggedUser);
-    }
+      {
+        isLoading
+          ? <Loading />
+          : (
+            <FlatList
+              data={userGroups}
+              keyExtractor={item => String(item.id)}
+              renderItem={({ item }) => (
+                <View style={styles.listItemContainer}>
+                  <Text style={styles.listItemTitle}>{item.name}</Text>
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Criar nova despensa</Text>
+                  <View style={styles.listItemActions}>
+                    <CustomButton
+                      style={styles.editButton}
+                      onPress={() => handleEdit(item.id)}
+                    >
+                      <FontAwesome5 name='pencil-alt' size={16} color='black' />
+                    </CustomButton>
 
-            <View>
-                <Text style={styles.subtitle}>Nome da despensa</Text>
-                <CustomTextInput value={userGroupName} onChangeText={(name) => setUserGroupName(name)} style={styles.groupNameInput}></CustomTextInput>
-            </View>
-            <CustomButton onPress={handleSaveUserGroup} style={styles.button}>
-                <Text style={styles.textButton}>Cadastrar</Text>
-            </CustomButton>
-        </View>
-    )
+                    <CustomButton
+                      style={styles.deleteButton}
+                      onPress={() => handleRemove(item.id)}
+                    >
+                      <FontAwesome5 name='trash' size={16} color='black' />
+                    </CustomButton>
+                  </View>
+                </View>
+              )}
+            />
+          )
+      }
+    </SafeZoneScreen>
+  )
 }
