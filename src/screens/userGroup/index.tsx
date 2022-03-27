@@ -1,22 +1,65 @@
-import { AxiosResponse } from 'axios';
-import React, { useState } from 'react';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
+import { Loading } from '../../components/loading';
 import { OrangeButton } from '../../components/orangeButton';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { CustomTextInput } from '../../components/textInput';
 import { Title } from '../../components/title';
-import api from '../../services/api';
 import { User } from '../../storage/User';
+import { IUserGroupModel, UserGroupStorage } from '../../storage/UserGroup';
 import styles from './styles';
 
-interface IUserGroupResponse {
-  id: number;
+interface IParams {
+  id?: number;
 }
 
 export function UserGroup() {
   let [id, setId] = useState<number>(0);
   let [name, setName] = useState<string>('');
   let [isCreate, setIsCreate] = useState<boolean>(true);
+  let [isLoading, setIsLoading] = useState<boolean>(true);
+  let isFocused = useIsFocused();
+  let navigator = useNavigation();
+  let route = useRoute();
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        let params = route.params as IParams;
+
+        if (params && params.id) {
+          let loggedUser = await User.getLoggedUser();
+          let userGroup = loggedUser.userGroupEntities.find(_userGroup => _userGroup.id === params.id);
+
+          setId(userGroup!.id);
+          setName(userGroup!.name);
+          setIsCreate(false);
+        } else {
+          clearFields();
+          setIsCreate(true);
+        }
+      } catch {
+        Alert.alert('Erro', 'Erro inesperado!');
+      }
+
+      setIsLoading(false);
+    }
+
+    if (isFocused) {
+      setIsLoading(true);
+      loadData();
+      navigator.setParams({ id: 0 } as never);
+    }
+  }, [isFocused]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  function clearFields() {
+    setName('');
+  }
 
   function validateUserGroup(): string[] {
     let errors: string[] = [];
@@ -39,16 +82,18 @@ export function UserGroup() {
     }
 
     try {
-      let response: AxiosResponse<IUserGroupResponse> = isCreate
-        ? await api.post('/user-groups', { name })
-        : await api.put(`/user-groups/${id}`, { name });
-      let savedId = response.data.id;
+      let userGroup: IUserGroupModel = { id, name };
 
-      await saveUserInUserGroup(savedId)
+      if (isCreate) {
+        let createdId = await UserGroupStorage.add(userGroup);
+
+        setId(createdId);
+      } else {
+        await UserGroupStorage.update(userGroup);
+      }
 
       Alert.alert('Sucesso', 'Despensa salva com sucesso');
 
-      setId(savedId);
       setIsCreate(false);
     } catch (error: any) {
       if (Object.keys(error).some(key => key === 'response')) {
@@ -58,22 +103,6 @@ export function UserGroup() {
         Alert.alert('Erro', 'Erro inesperado');
       }
     }
-  }
-
-  async function saveUserInUserGroup(savedId: number): Promise<void> {
-    let loggedUser = await User.getLoggedUser();
-
-    if (isCreate) {
-      await api.post('/user-groups/users', { idUserGroup: savedId, idUser: loggedUser.id });
-
-      loggedUser.userGroupEntities.push({ id: savedId, name });
-    }
-
-    await api.put(`/users/${loggedUser.id}`, { idDefaultUserGroup: savedId })
-
-    loggedUser.idDefaultUserGroup = savedId;
-
-    await User.setLoggedUser(loggedUser);
   }
 
   return (
