@@ -1,13 +1,22 @@
-import { Platform, StatusBar, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
+interface IStyleProps {
+  backgroundColor?: string;
+  isWithoutHeader?: boolean;
+}
+
+export default (
+  { backgroundColor, isWithoutHeader }: IStyleProps
+) => StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    minHeight: Dimensions.get('window').height - (isWithoutHeader ? 0 : 80),
+    width: Dimensions.get('window').width,
 
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 
-    backgroundColor: '#FFFFFF'
+    backgroundColor: backgroundColor ?? '#FFFFFF'
+  },
+  containerWithoutScroll: {
+    height: Dimensions.get('window').height - (isWithoutHeader ? 0 : 80)
   }
 });

@@ -1,28 +1,26 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
+let imageSize = Dimensions.get('window').width * 0.85;
+let maxImageSize = 325;
+
 export default StyleSheet.create({
   container: {
-    backgroundColor: '#FFF7F7'
-  },
-  main: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-
-    backgroundColor: '#FFF7F7'
+    justifyContent: 'center'
   },
   image: {
-    height: Dimensions.get('window').width * 0.85,
-    maxHeight: 325,
-    width: Dimensions.get('window').width * 0.85,
-    maxWidth: 325,
+    height: imageSize,
+    maxHeight: maxImageSize,
+    width: imageSize,
+    maxWidth: maxImageSize,
 
-    margin: 30
+    marginVertical: 30
   },
   welcome: {
     padding: 30,
 
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold'
   },
   description: {

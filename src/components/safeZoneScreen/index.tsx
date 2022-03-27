@@ -5,31 +5,51 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  View
 } from 'react-native';
-import { SafeAreaViewProps } from 'react-native-safe-area-context';
 import styles from './styles';
 
-interface ISafeZoneScreenProps extends SafeAreaViewProps {
+interface ISafeZoneScreenProps {
+  backgroundColor?: string;
   children: ReactNode;
+  isWithoutHeader?: boolean;
+  isWithoutScroll?: boolean;
 }
 
 export function SafeZoneScreen(props: ISafeZoneScreenProps) {
-  let {
-    children,
-    style,
-    ...rest
-  } = props;
+  let { backgroundColor, children, isWithoutHeader, isWithoutScroll } = props;
 
   return (
-    <SafeAreaView {...rest} style={[styles.container, style]}>
+    <SafeAreaView>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
-            {children}
-          </ScrollView>
+          {
+            isWithoutScroll
+              ? (
+                <View
+                  style={[
+                    styles({ backgroundColor, isWithoutHeader }).container,
+                    styles({ isWithoutHeader }).containerWithoutScroll,
+                    { backgroundColor }
+                  ]}
+                >
+                  {children}
+                </View>
+              )
+              : (
+                <ScrollView
+                  contentContainerStyle={[
+                    styles({ backgroundColor, isWithoutHeader }).container,
+                    { backgroundColor }
+                  ]}
+                >
+                  {children}
+                </ScrollView>
+              )
+          }
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>

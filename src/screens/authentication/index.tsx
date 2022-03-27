@@ -49,8 +49,8 @@ export function Authentication() {
   let navigator = useNavigation();
 
   return (
-    <SafeZoneScreen style={styles.container}>
-      <View style={styles.main}>
+    <SafeZoneScreen backgroundColor='#FFF7F7' isWithoutHeader={true}>
+      <View style={styles.container}>
         <Image
           style={styles.image}
           source={require('../../../assets/logo.png')}
