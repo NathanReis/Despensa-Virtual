@@ -46,7 +46,7 @@ export function Camera(props: ICameraProps) {
   };
 
   return (
-    <View>
+    <View style={{ width: '100%' }}>
       <ExpoCamera
         style={styles.camera}
         ref={ref => setCamera(ref)}

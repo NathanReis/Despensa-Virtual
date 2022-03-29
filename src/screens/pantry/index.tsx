@@ -38,7 +38,7 @@ export function Pantry() {
           setProducts(products.data);
           setSearchedProducts(products.data);
           setDefaultUserGroup(defaultGroup!);
-          setDefaultUserGroupId(defaultGroup!.id);
+          setDefaultUserGroupId(user.idDefaultUserGroup);
         }
         setIsLoading(false);
       }

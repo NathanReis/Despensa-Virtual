@@ -10,7 +10,6 @@ import styles from './styles';
 
 export function BarcodeScan() {
   let [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  let [scanned, setScanned] = useState<boolean>(false);
   let navigator = useNavigation();
 
   useEffect(() => {
@@ -30,7 +29,6 @@ export function BarcodeScan() {
   }, []);
 
   function handleBarCodeScanned({ data }: BarCodeScannerResult) {
-    setScanned(true);
     navigator.navigate('Product' as never, { barcode: data } as never);
   };
 
@@ -43,16 +41,15 @@ export function BarcodeScan() {
   return (
     <View style={styles.container2}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={handleBarCodeScanned}
         style={[StyleSheet.absoluteFillObject, styles.scanner]}
       >
         <BarcodeMask
           width={250}
           height={250}
           outerMaskOpacity={0.5}
-          showAnimatedLine={false}
+          showAnimatedLine={true}
         />
-        {scanned && <Button title='Clique para escanear novamente' onPress={() => setScanned(false)} />}
         <View style={styles.scannerGrid}>
           <View style={styles.topbar}>
             <TouchableOpacity />

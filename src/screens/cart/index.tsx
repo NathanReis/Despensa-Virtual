@@ -8,7 +8,7 @@ import { Loading } from '../../components/loading';
 import api from '../../services/api';
 import { Purchase } from '../../storage/Purchase';
 import { IUserModel, User } from '../../storage/User';
-import { IUserGroupModel } from '../../storage/UserGroup';
+import { IUserGroupModel, UserGroupStorage } from '../../storage/UserGroup';
 import { IProductModel } from '../product/IProductModel';
 import styles from './styles';
 
@@ -38,6 +38,12 @@ export function Cart() {
           defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
           setDefaultUserGroup(defaultGroup!);
           setDefaultUserGroupId(defaultGroup!.id);
+        }
+        else if (user.userGroupEntities.length > 0) {
+          let userGroupId = user.userGroupEntities[0].id;
+          user.idDefaultUserGroup = userGroupId;
+          setDefaultUserGroupId(userGroupId)
+          await UserGroupStorage.setAsDefault({ id: userGroupId, name: '' });
         }
 
         setIsLoading(false);
@@ -93,7 +99,7 @@ export function Cart() {
       setProducts([]);
     }
     catch (error: any) {
-      console.log(error.response)
+      console.log(error)
       Alert.alert(error.response.data.error[0])
     }
   }

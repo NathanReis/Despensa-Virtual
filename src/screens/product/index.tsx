@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 // import MaskInput, { Masks } from 'react-native-mask-input';
 import mime from 'mime';
@@ -92,46 +92,48 @@ export function Product() {
     : { barcode: '7891079013458' };
   // : { barcode: '7896213002138' };
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    async function loadData() {
-      setCameraVisible(false);
-      setAmount(0);
-      setValidate('');
-      setIsLoading(true);
+    if (isFocused) {
+      async function loadData() {
+        setCameraVisible(false);
+        setAmount(0);
+        setValidate('');
+        setIsLoading(true);
 
-      let localResponse = await Purchase.findProductByBarcode(routeParams.barcode);
-      let productFound = localResponse;
+        let localResponse = await Purchase.findProductByBarcode(routeParams.barcode);
+        let productFound = localResponse;
 
-      if (productFound) {
-        setValidate(productFound.validate);
-        setAmount(productFound.amount);
+        if (productFound) {
+          setValidate(productFound.validate);
+          setAmount(productFound.amount);
 
-        Alert.prompt('Encontrei localmente');
-      } else {
-        let apiResponse = await api.get(`/products/barcode/${routeParams.barcode}`);
-        productFound = apiResponse.data as IProductModel;
+          Alert.prompt('Encontrei localmente');
+        } else {
+          let apiResponse = await api.get(`/products/barcode/${routeParams.barcode}`);
+          productFound = apiResponse.data as IProductModel;
 
-        Alert.prompt('Encontrei remotamente');
+          Alert.prompt('Encontrei remotamente');
+        }
+
+        try {
+
+          await axios.get(`http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}`)
+          setHasImage(true)
+        } catch (error) {
+          setHasImage(false)
+        }
+
+        setProduct(productFound);
+        setIsLoading(false);
       }
 
-      try {
-
-        await axios.get(`http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}`)
-        setHasImage(true)
-      } catch (error) {
-        setHasImage(false)
-        console.log(error)
-        console.log(routeParams.barcode)
-      }
-
-      setProduct(productFound);
-      setIsLoading(false);
+      loadData().catch(error => {
+        Alert.alert('Erro', 'Produto não foi encontrado');
+      });
     }
-
-    loadData().catch(error => {
-      Alert.alert('Erro', 'Produto não foi encontrado');
-    });
-  }, [route.params]);
+  }, [isFocused, route.params]);
 
   if (isLoading) {
     return <Loading />;
