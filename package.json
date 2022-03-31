@@ -10,7 +10,6 @@
   "dependencies": {
     "@react-native-picker/picker": "1.16.1",
     "@react-navigation/drawer": "^6.1.4",
-    "@react-navigation/material-bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^6.0.7",
     "axios": "^0.22.0",
@@ -19,7 +18,6 @@
     "expo": "~42.0.1",
     "expo-auth-session": "~3.3.1",
     "expo-barcode-scanner": "~10.2.2",
-    "expo-camera": "~11.2.2",
     "expo-dev-client": "^0.5.1",
     "expo-image-picker": "~10.2.2",
     "expo-random": "~11.2.0",
@@ -35,7 +33,6 @@
     "react-native-barcode-mask": "^1.2.4",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-mask-input": "^1.2.0",
-    "react-native-mlkit-ocr": "^0.2.3",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
@@ -50,5 +47,6 @@
     "@types/react-native": "~0.63.2",
     "typescript": "~4.0.0"
   },
+  "license": "MIT",
   "private": false
 }
