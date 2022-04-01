@@ -1,16 +1,17 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker';
 // import MaskInput, { Masks } from 'react-native-mask-input';
 import mime from 'mime';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
-import { Camera } from '../../components/camera';
 import { GreenButton } from '../../components/greenButton';
 import { Loading } from '../../components/loading';
 import { NumericUpDown } from '../../components/numericUpDown';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { CustomTextInput } from '../../components/textInput';
+import { WaitingPermission } from '../../components/waitingPermission';
 import { DateHelper } from '../../helpers/DateHelper';
 import api from '../../services/api';
 import ocr from '../../services/ocr';
@@ -20,40 +21,88 @@ import { IProductModel } from './IProductModel';
 import styles from './styles';
 
 export function Product() {
-  async function saveCurrentData() {
-    product!.barcode = routeParams.barcode;
-    product!.validate = validate;
-    product!.amount = amount;
+  async function checkCameraPermission() {
+    let currentStatus = (await ImagePicker.getCameraPermissionsAsync()).status;
 
-    await Purchase.addProduct(product!);
+    if (currentStatus === 'granted') {
+      setHasCameraPermission(true);
+    } else {
+      let newStatus = (await ImagePicker.requestCameraPermissionsAsync()).status;
+
+      setHasCameraPermission(newStatus === 'granted');
+    }
   }
 
-  async function handleContinue() {
-    await saveCurrentData();
+  async function loadData() {
+    setAmount(0);
+    setValidate('');
 
-    navigator.navigate('BarcodeScan' as never);
-  }
+    let localResponse = await Purchase.findProductByBarcode(routeParams.barcode);
+    let productFound = localResponse;
 
-  async function handleValidate(uri: string) {
-    setCameraVisible(false);
+    if (productFound) {
+      setValidate(productFound.validate);
+      setAmount(productFound.amount);
 
-    let newImageUri = 'file:///' + uri.split('file:/').join('');
+      Alert.prompt('Encontrei localmente');
+    } else {
+      let apiResponse = await api.get(`/products/barcode/${routeParams.barcode}`);
+      productFound = apiResponse.data as IProductModel;
 
-    let formData = new FormData();
-    formData.append(
-      'image',
-      JSON.parse(JSON.stringify({
-        uri: newImageUri,
-        type: mime.getType(newImageUri),
-        name: newImageUri.split('/').pop()
-      }))
-    );
+      Alert.prompt('Encontrei remotamente');
+    }
 
-    await getValidate(formData);
-  }
+    setProduct(productFound);
 
-  async function getValidate(formData: FormData) {
     try {
+      await axios.get(`http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}`)
+      setHasImage(true)
+    } catch {
+      setHasImage(false)
+    }
+  }
+
+  async function handleUseEffect() {
+    setIsLoading(true);
+
+    await checkCameraPermission();
+
+    try {
+      await loadData();
+    } catch {
+      Alert.alert('Erro', 'Produto não foi encontrado');
+    }
+
+    setIsLoading(false);
+  }
+
+  async function handleOpenCamera() {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [2, 1],
+      quality: 0.05
+    });
+
+    if (!result.cancelled) {
+      await getValidate(result.uri);
+    }
+  }
+
+  async function getValidate(uri: string) {
+    try {
+      let newImageUri = 'file:///' + uri.split('file:/').join('');
+
+      let formData = new FormData();
+      formData.append(
+        'image',
+        JSON.parse(JSON.stringify({
+          uri: newImageUri,
+          type: mime.getType(newImageUri),
+          name: newImageUri.split('/').pop()
+        }))
+      );
+
       let response = await ocr.post(
         '/ocr/validate',
         formData,
@@ -74,12 +123,21 @@ export function Product() {
     }
   }
 
-  async function handleShowCamera() {
-    await saveCurrentData();
-    setCameraVisible(true);
+  async function saveCurrentData() {
+    product!.barcode = routeParams.barcode;
+    product!.validate = validate;
+    product!.amount = amount;
+
+    await Purchase.addProduct(product!);
   }
 
-  let [cameraVisible, setCameraVisible] = useState<boolean>(false);
+  async function handleContinue() {
+    await saveCurrentData();
+
+    navigator.navigate('BarcodeScan' as never);
+  }
+
+  let [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   let [hasImage, setHasImage] = useState<boolean>(false);
   let [product, setProduct] = useState<IProductModel>();
   let [amount, setAmount] = useState<number>(0);
@@ -96,94 +154,63 @@ export function Product() {
 
   useEffect(() => {
     if (isFocused) {
-      async function loadData() {
-        setCameraVisible(false);
-        setAmount(0);
-        setValidate('');
-        setIsLoading(true);
-
-        let localResponse = await Purchase.findProductByBarcode(routeParams.barcode);
-        let productFound = localResponse;
-
-        if (productFound) {
-          setValidate(productFound.validate);
-          setAmount(productFound.amount);
-
-          Alert.prompt('Encontrei localmente');
-        } else {
-          let apiResponse = await api.get(`/products/barcode/${routeParams.barcode}`);
-          productFound = apiResponse.data as IProductModel;
-
-          Alert.prompt('Encontrei remotamente');
-        }
-
-        try {
-
-          await axios.get(`http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}`)
-          setHasImage(true)
-        } catch (error) {
-          setHasImage(false)
-        }
-
-        setProduct(productFound);
-        setIsLoading(false);
-      }
-
-      loadData().catch(error => {
-        Alert.alert('Erro', 'Produto não foi encontrado');
-      });
+      handleUseEffect();
     }
   }, [isFocused, route.params]);
 
-  if (isLoading) {
+  if (hasCameraPermission === null) {
+    return <WaitingPermission />;
+  } else if (isLoading) {
     return <Loading />;
   }
 
   return (
     <SafeZoneScreen>
-      {
-        cameraVisible
-          ? <Camera handleImg={handleValidate} />
-          : <>
-            <View style={styles.amountContainer}>
-              <Text style={styles.productName}>{product?.name}</Text>
+      <View style={styles.amountContainer}>
+        <Text style={styles.productName}>{product?.name}</Text>
 
-              {hasImage &&
-                <Image style={styles.image} source={{ uri: `http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}` }} />
-                ||
-                <Image style={styles.image} source={require('../../../assets/logo.png')} />
-              }
+        {hasImage &&
+          <Image
+            style={styles.image}
+            source={{ uri: `http://www.eanpictures.com.br:9000/api/gtin/${routeParams.barcode}` }}
+          />
+          ||
+          <Image
+            style={styles.image}
+            source={require('../../../assets/logo.png')}
+          />
+        }
 
-              <NumericUpDown
-                style={styles.upDown}
-                value={amount}
-                onDown={() => setAmount(--amount)}
-                onUp={() => setAmount(++amount)}
-              />
-            </View>
+        <NumericUpDown
+          style={styles.upDown}
+          value={amount}
+          onDown={() => setAmount(--amount)}
+          onUp={() => setAmount(++amount)}
+        />
+      </View>
 
-            <CustomTextInput
-              style={styles.validate}
-              label='Data de validade'
-              placeholder='xx/xx/xxxx'
-              value={validate}
-              maxLength={10}
+      <CustomTextInput
+        style={styles.validate}
+        label='Data de validade'
+        placeholder='xx/xx/xxxx'
+        value={validate}
+        maxLength={10}
+        rightIcon={
+          hasCameraPermission &&
+          <AntDesign
+            style={styles.icon}
+            name='camera'
+            size={24}
+            color='#5A6CF3'
+            onPress={handleOpenCamera}
+          />
+        }
+        onChangeText={(text) => setValidate(text)}
+      />
 
-              rightIcon={<AntDesign
-                style={styles.icon}
-                name='camera'
-                size={24}
-                color='#5A6CF3'
-                onPress={handleShowCamera}
-              />}
-              onChangeText={(text) => setValidate(text)}
-            />
-
-            <GreenButton style={styles.button} onPress={handleContinue}>
-              <Text style={styles.buttonContent}>Continuar</Text>
-            </GreenButton>
-          </>
-      }
+      <GreenButton style={styles.button} onPress={handleContinue}>
+        <Text style={styles.buttonContent}>Continuar</Text>
+      </GreenButton>
     </SafeZoneScreen>
   );
 }
