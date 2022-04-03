@@ -42,7 +42,8 @@ export function UserGroup() {
           clearFields();
           setIsCreate(true);
         }
-      } catch {
+      } catch (error) {
+        console.log(error)
         Alert.alert('Erro', 'Erro inesperado!');
       }
 

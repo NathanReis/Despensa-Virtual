@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-// import MaskInput, { Masks } from 'react-native-mask-input';
+import { MaskedTextInput } from "react-native-mask-text";
 import mime from 'mime';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
@@ -131,10 +131,21 @@ export function Product() {
     await Purchase.addProduct(product!);
   }
 
-  async function handleContinue() {
-    await saveCurrentData();
+  async function validateFields() {
+    var date_regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!(date_regex.test(validate))) {
+      Alert.alert('Erro', 'Data inválida')
+      return false;
+    }
+    return true;
+  }
 
-    navigator.navigate('BarcodeScan' as never);
+  async function handleContinue() {
+    let isValid = await validateFields();
+    if (isValid == true) {
+      await saveCurrentData();
+      navigator.navigate('BarcodeScan' as never);
+    }
   }
 
   let [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
@@ -189,24 +200,31 @@ export function Product() {
         />
       </View>
 
-      <CustomTextInput
-        style={styles.validate}
-        label='Data de validade'
-        placeholder='xx/xx/xxxx'
-        value={validate}
-        maxLength={10}
-        rightIcon={
-          hasCameraPermission &&
-          <AntDesign
-            style={styles.icon}
-            name='camera'
-            size={24}
-            color='#5A6CF3'
-            onPress={handleOpenCamera}
+      <View style={styles.validate}>
+        <Text style={styles.label}>Data de validade</Text>
+        <View style={styles.inputContainer}>
+          <MaskedTextInput
+            mask="99/99/9999"
+            onChangeText={(text, rawText) => {
+              setValidate(text);
+            }}
+            placeholder='xx/xx/xxxx'
+            keyboardType="numeric"
+            style={styles.input}
           />
-        }
-        onChangeText={(text) => setValidate(text)}
-      />
+          <View style={[styles.iconRight, styles.rightIcon]}>
+            <AntDesign
+              style={styles.icon}
+              name='camera'
+              size={24}
+              color='#5A6CF3'
+              onPress={handleOpenCamera}
+            />
+          </View>
+        </View>
+
+      </View>
+
 
       <GreenButton style={styles.button} onPress={handleContinue}>
         <Text style={styles.buttonContent}>Continuar</Text>

@@ -33,7 +33,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-barcode-mask": "^1.2.4",
     "react-native-gesture-handler": "~1.10.2",
-    "react-native-mask-input": "^1.2.0",
+    "react-native-mask-text": "^0.7.0",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
