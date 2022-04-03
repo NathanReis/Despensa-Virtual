@@ -1,4 +1,5 @@
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import Checkbox from 'expo-checkbox';
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { Loading } from '../../components/loading';
@@ -17,6 +18,7 @@ interface IParams {
 export function UserGroup() {
   let [id, setId] = useState<number>(0);
   let [name, setName] = useState<string>('');
+  let [isDefault, setIsDefault] = useState<boolean>(false);
   let [isCreate, setIsCreate] = useState<boolean>(true);
   let [isLoading, setIsLoading] = useState<boolean>(true);
   let isFocused = useIsFocused();
@@ -34,6 +36,7 @@ export function UserGroup() {
 
           setId(userGroup!.id);
           setName(userGroup!.name);
+          setIsDefault(userGroup!.id === loggedUser.idDefaultUserGroup);
           setIsCreate(false);
         } else {
           clearFields();
@@ -59,6 +62,7 @@ export function UserGroup() {
 
   function clearFields() {
     setName('');
+    setIsDefault(false);
   }
 
   function validateUserGroup(): string[] {
@@ -85,11 +89,11 @@ export function UserGroup() {
       let userGroup: IUserGroupModel = { id, name };
 
       if (isCreate) {
-        let createdId = await UserGroupStorage.add(userGroup);
+        let createdId = await UserGroupStorage.add(userGroup, isDefault);
 
         setId(createdId);
       } else {
-        await UserGroupStorage.update(userGroup);
+        await UserGroupStorage.update(userGroup, isDefault);
       }
 
       Alert.alert('Sucesso', 'Despensa salva com sucesso');
@@ -114,8 +118,18 @@ export function UserGroup() {
           <CustomTextInput
             label='Nome da despensa'
             value={name}
-            onChangeText={text => setName(text)}
+            onChangeText={setName}
           />
+
+          <View style={styles.checkboxContainer}>
+            <Checkbox value={isDefault} onValueChange={setIsDefault} />
+            <Text
+              style={styles.checkboxLabel}
+              onPress={() => setIsDefault(!isDefault)}
+            >
+              Tornar padrão
+            </Text>
+          </View>
 
           <OrangeButton onPress={handleSave}>
             <Text>{isCreate ? 'Cadastrar' : 'Atualizar'}</Text>

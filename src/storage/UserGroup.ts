@@ -25,7 +25,7 @@ export class UserGroupStorage {
     return userGroup ?? null;
   }
 
-  public static async add(userGroup: IUserGroupModel): Promise<number> {
+  public static async add(userGroup: IUserGroupModel, isDefault: boolean): Promise<number> {
     let response: AxiosResponse<IUserGroupResponse> = await api.post('/user-groups', { name: userGroup.name });
     let createdId = response.data.id;
 
@@ -38,9 +38,9 @@ export class UserGroupStorage {
 
     await User.setLoggedUser(loggedUser);
 
-    await this.setAsDefault(userGroup);
-
-    console.log(loggedUser)
+    if (isDefault) {
+      await this.setAsDefault(userGroup);
+    }
 
     return createdId;
   }
@@ -56,11 +56,9 @@ export class UserGroupStorage {
     await api.delete(`user-groups/${id}/users/${loggedUser.id}`);
 
     await User.setLoggedUser(loggedUser);
-
-    console.log(loggedUser)
   }
 
-  public static async update(userGroup: IUserGroupModel): Promise<void> {
+  public static async update(userGroup: IUserGroupModel, isDefault: boolean): Promise<void> {
     await api.put(`/user-groups/${userGroup.id}`, { name: userGroup.name });
 
     let loggedUser = await User.getLoggedUser();
@@ -68,13 +66,17 @@ export class UserGroupStorage {
 
     if (index >= 0) {
       loggedUser.userGroupEntities[index] = userGroup;
+
+      if (!isDefault) {
+        loggedUser.idDefaultUserGroup = null;
+      }
     }
 
     await User.setLoggedUser(loggedUser);
 
-    await this.setAsDefault(userGroup);
-
-    console.log(loggedUser)
+    if (index >= 0 && isDefault) {
+      await this.setAsDefault(userGroup);
+    }
   }
 
   public static async setAsDefault(userGroup: IUserGroupModel): Promise<void> {

@@ -7,5 +7,13 @@ export default StyleSheet.create({
   },
   formContainer: {
     alignItems: 'center'
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start'
+  },
+  checkboxLabel: {
+    fontSize: 16
   }
 })
