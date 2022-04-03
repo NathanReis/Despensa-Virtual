@@ -7,10 +7,12 @@ import { CustomButton } from '../../components/button';
 import { Loading } from '../../components/loading';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { Title } from '../../components/title';
+import { User } from '../../storage/User';
 import { IUserGroupModel, UserGroupStorage } from '../../storage/UserGroup';
 import styles from './styles';
 
 export function UserGroups() {
+  let [idDefaultUserGroup, setIdDefaultUserGroup] = useState<number | null>(null);
   let [userGroups, setUserGroups] = useState<IUserGroupModel[]>([]);
   let [isLoading, setIsLoading] = useState<boolean>(true);
   let isFocused = useIsFocused();
@@ -20,6 +22,7 @@ export function UserGroups() {
     setIsLoading(true);
 
     try {
+      setIdDefaultUserGroup((await User.getLoggedUser()).idDefaultUserGroup);
       setUserGroups(await UserGroupStorage.getAll());
     } catch {
       Alert.alert('Erro', 'Erro inesperado!');
@@ -60,7 +63,15 @@ export function UserGroups() {
               keyExtractor={item => String(item.id)}
               renderItem={({ item }) => (
                 <View style={styles.listItemContainer}>
-                  <Text style={styles.listItemTitle}>{item.name}</Text>
+                  <Text
+                    style={[
+                      styles.listItemTitle,
+                      idDefaultUserGroup === item.id && { fontWeight: 'bold' }
+                    ]}
+                  >
+                    {idDefaultUserGroup === item.id && '* '}
+                    {item.name}
+                  </Text>
 
                   <View style={styles.listItemActions}>
                     <CustomButton
