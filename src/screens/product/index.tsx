@@ -90,6 +90,7 @@ export function Product() {
   }
 
   async function getValidate(uri: string) {
+    setDisabledButton(true);
     try {
       let newImageUri = 'file:///' + uri.split('file:/').join('');
 
@@ -102,7 +103,6 @@ export function Product() {
           name: newImageUri.split('/').pop()
         }))
       );
-
       let response = await ocr.post(
         '/ocr/validate',
         formData,
@@ -120,6 +120,9 @@ export function Product() {
       }
     } catch {
       Alert.alert('Erro', 'Erro inesperado.');
+    }
+    finally {
+      setDisabledButton(false);
     }
   }
 
@@ -154,6 +157,7 @@ export function Product() {
   let [amount, setAmount] = useState<number>(0);
   let [validate, setValidate] = useState<string>('');
   let [isLoading, setIsLoading] = useState<boolean>(true);
+  let [disabledButton, setDisabledButton] = useState<boolean>(false);
   let navigator = useNavigation();
   let route = useRoute();
   let routeParams = route.params
@@ -200,15 +204,31 @@ export function Product() {
         />
       </View>
 
-      <View style={styles.validate}>
+      <CustomTextInput
+        style={styles.validate}
+        label='Data de validade'
+        placeholder='xx/xx/xxxx'
+        value={validate}
+        maxLength={10}
+        rightIcon={
+          hasCameraPermission &&
+          <AntDesign
+            style={styles.icon}
+            name='camera'
+            size={24}
+            color='#5A6CF3'
+            onPress={handleOpenCamera} />}
+        onChangeText={(text) => setValidate(text)}
+      />
+
+      {/* <View style={styles.validate}>
         <Text style={styles.label}>Data de validade</Text>
         <View style={styles.inputContainer}>
           <MaskedTextInput
             mask="99/99/9999"
-            onChangeText={(text, rawText) => {
-              setValidate(text);
-            }}
-            placeholder='xx/xx/xxxx'
+            value={validate}
+            onChangeText={(text) => setValidate(text)}
+            // placeholder='xx/xx/xxxx'
             keyboardType="numeric"
             style={styles.input}
           />
@@ -223,10 +243,10 @@ export function Product() {
           </View>
         </View>
 
-      </View>
+      </View> */}
 
 
-      <GreenButton style={styles.button} onPress={handleContinue}>
+      <GreenButton disabled={disabledButton} style={styles.button} onPress={handleContinue}>
         <Text style={styles.buttonContent}>Continuar</Text>
       </GreenButton>
     </SafeZoneScreen>

@@ -18,6 +18,7 @@ export function Pantry() {
   let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>(0);
   let [searchedProducts, setSearchedProducts] = useState<IMyProductModel[]>([]);
   let [isLoading, setIsLoading] = useState<boolean>(true);
+  let [refresh, setRefresh] = useState<boolean>(false);
   let navigator = useNavigation();
 
   const isFocused = useIsFocused();
@@ -50,7 +51,6 @@ export function Pantry() {
 
       });
     }
-
   }, [isFocused]);
 
   async function handleChangeUserGroup(id: number) {
@@ -74,6 +74,16 @@ export function Pantry() {
       setSearchedProducts(possibleProducts);
     else
       setSearchedProducts(products)
+  }
+
+  function handleSortByAmount() {
+    let possibleProducts = products.sort(function (a, b) { return a.amount - b.amount });
+    setSearchedProducts(possibleProducts);
+  }
+
+  function handleSortByValidate() {
+    let possibleProducts = products.sort(function (a, b) { return new Date(a.validate).getTime() - new Date(b.validate).getTime() })
+    setSearchedProducts(possibleProducts);
   }
 
   if (isLoading) {
@@ -123,6 +133,12 @@ export function Pantry() {
             source={require('../../../assets/searchIcon.png')}
           />
         </CustomButton>
+      </View>
+      <Text>Ordenar por</Text>
+      <View style={styles.sortButtonsContainer}>
+        <CustomButton onPress={handleSortByAmount} style={styles.sortButton}><Text style={styles.sortButtonText}>Quantidade</Text></CustomButton>
+        <CustomButton onPress={handleSortByValidate} style={styles.sortButton}><Text style={styles.sortButtonText}>Validade</Text></CustomButton>
+        <CustomButton style={styles.sortButton}><Text style={styles.sortButtonText}>Vencidos</Text></CustomButton>
       </View>
 
       <ScrollView>

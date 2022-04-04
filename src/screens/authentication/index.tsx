@@ -10,16 +10,6 @@ import api from '../../services/api';
 import styles from './styles';
 
 WebBrowser.maybeCompleteAuthSession();
-
-// interface User{
-//   email: string,
-//   id: number,
-//   idDefaultUserGroup: number,
-//   name: string,
-//   picture: string,
-//   // userGroupEntities = [],
-// }
-
 export function Authentication() {
   async function handleNavigation() {
     const CLIENT_ID = process.env.OAUTH_CLIENT_ID;
