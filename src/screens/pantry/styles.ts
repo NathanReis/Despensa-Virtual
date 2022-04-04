@@ -113,5 +113,13 @@ export default StyleSheet.create({
   },
   sortButtonText: {
     color: '#F08F5F'
+  },
+  sortButtonSelected: {
+    backgroundColor: '#F08F5F',
+    borderColor: '#F08F5F',
+    borderWidth: 1
+  },
+  sortButtonTextSelected: {
+    color: '#F8F8FB'
   }
 })
