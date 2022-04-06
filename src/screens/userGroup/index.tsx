@@ -41,7 +41,8 @@ export function UserGroup() {
 
         if (params && params.id) {
           let loggedUser = await User.getLoggedUser();
-          let userGroup = loggedUser.userGroupEntities.find(_userGroup => _userGroup.id === params.id);
+          // let userGroup = loggedUser.userGroupEntities.find(_userGroup => _userGroup.id === params.id);
+          let userGroup = (await api.get<IUserGroupModel>(`user-groups/${params.id}`)).data;
 
           setId(userGroup!.id);
           setName(userGroup!.name);
