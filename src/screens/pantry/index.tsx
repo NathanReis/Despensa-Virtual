@@ -46,9 +46,7 @@ export function Pantry() {
 
       load().catch(error => {
         console.log(error.response.data)
-        // Alert.alert('Erro', JSON.stringify(error.response.data));
         setIsLoading(false);
-
       });
     }
   }, [isFocused]);
@@ -56,6 +54,7 @@ export function Pantry() {
   async function handleChangeUserGroup(id: number) {
 
     setDefaultUserGroupId(id);
+    setSelectedFilter(-1);
     try {
       let products = await api.get<IMyProductModel[]>(`/my-products/${id}`);
       setProducts(products.data);
@@ -108,6 +107,17 @@ export function Pantry() {
   if (searchedProducts.length == 0) {
     return (
       <View style={{ padding: 10 }}>
+        <View style={styles.sortButtonsContainer}>
+          <CustomButton onPress={handleSortByAmount} style={(selectedFilter === 0 ? styles.sortButtonSelected : styles.sortButton)}>
+            <Text style={(selectedFilter === 0 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Quantidade</Text>
+          </CustomButton>
+          <CustomButton onPress={handleSortByValidate} style={(selectedFilter === 1 ? styles.sortButtonSelected : styles.sortButton)}>
+            <Text style={(selectedFilter === 1 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Validade</Text>
+          </CustomButton>
+          <CustomButton onPress={handleFilterExpireds} style={(selectedFilter === 2 ? styles.sortButtonSelected : styles.sortButton)}>
+            <Text style={(selectedFilter === 2 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Vencidos</Text>
+          </CustomButton>
+        </View>
         <Text style={styles.pageTitle}>Você não possui nenhum produto nessa despensa</Text>
         <SafeAreaView style={styles.userGroupContainer}>
           <View style={styles.pickerBorder}>
