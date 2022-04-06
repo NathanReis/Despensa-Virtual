@@ -69,7 +69,8 @@ export function Product() {
 
     try {
       await loadData();
-    } catch {
+    } catch (error: any) {
+      console.log(error.response.data.error)
       Alert.alert('Erro', 'Produto não foi encontrado');
     }
 

@@ -100,7 +100,7 @@ export function Pantry() {
   if (defaultUserGroupId == 0) {
     return (
       <View style={{ padding: 10 }}>
-        <Text style={styles.pageTitle}>Você precisa registrar uma residência para visualizar seus produtos!</Text>
+        <Text style={styles.pageTitle}>Você precisa registrar uma despensa para visualizar seus produtos!</Text>
       </View>
     )
   }
@@ -173,21 +173,6 @@ export function Pantry() {
         )}
       />
 
-      {/* <ScrollView>
-        {searchedProducts.map(x =>
-        (
-          <View key={x.id} style={styles.productContainer}>
-            <View style={styles.productImgContainer}>
-              <Image style={styles.image} source={require('../../../assets/logo.png')} />
-              <View style={styles.productNameContainer}>
-                <Text style={styles.productName}>{x.productEntity.name}</Text>
-                <Text style={styles.productName}>Vence em: {x.validate}</Text>
-              </View>
-            </View>
-            <Text>{x.amount} x</Text>
-          </View>
-        ))}
-      </ScrollView> */}
       <SafeAreaView style={styles.userGroupContainer}>
         <View style={styles.pickerBorder}>
           <Picker
