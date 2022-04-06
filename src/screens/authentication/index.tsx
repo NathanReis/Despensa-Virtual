@@ -12,6 +12,44 @@ import styles from './styles';
 WebBrowser.maybeCompleteAuthSession();
 export function Authentication() {
   async function handleNavigation() {
+
+    await LocalStorageHelper.set('loggedUser', JSON.stringify({
+      "id": 1,
+      "name": "Vitor Lupinetti",
+      "email": "vi.lupinettii@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/a/AATXAJw6r3w2lIC7PRo42ufmF5aKI4Df5sesE0bnNLHM=s96-c",
+      "idDefaultUserGroup": 10,
+      "userGroupEntities": [
+        {
+          "id": 10,
+          "name": "casa"
+        },
+        {
+          "id": 11,
+          "name": "praia"
+        },
+        {
+          "id": 18,
+          "name": "despensa legal"
+        },
+        {
+          "id": 25,
+          "name": "loloolo"
+        },
+        {
+          "id": 26,
+          "name": "Casa 2"
+        }
+      ],
+      "defaultUserGroupEntity": {
+        "id": 10,
+        "name": "casa"
+      }
+    }));
+    await LocalStorageHelper.set('logged', 'y');
+    navigator.navigate('DrawerNavigator' as never);
+    return;
+
     const CLIENT_ID = process.env.OAUTH_CLIENT_ID;
     const REDIRECT_URI = AuthSession.makeRedirectUri({ path: process.env.OAUTH_REDIRECT_URI, useProxy: true });
     const RESPONSE_TYPE = 'token';

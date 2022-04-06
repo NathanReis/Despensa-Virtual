@@ -2,7 +2,7 @@ import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { CustomButton } from '../../components/button';
 import { Loading } from '../../components/loading';
@@ -206,89 +206,97 @@ export function UserGroup() {
 
   return (
     <View style={styles.container}>
-      <Title content={isCreate ? 'Criar nova despensa' : 'Editar despensa'} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <Title content={isCreate ? 'Criar nova despensa' : 'Editar despensa'} />
 
-      <View style={styles.formContainer}>
-        <CustomTextInput
-          label='Nome da despensa'
-          value={name}
-          onChangeText={setName}
-        />
-
-        <View style={styles.checkboxContainer}>
-          <Checkbox value={isDefault} onValueChange={setIsDefault} />
-          <Text
-            style={styles.checkboxLabel}
-            onPress={() => setIsDefault(!isDefault)}
-          >
-            Tornar padrão
-          </Text>
-        </View>
-
-        <OrangeButton onPress={handleSave}>
-          <Text>{isCreate ? 'Cadastrar' : 'Atualizar'}</Text>
-        </OrangeButton>
-      </View>
-
-      {
-        !isCreate &&
-        <View style={{ height: '40%' }}>
-          <View style={styles.listContainer}>
-            <Text style={styles.listItemTitle}>Usuários dessa despensa</Text>
-            <FlatList
-              data={users}
-              keyExtractor={item => String(item.id)}
-              renderItem={({ item }) => (
-                <View style={styles.listItemContainer}>
-                  <Text
-                    style={[
-                      styles.listItemTitle,
-                      loggedUser?.id === item.id && { fontWeight: 'bold' }
-                    ]}
-                  >
-                    {item.name} {loggedUser?.id === item.id && <Text>(Você)</Text>}
-                  </Text>
-
-                  <View style={styles.listItemActions}>
-                    {loggedUser?.id !== item.id &&
-
-                      <CustomButton
-                        style={styles.deleteButton}
-                        onPress={() => handleRemoveUser(item.id, item.name)}
-                      >
-                        <FontAwesome5 name='trash' size={16} color='black' />
-                      </CustomButton>}
-                  </View>
-                </View>
-              )}
-            />
-          </View>
-          <OrangeButton onPress={openModal}>
-            <Text>Adicionar Usuário</Text>
-          </OrangeButton>
-        </View>
-      }
-
-
-      <CustomModal handleVisible={closeModal} isVisible={modalVisible}>
         <View style={styles.formContainer}>
-          <Text
-            style={styles.modalTitle}
-          >
-            Adicionar usuário à despensa
-          </Text>
+
           <CustomTextInput
-            label='Email do usuário'
-            value={userToAddEmail}
-            keyboardType='email-address'
-            onChangeText={setUserToAddEmail}
+            label='Nome da despensa'
+            value={name}
+            onChangeText={setName}
           />
-          <OrangeButton onPress={handleAddUserToGroup}>
-            <Text>{'Cadastrar'}</Text>
+          <View style={styles.checkboxContainer}>
+            <Checkbox value={isDefault} onValueChange={setIsDefault} />
+            <Text
+              style={styles.checkboxLabel}
+              onPress={() => setIsDefault(!isDefault)}
+            >
+              Tornar padrão
+            </Text>
+          </View>
+
+          <OrangeButton onPress={handleSave}>
+            <Text>{isCreate ? 'Cadastrar' : 'Atualizar'}</Text>
           </OrangeButton>
         </View>
-      </CustomModal>
 
+        {
+          !isCreate &&
+
+          <View style={{ height: '40%' }}>
+            <View style={styles.listContainer}>
+              <Text style={styles.listItemTitle}>Usuários dessa despensa</Text>
+              <FlatList
+                data={users}
+                keyExtractor={item => String(item.id)}
+                renderItem={({ item }) => (
+                  <View style={styles.listItemContainer}>
+                    <Text
+                      style={[
+                        styles.listItemTitle,
+                        loggedUser?.id === item.id && { fontWeight: 'bold' }
+                      ]}
+                    >
+                      {item.name} {loggedUser?.id === item.id && <Text>(Você)</Text>}
+                    </Text>
+
+                    <View style={styles.listItemActions}>
+                      {loggedUser?.id !== item.id &&
+
+                        <CustomButton
+                          style={styles.deleteButton}
+                          onPress={() => handleRemoveUser(item.id, item.name)}
+                        >
+                          <FontAwesome5 name='trash' size={16} color='black' />
+                        </CustomButton>}
+                    </View>
+                  </View>
+                )}
+              />
+            </View>
+            <OrangeButton onPress={openModal}>
+              <Text>Adicionar Usuário</Text>
+            </OrangeButton>
+          </View>
+        }
+
+
+        <CustomModal handleVisible={closeModal} isVisible={modalVisible}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <View style={styles.formContainer}>
+              <Text
+                style={styles.modalTitle}
+              >
+                Adicionar usuário à despensa
+              </Text>
+              <CustomTextInput
+                label='Email do usuário'
+                value={userToAddEmail}
+                keyboardType='email-address'
+                onChangeText={setUserToAddEmail}
+              />
+              <OrangeButton onPress={handleAddUserToGroup}>
+                <Text>{'Cadastrar'}</Text>
+              </OrangeButton>
+            </View>
+          </KeyboardAvoidingView>
+        </CustomModal>
+      </KeyboardAvoidingView>
     </View>
   )
 }
