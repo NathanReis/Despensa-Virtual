@@ -1,4 +1,4 @@
-# FTT-TCC - Proj Despensa
+# Despensa Virtual
 
 > "Já ficou na dúvida sobre quais produtos ainda estão em sua despensa?"
 > 
