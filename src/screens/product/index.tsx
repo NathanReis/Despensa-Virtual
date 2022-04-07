@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-// import MaskInput, { Masks } from 'react-native-mask-input';
+import { MaskedTextInput } from "react-native-mask-text";
 import mime from 'mime';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
@@ -69,7 +69,8 @@ export function Product() {
 
     try {
       await loadData();
-    } catch {
+    } catch (error: any) {
+      console.log(error.response.data.error)
       Alert.alert('Erro', 'Produto não foi encontrado');
     }
 
@@ -90,6 +91,7 @@ export function Product() {
   }
 
   async function getValidate(uri: string) {
+    setDisabledButton(true);
     try {
       let newImageUri = 'file:///' + uri.split('file:/').join('');
 
@@ -102,7 +104,6 @@ export function Product() {
           name: newImageUri.split('/').pop()
         }))
       );
-
       let response = await ocr.post(
         '/ocr/validate',
         formData,
@@ -121,6 +122,9 @@ export function Product() {
     } catch {
       Alert.alert('Erro', 'Erro inesperado.');
     }
+    finally {
+      setDisabledButton(false);
+    }
   }
 
   async function saveCurrentData() {
@@ -131,10 +135,21 @@ export function Product() {
     await Purchase.addProduct(product!);
   }
 
-  async function handleContinue() {
-    await saveCurrentData();
+  async function validateFields() {
+    var date_regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!(date_regex.test(validate))) {
+      Alert.alert('Erro', 'Data inválida')
+      return false;
+    }
+    return true;
+  }
 
-    navigator.navigate('BarcodeScan' as never);
+  async function handleContinue() {
+    let isValid = await validateFields();
+    if (isValid == true) {
+      await saveCurrentData();
+      navigator.navigate('BarcodeScan' as never);
+    }
   }
 
   let [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
@@ -143,6 +158,7 @@ export function Product() {
   let [amount, setAmount] = useState<number>(0);
   let [validate, setValidate] = useState<string>('');
   let [isLoading, setIsLoading] = useState<boolean>(true);
+  let [disabledButton, setDisabledButton] = useState<boolean>(false);
   let navigator = useNavigation();
   let route = useRoute();
   let routeParams = route.params
@@ -202,13 +218,36 @@ export function Product() {
             name='camera'
             size={24}
             color='#5A6CF3'
-            onPress={handleOpenCamera}
-          />
-        }
+            onPress={handleOpenCamera} />}
         onChangeText={(text) => setValidate(text)}
       />
 
-      <GreenButton style={styles.button} onPress={handleContinue}>
+      {/* <View style={styles.validate}>
+        <Text style={styles.label}>Data de validade</Text>
+        <View style={styles.inputContainer}>
+          <MaskedTextInput
+            mask="99/99/9999"
+            value={validate}
+            onChangeText={(text) => setValidate(text)}
+            // placeholder='xx/xx/xxxx'
+            keyboardType="numeric"
+            style={styles.input}
+          />
+          <View style={[styles.iconRight, styles.rightIcon]}>
+            <AntDesign
+              style={styles.icon}
+              name='camera'
+              size={24}
+              color='#5A6CF3'
+              onPress={handleOpenCamera}
+            />
+          </View>
+        </View>
+
+      </View> */}
+
+
+      <GreenButton disabled={disabledButton} style={styles.button} onPress={handleContinue}>
         <Text style={styles.buttonContent}>Continuar</Text>
       </GreenButton>
     </SafeZoneScreen>

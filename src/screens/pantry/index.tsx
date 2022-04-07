@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
+import { FlatList, Image, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { Loading } from '../../components/loading';
 import api from '../../services/api';
@@ -16,6 +16,7 @@ export function Pantry() {
   let [loggedUser, setLoggedUser] = useState<IUserModel>({} as IUserModel);
   let [defaultUserGroup, setDefaultUserGroup] = useState<IUserGroupModel>({} as IUserGroupModel);
   let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>(0);
+  let [selectedFilter, setSelectedFilter] = useState<number>(-1);
   let [searchedProducts, setSearchedProducts] = useState<IMyProductModel[]>([]);
   let [isLoading, setIsLoading] = useState<boolean>(true);
   let navigator = useNavigation();
@@ -45,17 +46,15 @@ export function Pantry() {
 
       load().catch(error => {
         console.log(error.response.data)
-        // Alert.alert('Erro', JSON.stringify(error.response.data));
         setIsLoading(false);
-
       });
     }
-
   }, [isFocused]);
 
   async function handleChangeUserGroup(id: number) {
 
     setDefaultUserGroupId(id);
+    setSelectedFilter(-1);
     try {
       let products = await api.get<IMyProductModel[]>(`/my-products/${id}`);
       setProducts(products.data);
@@ -76,6 +75,23 @@ export function Pantry() {
       setSearchedProducts(products)
   }
 
+  function handleSortByAmount() {
+    let possibleProducts = products.sort(function (a, b) { return b.amount - a.amount });
+    setSearchedProducts([...possibleProducts]);
+    setSelectedFilter(0);
+  }
+
+  function handleSortByValidate() {
+    let possibleProducts = products.sort(function (a, b) { return new Date(a.validate).getTime() - new Date(b.validate).getTime() })
+    setSearchedProducts([...possibleProducts]);
+    setSelectedFilter(1);
+  }
+  function handleFilterExpireds() {
+    let possibleProducts = products.filter(x => new Date(x.validate) <= new Date())
+    setSearchedProducts([...possibleProducts]);
+    setSelectedFilter(2);
+  }
+
   if (isLoading) {
     return <Loading />;
   }
@@ -83,7 +99,7 @@ export function Pantry() {
   if (defaultUserGroupId == 0) {
     return (
       <View style={{ padding: 10 }}>
-        <Text style={styles.pageTitle}>Você precisa registrar uma residência para visualizar seus produtos!</Text>
+        <Text style={styles.pageTitle}>Você precisa registrar uma despensa para visualizar seus produtos!</Text>
       </View>
     )
   }
@@ -91,6 +107,17 @@ export function Pantry() {
   if (searchedProducts.length == 0) {
     return (
       <View style={{ padding: 10 }}>
+        <View style={styles.sortButtonsContainer}>
+          <CustomButton onPress={handleSortByAmount} style={(selectedFilter === 0 ? styles.sortButtonSelected : styles.sortButton)}>
+            <Text style={(selectedFilter === 0 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Quantidade</Text>
+          </CustomButton>
+          <CustomButton onPress={handleSortByValidate} style={(selectedFilter === 1 ? styles.sortButtonSelected : styles.sortButton)}>
+            <Text style={(selectedFilter === 1 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Validade</Text>
+          </CustomButton>
+          <CustomButton onPress={handleFilterExpireds} style={(selectedFilter === 2 ? styles.sortButtonSelected : styles.sortButton)}>
+            <Text style={(selectedFilter === 2 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Vencidos</Text>
+          </CustomButton>
+        </View>
         <Text style={styles.pageTitle}>Você não possui nenhum produto nessa despensa</Text>
         <SafeAreaView style={styles.userGroupContainer}>
           <View style={styles.pickerBorder}>
@@ -124,22 +151,38 @@ export function Pantry() {
           />
         </CustomButton>
       </View>
+      <Text>Ordenar por</Text>
 
-      <ScrollView>
-        {searchedProducts.map(x =>
-        (
-          <View key={x.id} style={styles.productContainer}>
+      <View style={styles.sortButtonsContainer}>
+        <CustomButton onPress={handleSortByAmount} style={(selectedFilter === 0 ? styles.sortButtonSelected : styles.sortButton)}>
+          <Text style={(selectedFilter === 0 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Quantidade</Text>
+        </CustomButton>
+        <CustomButton onPress={handleSortByValidate} style={(selectedFilter === 1 ? styles.sortButtonSelected : styles.sortButton)}>
+          <Text style={(selectedFilter === 1 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Validade</Text>
+        </CustomButton>
+        <CustomButton onPress={handleFilterExpireds} style={(selectedFilter === 2 ? styles.sortButtonSelected : styles.sortButton)}>
+          <Text style={(selectedFilter === 2 ? styles.sortButtonTextSelected : styles.sortButtonText)}>Vencidos</Text>
+        </CustomButton>
+      </View>
+
+      <FlatList
+        data={searchedProducts}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <View style={styles.productContainer}>
             <View style={styles.productImgContainer}>
               <Image style={styles.image} source={require('../../../assets/logo.png')} />
               <View style={styles.productNameContainer}>
-                <Text style={styles.productName}>{x.productEntity.name}</Text>
-                <Text style={styles.productName}>Vence em: {x.validate}</Text>
+                <Text style={styles.productName}>{item.productEntity.name}</Text>
+                <Text style={styles.productName}>Vence em: {item.validate}</Text>
+                <Text style={styles.productName}>Status: {item.status}</Text>
               </View>
             </View>
-            <Text>{x.amount} x</Text>
+            <Text>{item.amount} x</Text>
           </View>
-        ))}
-      </ScrollView>
+        )}
+      />
+
       <SafeAreaView style={styles.userGroupContainer}>
         <View style={styles.pickerBorder}>
           <Picker

@@ -7,7 +7,8 @@ import { CustomButton } from '../../components/button';
 import { Loading } from '../../components/loading';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { Title } from '../../components/title';
-import { User } from '../../storage/User';
+import api from '../../services/api';
+import { IUserModel, User } from '../../storage/User';
 import { IUserGroupModel, UserGroupStorage } from '../../storage/UserGroup';
 import styles from './styles';
 
@@ -23,7 +24,8 @@ export function UserGroups() {
 
     try {
       setIdDefaultUserGroup((await User.getLoggedUser()).idDefaultUserGroup);
-      setUserGroups(await UserGroupStorage.getAll());
+      // setUserGroups(await UserGroupStorage.getAll());
+      await getUserGroups();
     } catch {
       Alert.alert('Erro', 'Erro inesperado!');
     }
@@ -33,6 +35,12 @@ export function UserGroups() {
 
   function handleEdit(id: number) {
     navigator.navigate('UserGroup' as never, { id } as never);
+  }
+
+  async function getUserGroups() {
+    let email = await (await User.getLoggedUser()).email;
+    let userGroups = (await (await api.get<IUserModel>(`users/email/${email}`)).data).userGroupEntities;
+    setUserGroups(userGroups);
   }
 
   async function handleRemove(id: number) {

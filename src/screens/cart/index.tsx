@@ -33,13 +33,12 @@ export function Cart() {
         let user = await User.getLoggedUser();
         setLoggedUser(user);
         let defaultGroup;
-
         if (user.idDefaultUserGroup != null) {
           defaultGroup = user.userGroupEntities.find(x => x.id == user.idDefaultUserGroup);
           setDefaultUserGroup(defaultGroup!);
           setDefaultUserGroupId(defaultGroup!.id);
         }
-        else if (user.userGroupEntities.length > 0) {
+        else if (user.userGroupEntities && user.userGroupEntities.length > 0) {
           let userGroupId = user.userGroupEntities[0].id;
           user.idDefaultUserGroup = userGroupId;
           setDefaultUserGroupId(userGroupId)
@@ -61,8 +60,8 @@ export function Cart() {
   }
   if (defaultUserGroupId == 0) {
     return (
-      <View >
-        <Text style={styles.pageTitle}>Você precisa registrar uma residência para poder salvar seus produtos</Text>
+      <View style={{ padding: 30 }}>
+        <Text style={styles.pageTitle}>Você precisa registrar uma despensa para poder salvar seus produtos</Text>
       </View>
     )
   }

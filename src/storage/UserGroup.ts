@@ -32,6 +32,9 @@ export class UserGroupStorage {
     userGroup.id = createdId;
 
     let loggedUser = await User.getLoggedUser();
+    if (!loggedUser.userGroupEntities)
+      loggedUser.userGroupEntities = [];
+
     loggedUser.userGroupEntities.push(userGroup);
 
     await api.post('/user-groups/users', { idUserGroup: createdId, idUser: loggedUser.id });
