@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "FTT-TCC",
-    "slug": "ftt-tcc",
-    "scheme": "ftt-tcc",
+    "name": "Despensa Virtual",
+    "slug": "despensa-virtual",
+    "scheme": "despensa-virtual",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFF7F7"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,9 +23,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFF7F7"
       },
-      "package": "com.vlupine.ftttcc"
+      "package": "com.vlupine.despensa-virtual"
     },
     "web": {
       "favicon": "./assets/favicon.png"
