@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Despensa Virtual",
-    "slug": "despensa-virtual",
-    "scheme": "despensa-virtual",
+    "slug": "ftt-tcc",
+    "scheme": "ftt-tcc",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF7F7"
       },
-      "package": "com.vlupine.despensa-virtual"
+      "package": "com.vlupine.despensa_virtual"
     },
     "web": {
       "favicon": "./assets/favicon.png"

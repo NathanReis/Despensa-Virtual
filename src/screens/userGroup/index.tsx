@@ -2,7 +2,7 @@ import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Alert, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { CustomButton } from '../../components/button';
 import { Loading } from '../../components/loading';
@@ -15,6 +15,7 @@ import { IUserModel, User } from '../../storage/User';
 import { IUserGroupModel, UserGroupStorage } from '../../storage/UserGroup';
 import styles from './styles';
 import { CustomModal } from '../../components/modal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface IParams {
   id?: number;
@@ -76,6 +77,9 @@ export function UserGroup() {
   function clearFields() {
     setName('');
     setIsDefault(false);
+    let newUsers: Array<IUserModel> = [];
+    newUsers.push(loggedUser!)
+    setUsers([...newUsers]);
   }
 
   function validateUserGroup(): string[] {
@@ -92,7 +96,7 @@ export function UserGroup() {
     let errors: string[] = [];
 
     if (!userToAddEmail || userToAddEmail.trim().length == 0) {
-      errors.push('Informe como gostaria de chamar sua despensa');
+      errors.push('Informe o email do usuário a ser adicionado');
     }
     return errors;
   }
@@ -139,7 +143,7 @@ export function UserGroup() {
   }
 
   async function handleAddUserToGroup() {
-    let errors = validateUserGroup();
+    let errors = validateUserEmail();
 
     if (errors.length !== 0) {
       Alert.alert('Registro inválido', `- ${errors.join('\n- ')}`);
@@ -205,7 +209,10 @@ export function UserGroup() {
   }
 
   return (
-    <View style={styles.container}>
+
+
+    // <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
@@ -236,7 +243,7 @@ export function UserGroup() {
         {
           !isCreate &&
 
-          <View style={{ height: '40%' }}>
+          <View style={{ height: '40%', marginTop: 40 }}>
             <View style={styles.listContainer}>
               <Text style={styles.listItemTitle}>Usuários dessa despensa</Text>
               <FlatList
@@ -273,12 +280,10 @@ export function UserGroup() {
           </View>
         }
 
-
         <CustomModal handleVisible={closeModal} isVisible={modalVisible}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          >
-            <View style={styles.formContainer}>
+          <SafeAreaView>
+
+            <View >
               <Text
                 style={styles.modalTitle}
               >
@@ -294,9 +299,12 @@ export function UserGroup() {
                 <Text>{'Cadastrar'}</Text>
               </OrangeButton>
             </View>
-          </KeyboardAvoidingView>
+          </SafeAreaView>
+
         </CustomModal>
+
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
+    // </View>
   )
 }

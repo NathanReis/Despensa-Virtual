@@ -6,7 +6,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    height: 100,
+    height: '70%',
 
     marginHorizontal: 16,
     marginVertical: 64,

@@ -19,8 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IUserModel, User } from "../../storage/User";
 import { Loading } from "../../components/loading";
 import { LocalStorageHelper } from "../../helpers/LocalStorageHelper";
-import { StackNavigator } from "../stack";
-
+import { Restart } from "fiction-expo-restart";
 export function DrawerContent(props: DrawerContentComponentProps) {
   let [loggedUser, setLoggedUser] = useState<IUserModel>();
   let [isLoading, setIsLoading] = useState<boolean>(true);
@@ -139,7 +138,7 @@ export function DrawerContent(props: DrawerContentComponentProps) {
           label="Deslogar"
           onPress={async () => {
             await LocalStorageHelper.set('logged', 'n');
-            DevSettings.reload()
+            Restart();
           }}
         />
       </Drawer.Section>
