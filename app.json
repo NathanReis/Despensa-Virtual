@@ -3,7 +3,7 @@
     "name": "Despensa Virtual",
     "slug": "ftt-tcc",
     "scheme": "ftt-tcc",
-    "version": "1.0.0",
+    "version": "1.10.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
