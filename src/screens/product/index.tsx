@@ -82,7 +82,7 @@ export function Product() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [2, 1],
-      quality: 0.05
+      quality: 0.3
     });
 
     if (!result.cancelled) {
