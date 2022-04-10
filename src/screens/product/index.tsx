@@ -19,6 +19,8 @@ import { Purchase } from '../../storage/Purchase';
 import { IProductDto } from './IProductDto';
 import { IProductModel } from './IProductModel';
 import styles from './styles';
+import { OrangeButton } from '../../components/orangeButton';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function Product() {
   async function checkCameraPermission() {
@@ -141,6 +143,10 @@ export function Product() {
       Alert.alert('Erro', 'Data inválida')
       return false;
     }
+    if (amount <= 0) {
+      Alert.alert('Erro', 'Selecione ao menos uma unidade')
+      return false;
+    }
     return true;
   }
 
@@ -149,6 +155,14 @@ export function Product() {
     if (isValid == true) {
       await saveCurrentData();
       navigator.navigate('BarcodeScan' as never);
+    }
+  }
+
+  async function handleCart() {
+    let isValid = await validateFields();
+    if (isValid == true) {
+      await saveCurrentData();
+      navigator.navigate('Cart' as never);
     }
   }
 
@@ -172,7 +186,7 @@ export function Product() {
     if (isFocused) {
       handleUseEffect();
     }
-  }, [isFocused, route.params]);
+  }, [isFocused]);
 
   if (hasCameraPermission === null) {
     return <WaitingPermission />;
@@ -248,8 +262,23 @@ export function Product() {
 
 
       <GreenButton disabled={disabledButton} style={styles.button} onPress={handleContinue}>
-        <Text style={styles.buttonContent}>Continuar</Text>
+        <Text style={styles.buttonContent}>Escanear outro produto</Text>
+        <Icon
+          name="barcode"
+          color={'white'}
+          size={30}
+        />
       </GreenButton>
+
+      <OrangeButton disabled={disabledButton} onPress={handleCart}>
+        <Text style={styles.buttonContent}>Ir para o carrinho</Text>
+        <Icon
+          name="cart"
+          color={'white'}
+          size={30}
+        />
+      </OrangeButton>
+
     </SafeZoneScreen>
   );
 }

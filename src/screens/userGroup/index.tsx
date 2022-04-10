@@ -118,6 +118,7 @@ export function UserGroup() {
         let createdId = await UserGroupStorage.add(userGroup, isDefault);
 
         setId(createdId);
+        await getUsersOfGroup(createdId)
       } else {
         await UserGroupStorage.update(userGroup, isDefault);
       }
@@ -209,9 +210,6 @@ export function UserGroup() {
   }
 
   return (
-
-
-    // <View style={styles.container}>
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -250,6 +248,7 @@ export function UserGroup() {
                 data={users}
                 keyExtractor={item => String(item.id)}
                 renderItem={({ item }) => (
+
                   <View style={styles.listItemContainer}>
                     <Text
                       style={[
@@ -302,9 +301,7 @@ export function UserGroup() {
           </SafeAreaView>
 
         </CustomModal>
-
       </KeyboardAvoidingView>
     </SafeAreaView>
-    // </View>
   )
 }

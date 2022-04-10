@@ -88,7 +88,7 @@ export function Home() {
                 source={require('../../../assets/editUserIcon.png')}
               />
               <Text style={styles.menuLargeItemText}>
-                Gerenciar despensas
+                Nova Despensa
               </Text>
             </CustomButton>
 

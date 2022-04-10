@@ -35,7 +35,7 @@ export default StyleSheet.create({
     backgroundColor: '#D0EDFB'
   },
   button: {
-    marginTop: 64
+    marginTop: 45
   },
   buttonContent: {
     color: '#FFFFFF',
@@ -76,5 +76,18 @@ export default StyleSheet.create({
   },
   rightIcon: {
     right: 16
+  },
+  menuItemButton: {
+    backgroundColor: '#F8F8FB',
+    height: '20%',
+    width: '40%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  iconContainer: {
+    width: '40%',
+    height: '35%',
+    borderRadius: 10,
+    marginBottom: 20
   }
 });
