@@ -42,3 +42,9 @@ h2 {
     font-family: 'Roboto', sans-serif;
 
 }
+
+@media (max-width: 1000px) {
+    .card-container {
+        width: 75%;
+    }
+}
