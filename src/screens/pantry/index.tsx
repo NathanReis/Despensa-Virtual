@@ -3,6 +3,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
 import { CustomButton } from '../../components/button';
+import { GreenButton } from '../../components/greenButton';
 import { Loading } from '../../components/loading';
 import api from '../../services/api';
 import { IUserModel, User } from '../../storage/User';
@@ -100,6 +101,9 @@ export function Pantry() {
     return (
       <View style={{ padding: 10 }}>
         <Text style={styles.pageTitle}>Você precisa registrar uma despensa para visualizar seus produtos!</Text>
+        <GreenButton onPress={() => navigator.navigate('UserGroup' as never)}>
+          <Text style={{ color: 'white' }}>Nova despensa</Text>
+        </GreenButton>
       </View>
     )
   }

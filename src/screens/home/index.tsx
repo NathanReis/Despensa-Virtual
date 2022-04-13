@@ -40,7 +40,6 @@ export function Home() {
       <View style={styles.container}>
         <Text style={styles.welcomeTitle}>Bem vindo {userName.split(' ')[0]}</Text>
       </View>
-      {/* <Text style={styles.pageTitle}>Home</Text> */}
 
       <View style={styles.menuItemsContainer}>
         <CustomButton

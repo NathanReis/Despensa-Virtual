@@ -1,54 +1,38 @@
 import { useNavigation } from '@react-navigation/native';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { LocalStorageHelper } from '../../helpers/LocalStorageHelper';
+import * as Linking from 'expo-linking';
+import Checkbox from 'expo-checkbox';
 import api from '../../services/api';
 import styles from './styles';
+import { Loading } from '../../components/loading';
 
 WebBrowser.maybeCompleteAuthSession();
 export function Authentication() {
+  let [userAccepted, setUserAccepted] = useState<boolean>(false);
+  let [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function loadData() {
+      let userAccepted = await LocalStorageHelper.get('dv-userAccepted');
+
+      console.log(userAccepted);
+      setIsLoading(false);
+    }
+    loadData();
+  }, [])
+
   async function handleNavigation() {
 
-    // await LocalStorageHelper.set('loggedUser', JSON.stringify({
-    //   "id": 1,
-    //   "name": "Vitor Lupinetti",
-    //   "email": "vi.lupinettii@gmail.com",
-    //   "picture": "https://lh3.googleusercontent.com/a/AATXAJw6r3w2lIC7PRo42ufmF5aKI4Df5sesE0bnNLHM=s96-c",
-    //   "idDefaultUserGroup": 10,
-    //   "userGroupEntities": [
-    //     {
-    //       "id": 10,
-    //       "name": "casa"
-    //     },
-    //     {
-    //       "id": 11,
-    //       "name": "praia"
-    //     },
-    //     {
-    //       "id": 18,
-    //       "name": "despensa legal"
-    //     },
-    //     {
-    //       "id": 25,
-    //       "name": "loloolo"
-    //     },
-    //     {
-    //       "id": 26,
-    //       "name": "Casa 2"
-    //     }
-    //   ],
-    //   "defaultUserGroupEntity": {
-    //     "id": 10,
-    //     "name": "casa"
-    //   }
-    // }));
-    // await LocalStorageHelper.set('logged', 'y');
-    // navigator.navigate('DrawerNavigator' as never);
-    // return;
+    if (!userAccepted) {
+      Alert.alert('Atenção', 'Para entrar você deve aceitar nossos termos de uso e privacidade.');
+      return;
+    }
 
     const CLIENT_ID = process.env.OAUTH_CLIENT_ID;
     const REDIRECT_URI = AuthSession.makeRedirectUri({ path: process.env.OAUTH_REDIRECT_URI, useProxy: true });
@@ -66,14 +50,8 @@ export function Authentication() {
       } else {
         console.error({ _title: 'Authentication with error', response });
 
-        if (response.type === 'dismiss') {
-          // TO DO: Delete this condition after fix this problem
-          await LocalStorageHelper.set('logged', 'n');
-          Alert.alert('Bug', 'Mesmo conseguindo se autenticar, não é obtido sucesso');
-        } else {
-          await LocalStorageHelper.set('logged', 'n');
-          Alert.alert('Erro', 'Não foi possível fazer autenticação.');
-        }
+        await LocalStorageHelper.set('logged', 'n');
+        Alert.alert('Erro', 'Não foi possível fazer autenticação.');
       }
     } catch (exception) {
       console.error({ _title: 'Authentication threw exception', exception });
@@ -81,7 +59,22 @@ export function Authentication() {
     }
   }
 
+  async function handleAcceptPrivacy() {
+    setUserAccepted(!userAccepted);
+    await LocalStorageHelper.set('dv-userAccepted', String(!userAccepted));
+    console.log(!userAccepted);
+  }
+
+  function handleOpenPrivacy() {
+    const privacyUrl = 'https://nathanreis.github.io/Despensa-Virtual/privacy/';
+    Linking.openURL(privacyUrl);
+  }
+
   let navigator = useNavigation();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SafeZoneScreen backgroundColor='#FFF7F7' isWithoutHeader={true}>
@@ -96,6 +89,28 @@ export function Authentication() {
           Escaneie seus produtos e comece a{'\n'}
           reduzir o desperdício em sua residência
         </Text>
+
+
+        <View style={styles.checkboxContainer}>
+          <Checkbox value={userAccepted} onValueChange={handleAcceptPrivacy} />
+
+          <Text
+            style={styles.checkboxLabel}
+            onPress={handleAcceptPrivacy}
+          >
+            LI E ACEITO
+          </Text>
+        </View>
+        <View>
+          <Text
+            style={styles.privacyTextLabel}
+            onPress={handleOpenPrivacy}
+          >
+            Verifique nossos termos de uso
+          </Text>
+        </View>
+
+
 
         <CustomButton style={styles.button} onPress={handleNavigation}>
           <Text style={styles.buttonContent}>Entrar</Text>

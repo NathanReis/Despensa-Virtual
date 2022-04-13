@@ -39,5 +39,17 @@ export default StyleSheet.create({
     color: '#000000',
     fontSize: 16,
     fontWeight: 'bold'
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30
+  },
+  checkboxLabel: {
+    fontSize: 16
+  },
+  privacyTextLabel: {
+    color: '#5A8AF9',
+    textDecorationLine: 'underline',
   }
 });

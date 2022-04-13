@@ -4,6 +4,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { CustomButton } from '../../components/button';
+import { GreenButton } from '../../components/greenButton';
 import { Loading } from '../../components/loading';
 import api from '../../services/api';
 import { Purchase } from '../../storage/Purchase';
@@ -62,6 +63,9 @@ export function Cart() {
     return (
       <View style={{ padding: 30 }}>
         <Text style={styles.pageTitle}>Você precisa registrar uma despensa para poder salvar seus produtos</Text>
+        <GreenButton onPress={() => navigator.navigate('UserGroup' as never)}>
+          <Text style={{ color: 'white' }}>Nova despensa</Text>
+        </GreenButton>
       </View>
     )
   }
