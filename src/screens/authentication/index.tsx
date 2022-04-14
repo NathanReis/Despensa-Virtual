@@ -15,13 +15,18 @@ import { Loading } from '../../components/loading';
 WebBrowser.maybeCompleteAuthSession();
 export function Authentication() {
   let [userAccepted, setUserAccepted] = useState<boolean>(false);
+  let [userAlreadyAccepted, setUserAlreadyAccepted] = useState<boolean>(false);
   let [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function loadData() {
       let userAccepted = await LocalStorageHelper.get('dv-userAccepted');
+      // await LocalStorageHelper.set('dv-userAccepted', 'false');
 
-      console.log(userAccepted);
+      if (userAccepted && userAccepted != null) {
+        setUserAlreadyAccepted(JSON.parse(userAccepted))
+        console.log(userAccepted);
+      }
       setIsLoading(false);
     }
     loadData();
@@ -29,7 +34,9 @@ export function Authentication() {
 
   async function handleNavigation() {
 
-    if (!userAccepted) {
+    console.log(userAccepted)
+    console.log(userAlreadyAccepted)
+    if (userAlreadyAccepted == false && userAccepted == false) {
       Alert.alert('Atenção', 'Para entrar você deve aceitar nossos termos de uso e privacidade.');
       return;
     }
@@ -90,25 +97,30 @@ export function Authentication() {
           reduzir o desperdício em sua residência
         </Text>
 
+        {
+          userAlreadyAccepted == false && <>
+            <View style={styles.checkboxContainer}>
+              <Checkbox value={userAccepted} onValueChange={handleAcceptPrivacy} />
 
-        <View style={styles.checkboxContainer}>
-          <Checkbox value={userAccepted} onValueChange={handleAcceptPrivacy} />
+              <Text
+                style={styles.checkboxLabel}
+                onPress={handleAcceptPrivacy}
+              >
+                LI E ACEITO
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={styles.privacyTextLabel}
+                onPress={handleOpenPrivacy}
+              >
+                Verifique nossos termos de uso
+              </Text>
+            </View>
+          </>
 
-          <Text
-            style={styles.checkboxLabel}
-            onPress={handleAcceptPrivacy}
-          >
-            LI E ACEITO
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={styles.privacyTextLabel}
-            onPress={handleOpenPrivacy}
-          >
-            Verifique nossos termos de uso
-          </Text>
-        </View>
+        }
+
 
 
 
