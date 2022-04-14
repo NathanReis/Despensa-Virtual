@@ -21,7 +21,6 @@ export function Authentication() {
   useEffect(() => {
     async function loadData() {
       let userAccepted = await LocalStorageHelper.get('dv-userAccepted');
-      // await LocalStorageHelper.set('dv-userAccepted', 'false');
 
       if (userAccepted && userAccepted != null) {
         setUserAlreadyAccepted(JSON.parse(userAccepted))
@@ -34,8 +33,6 @@ export function Authentication() {
 
   async function handleNavigation() {
 
-    console.log(userAccepted)
-    console.log(userAlreadyAccepted)
     if (userAlreadyAccepted == false && userAccepted == false) {
       Alert.alert('Atenção', 'Para entrar você deve aceitar nossos termos de uso e privacidade.');
       return;
