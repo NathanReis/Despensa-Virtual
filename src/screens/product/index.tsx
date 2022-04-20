@@ -74,6 +74,7 @@ export function Product() {
     } catch (error: any) {
       console.log(error.response.data.error)
       Alert.alert('Erro', 'Produto não foi encontrado');
+      navigator.navigate('BarcodeScan' as never);
     }
 
     setIsLoading(false);

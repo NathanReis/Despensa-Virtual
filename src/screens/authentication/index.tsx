@@ -43,8 +43,9 @@ export function Authentication() {
     const RESPONSE_TYPE = 'token';
     const SCOPE = encodeURI('email profile');
     const OAUTH2_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+    let response;
     try {
-      let response = await AuthSession.startAsync({ authUrl: OAUTH2_URL });
+      response = await AuthSession.startAsync({ authUrl: OAUTH2_URL });
 
       if (response.type === 'success') {
         let user = (await api.post('/users/login-google', { token: response.params['access_token'] })).data;
@@ -53,11 +54,11 @@ export function Authentication() {
         navigator.navigate('DrawerNavigator' as never);
       } else {
         console.error({ _title: 'Authentication with error', response });
-
         await LocalStorageHelper.set('logged', 'n');
         Alert.alert('Erro', 'Não foi possível fazer autenticação.');
       }
     } catch (exception) {
+      console.log(response)
       console.error({ _title: 'Authentication threw exception', exception });
       Alert.alert('Erro', (exception as Error).message)
     }
