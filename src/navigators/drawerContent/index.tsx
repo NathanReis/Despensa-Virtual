@@ -124,6 +124,17 @@ export function DrawerContent(props: DrawerContentComponentProps) {
             label="Minhas despensas"
             onPress={() => { props.navigation.navigate('UserGroups') }}
           />
+          <DrawerItem
+            icon={({ color, size }) => (
+              <Icon
+                name="account-details"
+                color={color}
+                size={size}
+              />
+            )}
+            label="Gráficos"
+            onPress={() => { props.navigation.navigate('ChartsMenu') }}
+          />
         </Drawer.Section>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>

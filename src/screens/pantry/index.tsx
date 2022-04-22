@@ -5,6 +5,7 @@ import { FlatList, Image, SafeAreaView, ScrollView, Text, TextInput, View } from
 import { CustomButton } from '../../components/button';
 import { GreenButton } from '../../components/greenButton';
 import { Loading } from '../../components/loading';
+import { DateHelper } from '../../helpers/DateHelper';
 import api from '../../services/api';
 import { IUserModel, User } from '../../storage/User';
 import { IUserGroupModel } from '../../storage/UserGroup';
@@ -178,7 +179,7 @@ export function Pantry() {
               <Image style={styles.image} source={require('../../../assets/logo.png')} />
               <View style={styles.productNameContainer}>
                 <Text style={styles.productName}>{item.productEntity.name}</Text>
-                <Text style={styles.productName}>Vence em: {item.validate}</Text>
+                <Text style={styles.productName}>Vence em: {DateHelper.convertFromStoreToViewFormat(item.validate).substring(0, 10)}</Text>
                 <Text style={styles.productName}>Status: {item.status}</Text>
               </View>
             </View>
