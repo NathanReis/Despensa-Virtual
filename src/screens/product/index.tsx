@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
@@ -20,7 +20,6 @@ import { IProductDto } from './IProductDto';
 import { IProductModel } from './IProductModel';
 import styles from './styles';
 import { OrangeButton } from '../../components/orangeButton';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function Product() {
   async function checkCameraPermission() {
@@ -264,7 +263,7 @@ export function Product() {
 
       <GreenButton disabled={disabledButton} style={styles.button} onPress={handleContinue}>
         <Text style={styles.buttonContent}>Escanear outro produto</Text>
-        <Icon
+        <MaterialCommunityIcons
           name="barcode"
           color={'white'}
           size={30}
@@ -273,7 +272,7 @@ export function Product() {
 
       <OrangeButton disabled={disabledButton} onPress={handleCart}>
         <Text style={styles.buttonContent}>Ir para o carrinho</Text>
-        <Icon
+        <MaterialCommunityIcons
           name="cart"
           color={'white'}
           size={30}
