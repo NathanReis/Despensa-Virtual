@@ -1,125 +1,86 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    // marginTop: 40,
-    flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
-  productContainer: {
-    backgroundColor: '#F8F8FB',
-    // height: '20%',
-    width: '100%',
-    marginBottom: 20,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#F08F5F'
-  },
-  image: {
-    width: 40,
-    height: 40,
-    marginRight: 10
-  },
-  productImgContainer: {
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: '100%',
+    justifyContent: 'space-between',
+
+    height: 64,
+
+    marginBottom: 16,
+    padding: 8,
+
+    backgroundColor: '#F8F8FB',
+    borderRadius: 8
   },
-  pageTitle: {
-    fontWeight: 'bold',
-    fontSize: 25,
-    marginBottom: 20,
-    marginTop: 20
+  searchInput: {
+    flex: 1,
+
+    height: '100%'
   },
-  trashIcon: {
-    margin: 3
+  menuItemButton: {
+    marginRight: 0
+  },
+  selfCenter: {
+    alignSelf: 'center'
+  },
+  sortButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  },
+  sortButton: {
+    borderColor: '#F08F5F',
+    borderWidth: 1
+  },
+  sortButtonSelected: {
+    backgroundColor: '#F08F5F'
+  },
+  sortButtonText: {
+    color: '#F08F5F'
+  },
+  sortButtonTextSelected: {
+    color: '#F8F8FB'
+  },
+  productsContainer: {
+    flex: 1
+  },
+  productContainer: {
+    alignItems: 'center',
+
+    marginVertical: 8,
+    padding: 8,
+
+    backgroundColor: '#F8F8FB',
+    borderColor: '#F08F5F',
+    borderRadius: 16,
+    borderWidth: 1
+  },
+  productImgContainer: {
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  image: {
+    height: 40,
+    width: 40,
+
+    marginRight: 8
   },
   productNameContainer: {
     width: '80%'
   },
   productName: {
-    width: '100%',
     flexWrap: 'wrap',
+
     fontSize: 15
   },
-  userGroupContainer: {
-    height: '30%',
-    width: '90%',
-    alignItems: 'center',
-    justifyContent: 'center'
+  pickerBorder: {
+    marginVertical: 16,
+
+    borderWidth: 1,
+    borderRadius: 8
   },
   picker: {
-    marginVertical: 30,
-    width: 300,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#666',
-  },
-  pickerBorder: {
-    borderWidth: 1,
-    borderRadius: 10
-  },
-  btnAdicionar: {
-    width: '100%',
-    height: '30%',
-    backgroundColor: '#F08F5F',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  btnAdicionarTxt: {
-    color: 'white',
-    fontSize: 18
-  },
-  searchInput: {
-    width: '70%',
-    // marginBottom: 10,
-    height: '80%'
-  },
-  menuItemButton: {
-    backgroundColor: '#F8F8FB',
-    height: '80%',
-    // width: '40%',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  iconContainer: {
-    // width: '40%',
-    // height: '35%',
-    // borderRadius: 10,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    height: '10%',
-    width: '90%',
-    marginBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F8F8FB'
-  },
-  sortButtonsContainer: {
-    flexDirection: 'row'
-  },
-  sortButton: {
-    color: '#F08F5F',
-    borderColor: '#F08F5F',
-    borderWidth: 1
-  },
-  sortButtonText: {
-    color: '#F08F5F'
-  },
-  sortButtonSelected: {
-    backgroundColor: '#F08F5F',
-    borderColor: '#F08F5F',
-    borderWidth: 1
-  },
-  sortButtonTextSelected: {
-    color: '#F8F8FB'
+    padding: 32
   }
 })
