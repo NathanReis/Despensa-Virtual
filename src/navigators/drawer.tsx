@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BarcodeScan } from '../screens/barcodeScan';
 import { Cart } from '../screens/cart';
 import { ChartsMenu } from '../screens/chartsMenu';
+import { ExpiredsConsumedsChart } from '../screens/expiredsXConsumedsChart';
 import { ExpiredConsumedChart } from '../screens/expiredxConsumedChart';
 import { Home } from '../screens/home';
 import { Pantry } from '../screens/pantry';
@@ -36,6 +37,7 @@ export function DrawerNavigator() {
       <drawer.Screen component={ChartsMenu} name='ChartsMenu' options={{ title: 'Gráficos' }} />
       <drawer.Screen component={PantryUniqueProducts} name='PantryUniqueProducts' options={{ title: 'Produtos' }} />
       <drawer.Screen component={ExpiredConsumedChart} name='ExpiredConsumedChart' options={{ title: 'Gráfico' }} />
+      <drawer.Screen component={ExpiredsConsumedsChart} name='ExpiredsConsumedsChart' options={{ title: 'Gráfico' }} />
     </drawer.Navigator>
   );
 }

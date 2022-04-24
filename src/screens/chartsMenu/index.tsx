@@ -32,6 +32,15 @@ export function ChartsMenu() {
         <Text>Produtos vencidos x consumidos</Text>
       </CustomButton>
 
+      <CustomButton onPress={() => handleNavigate('ExpiredsConsumedsChart')}
+        style={styles.cardContainer}>
+        {/* <Image
+          style={styles.image}
+          source={require('../../../assets/chart1.png')}
+        /> */}
+        <Text>Produtos vencidos x consumidos</Text>
+      </CustomButton>
+
     </View>
   )
 }
