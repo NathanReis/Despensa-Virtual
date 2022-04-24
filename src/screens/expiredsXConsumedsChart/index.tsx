@@ -22,15 +22,32 @@ interface IParams {
 }
 export function ExpiredsConsumedsChart() {
   let [isLoading, setIsLoading] = useState<boolean>(true);
-  let [chartData, setChartData] = useState<IChartResponse>();
+  let [chartData, setChartData] = useState<IChartResponse[]>();
   let route = useRoute();
   let routeParams = route.params as IParams;
   let isFocused = useIsFocused();
-  const data = [
-    { key: 1, value: chartData?.qtdTotal },
-    { key: 2, value: chartData?.qtdConsumida },
-    { key: 3, value: chartData?.qtdVencida },
-  ];
+  // const data = [
+  //   { key: 1, value: chartData?.qtdTotal },
+  //   { key: 2, value: chartData?.qtdConsumida },
+  //   { key: 3, value: chartData?.qtdVencida },
+  // ];
+
+  let data: Array<any> = [];
+  let tickValues: Array<any> = [];
+  let tickFormat: Array<any> = [];
+  let labels: Array<any> = [];
+
+  let i = 1;
+  chartData?.map(x => {
+    if (x.qtdTotal != 0) {
+      tickValues.push(i);
+      tickFormat.push(DateHelper.convertFromStoreToViewFormat(x.purchaseDate).substring(0, 10))
+      let value = ((x.qtdVencida / x.qtdTotal) * 100);
+      data.push({ key: i, value: value });
+      labels.push(`${value}%`);
+      i++;
+    }
+  })
 
   let barColor = {
     1: '#7AF8E1',
@@ -41,7 +58,8 @@ export function ExpiredsConsumedsChart() {
     setIsLoading(true);
 
     try {
-      let response = await api.get<IChartResponse>(`/analytics/user-groups/${routeParams.idUserGroup}/product/${routeParams.idProduct}/last-purchase`)
+      let response = await api.get<IChartResponse[]>(`/analytics/user-groups/${76}/product/${7}/all-purchases`)
+      // let response = await api.get<IChartResponse[]>(`/analytics/user-groups/${routeParams.idUserGroup}/product/${routeParams.idProduct}/all-purchases`)
       let data = response.data;
       // data.purchaseDate = DateHelper.convertFromStoreToViewFormat(chartData!.purchaseDate).substring(0, 10)
       setChartData(data);
@@ -64,35 +82,34 @@ export function ExpiredsConsumedsChart() {
     ? <Loading />
     : (
       <View style={styles.container}>
-        <Text style={styles.chartDescription}>Análise com base em sua última compra desse produto</Text>
-        <Text style={styles.productName}>{chartData?.nomeProduto}</Text>
+        <Text style={styles.chartDescription}>Análise com base em suas últimas compras desse produto</Text>
+        <Text style={styles.productName}>{chartData![0].nomeProduto}</Text>
         <VictoryChart
           // adding the material theme provided with Victory
           theme={VictoryTheme.material}
           domainPadding={20}
         >
           <VictoryAxis
-            tickValues={[1, 2, 3]}
-            tickFormat={["Total", "Consumidos", "Vencidos"]}
+            tickValues={tickValues}
+            tickFormat={tickFormat}
           />
           <VictoryAxis
             dependentAxis
             tickFormat={(x) => (x)}
           />
           <VictoryBar
-            labels={[String(chartData?.qtdTotal), String(chartData?.qtdConsumida), String(chartData?.qtdVencida)]}
+            labels={labels}
             data={data}
             x="key"
             y="value"
             style={{
               data: {
-                fill: ({ datum }) => barColor[datum.key],
+                fill: '#F35959',
               },
               labels: { fill: "black" }
             }}
           />
         </VictoryChart>
-        <Text style={styles.purchaseDateText}>Data da compra: {chartData?.purchaseDate}</Text>
       </View>
     )
 }

@@ -1,5 +1,5 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { BarcodeScan } from '../screens/barcodeScan';
 import { Cart } from '../screens/cart';
@@ -7,6 +7,7 @@ import { ChartsMenu } from '../screens/chartsMenu';
 import { ExpiredsConsumedsChart } from '../screens/expiredsXConsumedsChart';
 import { ExpiredConsumedChart } from '../screens/expiredxConsumedChart';
 import { Home } from '../screens/home';
+import { MostConsumedChart } from '../screens/mostConsumedChart';
 import { Pantry } from '../screens/pantry';
 import { PantryUniqueProducts } from '../screens/pantryUniqueProducts';
 import { Product } from '../screens/product';
@@ -141,8 +142,13 @@ export function DrawerNavigator() {
         }}
       />
       <drawer.Screen
+<<<<<<< HEAD
         component={ExpiredsConsumedsChart}
         name='ExpiredsConsumedsChart'
+=======
+        component={MostConsumedChart}
+        name='MostConsumedChart'
+>>>>>>> 0a07ed05018bf3a512b7a5a57f9b18cd557a897c
         options={{
           drawerItemStyle: { display: 'none' },
           title: 'Gráfico'
