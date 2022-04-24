@@ -1,11 +1,12 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { BarcodeScan } from '../screens/barcodeScan';
 import { Cart } from '../screens/cart';
 import { ChartsMenu } from '../screens/chartsMenu';
 import { ExpiredConsumedChart } from '../screens/expiredxConsumedChart';
 import { Home } from '../screens/home';
+import { MostConsumedChart } from '../screens/mostConsumedChart';
 import { Pantry } from '../screens/pantry';
 import { PantryUniqueProducts } from '../screens/pantryUniqueProducts';
 import { Product } from '../screens/product';
@@ -133,6 +134,14 @@ export function DrawerNavigator() {
       <drawer.Screen
         component={ExpiredConsumedChart}
         name='ExpiredConsumedChart'
+        options={{
+          drawerItemStyle: { display: 'none' },
+          title: 'Gráfico'
+        }}
+      />
+      <drawer.Screen
+        component={MostConsumedChart}
+        name='MostConsumedChart'
         options={{
           drawerItemStyle: { display: 'none' },
           title: 'Gráfico'

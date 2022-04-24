@@ -23,6 +23,15 @@ export function ChartsMenu() {
 
   return (
     <View style={styles.container}>
+      <CustomButton onPress={() => handleNavigate('MostConsumedChart')}
+        style={styles.cardContainer}>
+        {/* <Image
+          style={styles.image}
+          source={require('../../../assets/chart1.png')}
+        /> */}
+        <Text>Mais consumidos</Text>
+      </CustomButton>
+
       <CustomButton onPress={() => handleNavigate('PantryUniqueProducts')}
         style={styles.cardContainer}>
         {/* <Image
@@ -31,7 +40,6 @@ export function ChartsMenu() {
         /> */}
         <Text>Produtos vencidos x consumidos</Text>
       </CustomButton>
-
     </View>
   )
 }
