@@ -142,13 +142,16 @@ export function DrawerNavigator() {
         }}
       />
       <drawer.Screen
-<<<<<<< HEAD
         component={ExpiredsConsumedsChart}
         name='ExpiredsConsumedsChart'
-=======
+        options={{
+          drawerItemStyle: { display: 'none' },
+          title: 'Gráfico'
+        }}
+      />
+      <drawer.Screen
         component={MostConsumedChart}
         name='MostConsumedChart'
->>>>>>> 0a07ed05018bf3a512b7a5a57f9b18cd557a897c
         options={{
           drawerItemStyle: { display: 'none' },
           title: 'Gráfico'

@@ -4,7 +4,6 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#f5fcff"
   },
   image: {
     width: '100%',
@@ -16,5 +15,13 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 0.5,
     marginTop: 40,
+  },
+  chartTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20
+  },
+  chartDescription: {
+    fontSize: 15
   }
 })

@@ -1,4 +1,4 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TextInput, SafeAreaView } from 'react-native';
 import styles from './styles';
@@ -14,12 +14,18 @@ interface IUniqueProductDTO {
   id: number,
   name: string
 }
+
+interface IParams {
+  screen: string,
+}
 export function PantryUniqueProducts() {
   let [isLoading, setIsLoading] = useState<boolean>(true);
   let [products, setProducts] = useState<IUniqueProductDTO[]>([]);
   let [searchedProducts, setSearchedProducts] = useState<IUniqueProductDTO[]>([]);
   let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>(0);
   let [loggedUser, setLoggedUser] = useState<IUserModel>({} as IUserModel);
+  let route = useRoute();
+  let routeParams = route.params as IParams;
   let isFocused = useIsFocused();
   let navigator = useNavigation();
 
@@ -77,7 +83,7 @@ export function PantryUniqueProducts() {
     }
   }
   async function handleNavigate(id: number) {
-    navigator.navigate('ExpiredConsumedChart' as never, { idProduct: id, idUserGroup: defaultUserGroupId } as never);
+    navigator.navigate(routeParams.screen as never, { idProduct: id, idUserGroup: defaultUserGroupId } as never);
   }
 
   if (isLoading) {

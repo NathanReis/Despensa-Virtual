@@ -18,36 +18,39 @@ export function ChartsMenu() {
   }, [isFocused]);
 
   async function handleNavigate(screen: string) {
-    navigator.navigate(screen as never);
+    if (screen === 'ExpiredsConsumedsChart' || screen === 'ExpiredConsumedChart') {
+      navigator.navigate('PantryUniqueProducts' as never, { screen } as never);
+    } else
+      navigator.navigate(screen as never);
   }
 
   return (
     <View style={styles.container}>
       <CustomButton onPress={() => handleNavigate('MostConsumedChart')}
         style={styles.cardContainer}>
-        {/* <Image
-          style={styles.image}
-          source={require('../../../assets/chart1.png')}
-        /> */}
-        <Text>Mais consumidos</Text>
+        <Text style={styles.chartTitle}>Mais consumidos</Text>
+        <Text style={styles.chartDescription}>
+          Esse gráfico analisa seus produtos que mais foram consumidos, e mostra seu consumo médio do mesmo
+          por semana ou por mês
+        </Text>
       </CustomButton>
 
-      <CustomButton onPress={() => handleNavigate('PantryUniqueProducts')}
+      <CustomButton onPress={() => handleNavigate('ExpiredConsumedChart')}
         style={styles.cardContainer}>
-        {/* <Image
-          style={styles.image}
-          source={require('../../../assets/chart1.png')}
-        /> */}
-        <Text>Produtos vencidos x consumidos</Text>
+        <Text style={styles.chartTitle}>Vencidos x consumidos</Text>
+        <Text style={styles.chartDescription}>
+          Esse gráfico analisa com base em sua última compra de
+          determinado produto, o quanto foi consumido e quantas unidades deste produto venceram.
+        </Text>
       </CustomButton>
 
       <CustomButton onPress={() => handleNavigate('ExpiredsConsumedsChart')}
         style={styles.cardContainer}>
-        {/* <Image
-          style={styles.image}
-          source={require('../../../assets/chart1.png')}
-        /> */}
-        <Text>Produtos vencidos x consumidos</Text>
+        <Text style={styles.chartTitle}>Vencidos x consumidos</Text>
+        <Text style={styles.chartDescription}>
+          Esse gráfico analisa com base em todas suas compras de
+          determinado produto, uma porcentagem de quantas unidades do produto que foram compradas que acabaram vencendo
+        </Text>
       </CustomButton>
 
     </View>

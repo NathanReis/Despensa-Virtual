@@ -26,11 +26,6 @@ export function ExpiredsConsumedsChart() {
   let route = useRoute();
   let routeParams = route.params as IParams;
   let isFocused = useIsFocused();
-  // const data = [
-  //   { key: 1, value: chartData?.qtdTotal },
-  //   { key: 2, value: chartData?.qtdConsumida },
-  //   { key: 3, value: chartData?.qtdVencida },
-  // ];
 
   let data: Array<any> = [];
   let tickValues: Array<any> = [];
@@ -49,20 +44,14 @@ export function ExpiredsConsumedsChart() {
     }
   })
 
-  let barColor = {
-    1: '#7AF8E1',
-    2: '#8BF359',
-    3: '#F35959'
-  }
   async function loadData() {
     setIsLoading(true);
 
     try {
-      let response = await api.get<IChartResponse[]>(`/analytics/user-groups/${76}/product/${7}/all-purchases`)
-      // let response = await api.get<IChartResponse[]>(`/analytics/user-groups/${routeParams.idUserGroup}/product/${routeParams.idProduct}/all-purchases`)
+      let response = await api.get<IChartResponse[]>(`/analytics/user-groups/${routeParams.idUserGroup}/product/${routeParams.idProduct}/all-purchases`)
       let data = response.data;
       // data.purchaseDate = DateHelper.convertFromStoreToViewFormat(chartData!.purchaseDate).substring(0, 10)
-      setChartData(data);
+      setChartData(data.reverse());
     } catch (error) {
       console.log(error)
       Alert.alert('Erro', 'Erro inesperado!');
