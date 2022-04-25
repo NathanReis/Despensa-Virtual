@@ -62,15 +62,16 @@ export function Home() {
           <Text>Meus produtos</Text>
         </CustomButton>
 
-        <CustomButton style={styles.menuItemButton}>
+        <CustomButton disabled style={styles.menuItemButton}>
           <Image
             style={styles.iconContainer}
             source={require('../../../assets/cartIcon.png')}
           />
           <Text>Lista de compras</Text>
+          <Text>(Breve)</Text>
         </CustomButton>
 
-        <CustomButton style={styles.menuItemButton}>
+        <CustomButton disabled style={styles.menuItemButton}>
           <Image
             style={styles.iconContainer}
             source={require('../../../assets/warningIcon.png')}

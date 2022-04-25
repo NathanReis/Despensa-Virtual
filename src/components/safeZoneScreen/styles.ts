@@ -17,6 +17,7 @@ export default (
     backgroundColor: backgroundColor ?? '#FFFFFF'
   },
   containerWithoutScroll: {
-    height: Dimensions.get('window').height - (isWithoutHeader ? 0 : 80)
+    // height: Dimensions.get('window').height - (isWithoutHeader ? 0 : 80)
+    height: '80%'
   }
 });

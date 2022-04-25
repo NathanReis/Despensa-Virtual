@@ -95,6 +95,8 @@ export function Pantry() {
     try {
       let products = await api.get<IMyProductModel[]>(`/my-products/${idUserGroup}`);
 
+      products.data = products.data.filter(x => x.status != 'Consumido')
+
       setProducts(products.data);
       setSearchedProducts(products.data)
 
