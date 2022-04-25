@@ -1,11 +1,14 @@
 import { Picker } from '@react-native-picker/picker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, Image, Text, TextInput, View } from 'react-native';
+import { Alert, Image, SafeAreaView, Text, TextInput, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { CustomButton } from '../../components/button';
 import { GreenButton } from '../../components/greenButton';
 import { Loading } from '../../components/loading';
+import { CustomModal } from '../../components/modal';
+import { NumericUpDown } from '../../components/numericUpDown';
+import { OrangeButton } from '../../components/orangeButton';
 import { SafeZoneScreen } from '../../components/safeZoneScreen';
 import { Title } from '../../components/title';
 import { DateHelper } from '../../helpers/DateHelper';
@@ -18,10 +21,14 @@ import styles from './styles';
 export function Pantry() {
   let [products, setProducts] = useState<IMyProductModel[]>([]);
   let [defaultUserGroupId, setDefaultUserGroupId] = useState<number>(0);
+  let [modalVisible, setModalVisible] = useState<boolean>(false);
   let [selectedFilter, setSelectedFilter] = useState<number>(-1);
   let [searchedProducts, setSearchedProducts] = useState<IMyProductModel[]>([]);
+  let [selectedProduct, setSelectedProduct] = useState<IMyProductModel>();
+  let [selectedStatus, setSelectedStatus] = useState<string>();
   let [isLoading, setIsLoading] = useState<boolean>(true);
   let [userGroups, setUserGroups] = useState<IUserGroupModel[]>([]);
+  let [amountToUpdate, setAmount] = useState<number>(1);
 
   let isFocused = useIsFocused();
   let navigator = useNavigation();
@@ -90,11 +97,39 @@ export function Pantry() {
 
       setProducts(products.data);
       setSearchedProducts(products.data)
+
     } catch {
       setProducts([])
       setSearchedProducts([])
 
       Alert.alert('Erro', 'Não foi possível buscar seus produtos');
+    }
+  }
+  async function openModal(id: number, status: string) {
+    let product = searchedProducts.find(x => x.id == id);
+    setSelectedProduct(product);
+    setSelectedStatus(status);
+    setModalVisible(true);
+  }
+  async function closeModal() {
+    setModalVisible(false);
+  }
+
+  async function handleChangeProductStatus() {
+    try {
+      let req = {
+        idMyProduct: selectedProduct?.id,
+        amount: amountToUpdate,
+        status: selectedStatus
+      }
+      await api.put(`/my-products/update-status`, req)
+
+      Alert.alert('Sucesso!', 'Status do produto atualizado')
+      await loadProducts(defaultUserGroupId);
+      closeModal();
+
+    } catch (error: any) {
+      Alert.alert('Erro', error.response.data.error[0])
     }
   }
 
@@ -179,6 +214,14 @@ export function Pantry() {
                     </View>
 
                     <Text>{item.amount} x</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                      <GreenButton onPress={() => openModal(item.id, 'open')} style={{ width: '30%' }}>
+                        <Text>Abrir</Text>
+                      </GreenButton>
+                      <OrangeButton onPress={() => openModal(item.id, 'consumed')}>
+                        <Text>Consumir</Text>
+                      </OrangeButton>
+                    </View>
                   </View>
                 )}
               />
@@ -199,6 +242,34 @@ export function Pantry() {
             ))
           }
         </Picker>
+
+
+        <CustomModal handleVisible={closeModal} isVisible={modalVisible}>
+          <SafeAreaView>
+            {/* <Text style={{ fontSize: 25 }}>Atualizar status do produto</Text> */}
+            <View style={styles.amountContainer}>
+              <Text style={styles.productModalName}>{selectedProduct?.productEntity.name}</Text>
+              <Image
+                style={styles.modalImage}
+                source={require('../../../assets/logo.png')}
+              />
+
+              <NumericUpDown
+                style={styles.upDown}
+                value={amountToUpdate}
+                onDown={() => setAmount(--amountToUpdate)}
+                onUp={() => setAmount(++amountToUpdate)}
+              />
+            </View>
+            <GreenButton onPress={handleChangeProductStatus}>
+              {
+                selectedStatus == 'open' ? <Text>Abrir produto</Text>
+                  :
+                  <Text>Consumir produto</Text>
+              }
+            </GreenButton>
+          </SafeAreaView>
+        </CustomModal>
       </View>
     </SafeZoneScreen>
   );

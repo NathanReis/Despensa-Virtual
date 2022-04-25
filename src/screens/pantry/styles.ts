@@ -82,5 +82,30 @@ export default StyleSheet.create({
   },
   picker: {
     padding: 32
+  },
+  amountContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    borderRadius: 16,
+    backgroundColor: '#F8F8F8',
+    height: '65%',
+    marginBottom: 20
+  },
+  productModalName: {
+    fontSize: 20,
+    textAlign: 'center'
+  },
+  modalImage: {
+    height: 100,
+    width: 100,
+
+    marginVertical: 16
+  },
+  upDown: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 0,
+    marginBottom: 16
   }
 })
