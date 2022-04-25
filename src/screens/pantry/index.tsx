@@ -248,7 +248,6 @@ export function Pantry() {
 
         <CustomModal handleVisible={closeModal} isVisible={modalVisible}>
           <SafeAreaView>
-            {/* <Text style={{ fontSize: 25 }}>Atualizar status do produto</Text> */}
             <View style={styles.amountContainer}>
               <Text style={styles.productModalName}>{selectedProduct?.productEntity.name}</Text>
               <Image

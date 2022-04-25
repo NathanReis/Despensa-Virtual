@@ -3,7 +3,7 @@
     "name": "Despensa Virtual",
     "slug": "ftt-tcc",
     "scheme": "ftt-tcc",
-    "version": "1.10.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF7F7"
       },
-      "package": "com.vlupine.despensa_virtual"
+      "package": "com.vlupine.despensa_virtual",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
