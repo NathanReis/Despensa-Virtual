@@ -12,7 +12,7 @@ Um sistema que permite salvar suas compras, e com base nestes dados, disponibili
 
 Além disso, nele ainda é possível extrair a data de validade através de uma imagem, o que permitirá saber quais são os produtos próximos a vencer. 🤯
 
-Para identificar um produto, basta ler seu código de barras, mas para compras muito grande isso seria muito cansativo, então também é possível extrair os dados do cupom fiscal. 🤯🤯
+Para identificar um produto, basta ler seu código de barras. 🤯🤯
 
 E para permitir uma maior praticidade no uso diário, é possível utilizar comandos de voz para consultas rápidas. 🤯🤯🤯🤯🤯
 
