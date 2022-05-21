@@ -9,4 +9,7 @@ rm -f src/temp/*
 touch src/temp/.gitkeep
 
 yarn install
+
+yarn typeorm schema:sync
+
 yarn dev
