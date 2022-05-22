@@ -37,6 +37,8 @@ Também temos uma wiki onde deixamos algumas coisas que podem, ou não, ser úte
 
 Faculdade Engenheiro Salvador Arena (FESA)
 
+Conheça através da [home page](http://faculdadesalvadorarena.org.br) ou [LinkedIn](https://www.linkedin.com/school/faculdade-engenheiro-salvador-arena/).
+
 ### Orientador
 
 | Nome           |                                                  |
